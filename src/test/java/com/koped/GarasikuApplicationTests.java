@@ -1,0 +1,13 @@
+package com.koped;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class GarasikuApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
