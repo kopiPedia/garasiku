@@ -9,10 +9,7 @@ public class VoucherTest {
     Voucher voucher;
     @BeforeEach
     void setUp() {
-        this.voucher = new Voucher();
-        this.voucher.setVoucherId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        this.voucher.setVoucherName("GOJEKINAJA");
-        this.voucher.setVoucherQuantity(2);
+        this.voucher = new Voucher("eb558e9f-1c39-460e-8860-71af6af63bd6", "GOJEKINAJA", 2);
     }
 
     @Test
