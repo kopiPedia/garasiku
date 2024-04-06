@@ -1,12 +1,32 @@
 package com.koped.model;
-import lombok.Getter;
 import lombok.Setter;
-@Getter @Setter
+import lombok.Getter;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Setter
+@Getter
+@Table(name = "tbl_cart")
 public class Cart {
-    private User user;
-    private Product product;
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "user")
+    private String user;
+
+    @Column(name = "product")
+    private String product;
+
+    @Column(name = "quantity")
     private int quantity;
-    private int id; // ini auto increment buat tiap object
+
+    @Column(name = "price")
     private int price;
+
 }
