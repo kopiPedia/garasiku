@@ -1,11 +1,5 @@
 package com.koped.service;
 
-import com.koped.model.Cart;
-import com.koped.model.Product;
-import com.koped.model.User;
-
-import java.util.List;
-
 public interface CartService {
 //    Cart addProductToCart(Cart cart);
 //    void removeProductFromCart(int id);

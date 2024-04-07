@@ -1,18 +1,5 @@
 package com.koped.service;
 
-import com.koped.model.Cart;
-import com.koped.model.Product;
-import com.koped.model.User;
-import com.koped.repository.CartRepository;
-import com.koped.service.CartService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 //@Service
 //@RequiredArgsConstructor
 public class CartServiceImpl {
