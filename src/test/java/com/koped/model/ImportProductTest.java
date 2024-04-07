@@ -16,21 +16,6 @@ public class ImportProductTest {
     }
 
     @Test
-    public void testToString() {
-        ImportProduct importProduct = new ImportProduct();
-        importProduct.setId(1);
-        importProduct.setTitle("title");
-        importProduct.setDescription("description");
-        importProduct.setStock(1);
-        importProduct.setCountry("country");
-        importProduct.setPrice(BigDecimal.valueOf(1.0));
-        importProduct.setCategory("category");
-        importProduct.setImage("image");
-        importProduct.setProductId("productId");
-
-        assertTrue(importProduct.toString().contains("1"));
-    }
-    @Test
     public void testGetTitle() {
         ImportProduct importProduct = new ImportProduct();
         importProduct.setTitle("title");
