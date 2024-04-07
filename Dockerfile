@@ -13,8 +13,7 @@ RUN mvn dependency:go-offline
 
 # Copy the rest of the project files and build
 COPY . .
-RUN mvn clean package
-RUN mvn clean install
+RUN mvn clean compile assembly:single
 
 # Second stage: Use a smaller JRE-based image for runtime
 FROM docker.io/library/eclipse-temurin:21-jre-alpine AS runner
