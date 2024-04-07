@@ -93,7 +93,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>fully.qualified.MainClass</mainClass>
+							<mainClass>fully.qualified.GarasikuApplication</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
