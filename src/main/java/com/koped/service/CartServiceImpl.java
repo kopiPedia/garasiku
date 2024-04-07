@@ -1,4 +1,4 @@
-package com.koped.service.impl;
+package com.koped.service;
 
 import com.koped.model.Cart;
 import com.koped.model.Product;
