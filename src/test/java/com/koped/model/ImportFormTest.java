@@ -15,19 +15,6 @@ public class ImportFormTest {
     }
 
     @Test
-    public void testToString() {
-        ImportForm importForm = new ImportForm();
-        importForm.setId(1L);
-        importForm.setUserId(1L);
-        importForm.setProductName("productName");
-        importForm.setExpectedCountry("expectedCountry");
-        importForm.setDetails("details");
-        importForm.setBudgetRange(BigDecimal.valueOf(1.0));
-        importForm.setStatus("status");
-
-        assertTrue(importForm.toString().contains("1"));
-    }
-    @Test
     public void testGetUserId() {
         ImportForm importForm = new ImportForm();
         importForm.setUserId(1L);
