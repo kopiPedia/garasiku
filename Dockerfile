@@ -1,6 +1,12 @@
 FROM docker.io/library/eclipse-temurin:21-jdk-alpine AS builder
 
 WORKDIR /src/garasiku
+
+# Copy only the pom.xml file and resolve dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy the rest of the project files and build
 COPY . .
 RUN mvn clean package
 
