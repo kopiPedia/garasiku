@@ -7,9 +7,9 @@ import com.koped.model.User;
 import java.util.List;
 
 public interface CartService {
-    Cart addProductToCart(Cart cart);
-    void removeProductFromCart(int id);
-    Cart updateProductQuantityInCart(int id, int quantity);
-    int gettotalCart(User user);
-    int getPriceCart(User user);
+//    Cart addProductToCart(Cart cart);
+//    void removeProductFromCart(int id);
+//    Cart updateProductQuantityInCart(int id, int quantity);
+//    int gettotalCart(User user);
+//    int getPriceCart(User user);
 }
