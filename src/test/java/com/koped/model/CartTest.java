@@ -7,7 +7,6 @@ public class CartTest {
 
     @Test
     public void testCartProperties() {
-        // Positive test
         String userIdentifier = "User1";
         String productIdentifier = "Product1";
 
@@ -27,25 +26,22 @@ public class CartTest {
 
     @Test
     public void testCartNegativeQuantity() {
-        // Negative test for quantity
         Cart cart = new Cart();
-        cart.setQuantity(-1); // Attempt to set a negative quantity
+        cart.setQuantity(-1);
 
         assertTrue(cart.getQuantity() < 0, "The cart should not accept negative quantities.");
     }
 
     @Test
     public void testCartNegativePrice() {
-        // Negative test for price
         Cart cart = new Cart();
-        cart.setPrice(-100); // Attempt to set a negative price
+        cart.setPrice(-100);
 
         assertTrue(cart.getPrice() < 0, "The cart should not accept negative prices.");
     }
 
     @Test
     public void testCartZeroQuantity() {
-        // Edge case test for quantity
         Cart cart = new Cart();
         cart.setQuantity(0);
 
@@ -54,7 +50,6 @@ public class CartTest {
 
     @Test
     public void testCartHighQuantity() {
-        // Positive test for high quantity
         Cart cart = new Cart();
         cart.setQuantity(10000);
 
@@ -63,7 +58,6 @@ public class CartTest {
 
     @Test
     public void testCartHighPrice() {
-        // Positive test for high price
         Cart cart = new Cart();
         cart.setPrice(Integer.MAX_VALUE);
 
@@ -72,19 +66,56 @@ public class CartTest {
 
     @Test
     public void testCartInvalidUser() {
-        // Negative test for user field
         Cart cart = new Cart();
-        cart.setUser(""); // Set an empty string as the user
+        cart.setUser("");
 
         assertEquals("", cart.getUser(), "The cart should handle empty user strings.");
     }
 
     @Test
     public void testCartInvalidProduct() {
-        // Negative test for product field
         Cart cart = new Cart();
-        cart.setProduct(""); // Set an empty string as the product
+        cart.setProduct("");
 
         assertEquals("", cart.getProduct(), "The cart should handle empty product strings.");
+    }
+
+    @Test
+    public void testUpdateProductQuantity() {
+        Cart cart = new Cart();
+        cart.setProduct("Product1");
+        cart.setQuantity(1);
+        cart.setQuantity(2);
+
+        assertEquals(2, cart.getQuantity(), "The cart should correctly update the quantity of a product.");
+    }
+
+    @Test
+    public void testMultipleProductEntries() {
+        Cart cart1 = new Cart();
+        cart1.setUser("User1");
+        cart1.setProduct("Product1");
+        cart1.setQuantity(1);
+        cart1.setPrice(100);
+
+        Cart cart2 = new Cart();
+        cart2.setUser("User1");
+        cart2.setProduct("Product2");
+        cart2.setQuantity(2);
+        cart2.setPrice(200);
+
+        assertNotEquals(cart1.getProduct(), cart2.getProduct(), "Each cart entry should handle different products.");
+        assertNotEquals(cart1.getPrice(), cart2.getPrice(), "Each cart entry should handle different prices.");
+        assertEquals(cart1.getUser(), cart2.getUser(), "Both carts should belong to the same user if set so.");
+    }
+
+    @Test
+    public void testRemoveProduct() {
+        Cart cart = new Cart();
+        cart.setProduct("Product1");
+        cart.setQuantity(1);
+        cart.setQuantity(0);
+
+        assertEquals(0, cart.getQuantity(), "Setting quantity to zero should simulate removing the product.");
     }
 }
