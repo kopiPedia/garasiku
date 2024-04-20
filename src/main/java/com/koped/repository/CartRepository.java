@@ -1,22 +1,10 @@
 package com.koped.repository;
-
-//@Repository
-public class CartRepository{
-//    public Cart create(Cart cart) {
-//        return cart;
-//    }
-//
-//    public void deleteByUserAndProduct(int id) {
-//    }
-//
-//    public Cart findByUserAndProduct(int id, int quantity) {
-//        return null;
-//    }
-//
-//    public void update(int id, Cart cart) {
-//    }
-//
-//    public Iterator<Cart> findAllByUser(User user) {
-//        return new ArrayList<Cart>().iterator();
-//    }
+import com.koped.model.Cart;
+import com.koped.model.User;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+@Repository
+public interface CartRepository extends JpaRepository<Cart, Long>{
+        List<Cart> findAllByUser(String user);
 }
