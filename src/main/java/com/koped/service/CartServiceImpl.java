@@ -1,54 +1,56 @@
 package com.koped.service;
+import com.koped.model.Cart;
+import com.koped.repository.CartRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
-//@Service
-//@RequiredArgsConstructor
-public class CartServiceImpl {
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class CartServiceImpl implements CartService{
 
-//
-//    private CartRepository cartRepository;
-//
-//    @Override
-//    public Cart addProductToCart(Cart cart) {
-//        cartRepository.create(cart);
-//        return cart;
-//    }
-//
-//    @Override
-//    public void removeProductFromCart(int id) {
-//        cartRepository.deleteByUserAndProduct(id);
-//    }
-//
-//    @Override
-//    public Cart updateProductQuantityInCart(int id, int quantity) {
-//        Cart cart = cartRepository.findByUserAndProduct(id,quantity);
-//        if (cart != null) {
-//            cart.setQuantity(quantity);
-//            cartRepository.update(cart.getId(), cart);
-//        }
-//        return cart;
-//    }
-//
-//    @Override
-//    public int gettotalCart(User user) {
-//        int totalItem = 0;
-//        Iterator<Cart> cartIterator = cartRepository.findAllByUser(user);
-//        List<Cart> userCart = new ArrayList<>();
-//        cartIterator.forEachRemaining(userCart::add);
-//        for(Cart i : userCart){
-//            totalItem = totalItem + i.getQuantity();
-//        }
-//        return totalItem;
-//    }
-//
-//    @Override
-//    public int getPriceCart(User user) {
-//        int totalPrice = 0;
-//        Iterator<Cart> cartIterator = cartRepository.findAllByUser(user);
-//        List<Cart> userCart = new ArrayList<>();
-//        cartIterator.forEachRemaining(userCart::add);
-//        for(Cart i : userCart){
-//             totalPrice = totalPrice + (i.getQuantity() * i.getPrice());
-//        }
-//        return totalPrice;
-//    }
+  private CartRepository cartRepository;
+
+    @Override
+    public Cart addProductToCart(Cart cart) {
+        cartRepository.save(cart);
+        return cart;
+    }
+
+    @Override
+    public void removeProductFromCart(long id) {
+        cartRepository.deleteById(id);
+    }
+
+    @Override
+    public Cart updateProductQuantityInCart(long id, int quantity) {
+        Cart cart = cartRepository.findById(id).orElse(null);
+        if (cart != null) {
+            cart.setQuantity(quantity);
+            cartRepository.save(cart);
+        }
+        return cart;
+    }
+
+    @Override
+    public int gettotalCart(String user) {
+        int totalItem = 0;
+        List<Cart> userCart = cartRepository.findAllByUser(user);
+        for(Cart i : userCart){
+            totalItem += i.getQuantity();
+        }
+        return totalItem;
+    }
+
+    @Override
+    public int getPriceCart(String user) {
+        int totalPrice = 0;
+        List<Cart> userCart = cartRepository.findAllByUser(user);
+       for(Cart i : userCart){
+             totalPrice += i.getQuantity() * i.getPrice();
+        }
+        return totalPrice;
+    }
 }
