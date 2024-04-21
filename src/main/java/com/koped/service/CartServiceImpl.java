@@ -1,12 +1,14 @@
 package com.koped.service;
 import com.koped.model.Cart;
 import com.koped.repository.CartRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CartServiceImpl implements CartService{
 
   private CartRepository cartRepository;

@@ -1,15 +1,12 @@
 package com.koped.model;
+import jakarta.persistence.*;
 import lombok.Setter;
 import lombok.Getter;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 @Setter
 @Getter
 @Table(name = "tbl_cart")
+@Entity
 public class Cart {
 
     @Id
