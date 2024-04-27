@@ -1,6 +1,7 @@
 package com.koped.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "tbl_user")
+@Entity
 public class User {
     
     @Id
@@ -24,7 +26,7 @@ public class User {
     @Column(name = "password")
     private String password;
     
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     
