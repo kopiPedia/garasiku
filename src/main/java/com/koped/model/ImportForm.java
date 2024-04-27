@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Setter
 @Table(name = "ImportForms")
 public class ImportForm {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

@@ -20,6 +20,12 @@ public class ImportProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "requestId")
+    private int requestId;
+
+    @Column(name = "userId")
+    private int userId;
+
     @Column(name = "title")
     private String title;
 
