@@ -87,4 +87,5 @@ public class Product {
 			throw new IllegalArgumentException("Stock cannot be null or negative");
 		}
 	}
+	
 }
