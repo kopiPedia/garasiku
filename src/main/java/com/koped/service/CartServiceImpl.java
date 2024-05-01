@@ -3,6 +3,7 @@ import com.koped.model.Cart;
 import com.koped.repository.CartRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -10,8 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class CartServiceImpl implements CartService{
-
-  private CartRepository cartRepository;
+  private final CartRepository cartRepository;
 
     @Override
     public Cart addProductToCart(Cart cart) {
@@ -37,7 +37,7 @@ public class CartServiceImpl implements CartService{
     @Override
     public int gettotalCart(String user) {
         int totalItem = 0;
-        List<Cart> userCart = cartRepository.findAllByUser(user);
+        List<Cart> userCart = cartRepository.findAllByUsername(user);
         for(Cart i : userCart){
             totalItem += i.getQuantity();
         }
@@ -47,10 +47,14 @@ public class CartServiceImpl implements CartService{
     @Override
     public int getPriceCart(String user) {
         int totalPrice = 0;
-        List<Cart> userCart = cartRepository.findAllByUser(user);
+        List<Cart> userCart = cartRepository.findAllByUsername(user);
        for(Cart i : userCart){
              totalPrice += i.getQuantity() * i.getPrice();
         }
         return totalPrice;
+    }
+    @Override
+    public List<Cart> findCartByUser(String user) {
+        return cartRepository.findAllByUsername(user);
     }
 }
