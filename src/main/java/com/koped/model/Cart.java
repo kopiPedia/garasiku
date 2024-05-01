@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Setter
 @Getter
-@Table(name = "tbl_cart")
 @Entity
+@Table(name = "tbl_cart")
 public class Cart {
 
     @Id
@@ -14,8 +14,8 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "user")
-    private String user;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "product")
     private String product;
