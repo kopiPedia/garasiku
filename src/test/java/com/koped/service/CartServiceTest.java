@@ -17,7 +17,7 @@ public class CartServiceTest {
     @Test
     public void testAddProductToCart_Success() {
         Cart cart = new Cart();
-        cart.setUser("User1");
+        cart.setUsername("User1");
         cart.setProduct("Product1");
         cart.setQuantity(1);
         cart.setPrice(100);
@@ -26,7 +26,7 @@ public class CartServiceTest {
 
         Cart result = cartService.addProductToCart(cart);
         assertNotNull(result);
-        assertEquals("User1", result.getUser());
+        assertEquals("User1", result.getUsername());
         assertEquals("Product1", result.getProduct());
         assertEquals(1, result.getQuantity());
         assertEquals(100, result.getPrice());
@@ -79,7 +79,7 @@ public class CartServiceTest {
     @Test
     public void testAddProductToCart_Failure_InvalidProduct() {
         Cart invalidCart = new Cart();
-        invalidCart.setUser("User1");
+        invalidCart.setUsername("User1");
         invalidCart.setProduct("");
         invalidCart.setQuantity(1);
         invalidCart.setPrice(100);
@@ -93,7 +93,7 @@ public class CartServiceTest {
     @Test
     public void testAddProductToCart_Failure_EmptyUser() {
         Cart invalidCart = new Cart();
-        invalidCart.setUser("");
+        invalidCart.setUsername("");
         invalidCart.setProduct("Product1");
         invalidCart.setQuantity(1);
         invalidCart.setPrice(100);

@@ -5,5 +5,5 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long>{
-        List<Cart> findAllByUser(String user);
+        List<Cart> findAllByUsername(String username);
 }
