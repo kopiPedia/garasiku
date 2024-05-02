@@ -23,6 +23,9 @@ public class ImportForm {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "requestId")
+    private int requestId;
+
     @Column(name = "product_name")
     private String productName;
 

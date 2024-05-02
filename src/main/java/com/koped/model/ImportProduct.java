@@ -23,7 +23,7 @@ public class ImportProduct {
     @Column(name = "requestId")
     private int requestId;
 
-    @Column(name = "userId")
+    @Column(name = "user_Id")
     private int userId;
 
     @Column(name = "title")

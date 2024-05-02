@@ -23,5 +23,4 @@ public class Tax {
     @Column(name = "areatax")
     private BigDecimal areaTax;
 
-
 }
