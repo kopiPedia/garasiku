@@ -10,6 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Integer>{
-    Voucher findById(String id);
-    String delete(String id);
+    Voucher findByVoucherId(String voucherId);
 }

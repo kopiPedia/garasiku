@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 @Getter @Setter
 @Table(name = "tbl_voucher")
+@Entity
 public class Voucher {
     @Id
     @Column(name = "id")
@@ -21,6 +22,10 @@ public class Voucher {
 
     @Column(name = "method")
     private PaymentMethod method;
+
+    public Voucher () {
+
+    }
 
     public Voucher(String voucherId, String voucherName, int voucherQuantity) {
         this.voucherId = voucherId;
