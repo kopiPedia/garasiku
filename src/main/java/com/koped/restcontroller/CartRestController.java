@@ -35,9 +35,9 @@ public class CartRestController {
     public void removeProductFromCart(@PathVariable long id){
         cartService.removeProductFromCart(id);
     }
-    @PutMapping("/update/{id}/{quantity}")
-    public Cart updateProductQuantityInCart(@PathVariable long id, @PathVariable int quantity){
-        return cartService.updateProductQuantityInCart(id, quantity);
+    @PutMapping("/update/{id}/{quantity}/{productId}")
+    public Cart updateProductQuantityInCart(@PathVariable long id, @PathVariable int quantity, @PathVariable String productId){
+        return cartService.updateProductQuantityInCart(id, quantity, productId);
     }
     @GetMapping("/total/{user}")
     public int gettotalCart(@PathVariable String user){
@@ -46,5 +46,13 @@ public class CartRestController {
     @GetMapping("/price/{user}")
     public int getPriceCart(@PathVariable String user){
         return cartService.getPriceCart(user);
+    }
+    @PutMapping("/decrease/{id}/{productId}")
+    public Cart decreaseProductQuantityInCart(@PathVariable long id, @PathVariable String productId){
+        return cartService.decreaseProductQuantityInCart(id, productId);
+    }
+    @PutMapping("/increase/{id}/{productId}")
+    public Cart increaseProductQuantityInCart(@PathVariable long id, @PathVariable String productId){
+        return cartService.increaseProductQuantityInCart(id, productId);
     }
 }

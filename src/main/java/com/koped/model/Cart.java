@@ -26,4 +26,7 @@ public class Cart {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "productId")
+    private String productId;
+
 }
