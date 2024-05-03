@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import com.koped.repository.ProductRepository;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class CartServiceImpl implements CartService{
   private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public Cart addProductToCart(Cart cart) {
@@ -25,9 +27,12 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public Cart updateProductQuantityInCart(long id, int quantity) {
+    public Cart updateProductQuantityInCart(long id, int quantity, String productId) {
         Cart cart = cartRepository.findById(id).orElse(null);
         if (cart != null) {
+            if(productRepository.findByProductId(productId).getStock() < quantity){
+                return cart;
+            }
             cart.setQuantity(quantity);
             cartRepository.save(cart);
         }
@@ -56,5 +61,33 @@ public class CartServiceImpl implements CartService{
     @Override
     public List<Cart> findCartByUser(String user) {
         return cartRepository.findAllByUsername(user);
+    }
+
+    @Override
+    public Cart decreaseProductQuantityInCart(long id, String productId){
+        Cart cart = cartRepository.findById(id).orElse(null);
+        if (cart != null) {
+            if (cart.getQuantity() == 1) {
+                cartRepository.deleteById(id);
+            } else {cart.setQuantity(cart.getQuantity() - 1);}
+            productRepository.findByProductId(productId).setStock(productRepository.findByProductId(productId).getStock() + 1);
+            cartRepository.save(cart);
+        }
+        return cart;
+    }
+
+    @Override
+    public Cart increaseProductQuantityInCart(long id, String productId) {
+        Cart cart = cartRepository.findById(id).orElse(null);
+        if (cart != null) {
+            if (productRepository.findByProductId(productId).getStock() == 0) {
+                return cart;
+            }else {
+                cart.setQuantity(cart.getQuantity() + 1);
+                productRepository.findByProductId(productId).setStock(productRepository.findByProductId(productId).getStock() - 1);
+            }
+            cartRepository.save(cart);
+        }
+        return cart;
     }
 }
