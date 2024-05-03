@@ -3,6 +3,7 @@ package com.koped.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.koped.model.Cart;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +41,16 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public Voucher updateVoucher(Voucher voucher) {
-        return voucherRepository.save(voucher);
+    public Voucher updateVoucher(String voucherId, Voucher updatedVoucher) {
+        Voucher voucher = voucherRepository.findById(voucherId).orElse(null);
+
+        if (voucher != null) {
+            voucher.setVoucherName(updatedVoucher.getVoucherName());
+            voucher.setVoucherQuantity(updatedVoucher.getVoucherQuantity());
+            voucher.setDiscount(updatedVoucher.getDiscount());
+            return voucherRepository.save(voucher);
+        }
+
+        return null;
     }
 }

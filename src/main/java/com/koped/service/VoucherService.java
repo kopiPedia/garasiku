@@ -9,5 +9,5 @@ public interface VoucherService {
     void deleteVoucher(String voucherId);
     Voucher findByVoucherId(String voucherId);
     List<Voucher> findAllVoucher();
-    Voucher updateVoucher(Voucher voucher);
+    Voucher updateVoucher(String voucherId, Voucher updatedVoucher);
 }

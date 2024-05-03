@@ -45,8 +45,8 @@ public class VoucherRestController {
         voucherService.deleteVoucher(voucherId);
     }
 
-    @PutMapping("/update")
-    public Voucher updateVoucher(@RequestBody Voucher voucher) {
-        return voucherService.updateVoucher(voucher);
+    @PutMapping("/update/{voucherId}")
+    public Voucher updateVoucher(@PathVariable String voucherId, @RequestBody Voucher updatedVoucher) {
+        return voucherService.updateVoucher(voucherId, updatedVoucher);
     }
 }

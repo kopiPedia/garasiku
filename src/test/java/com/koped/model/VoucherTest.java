@@ -28,8 +28,5 @@ public class VoucherTest {
     }
 
     @Test
-    void testGetPaymentMethod() { assertEquals(voucher.getMethod().getValue(), PaymentMethod.VOUCHER.getValue());}
-
-    @Test
     void testGetDiscount() { assertEquals(50, this.voucher.getDiscount());}
 }

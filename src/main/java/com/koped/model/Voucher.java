@@ -3,15 +3,17 @@ package com.koped.model;
 import com.koped.enums.PaymentMethod;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 @Getter @Setter
 @Table(name = "tbl_voucher")
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Voucher {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String voucherId;
 
     @Column(name = "voucher_name", unique = true)
@@ -22,19 +24,4 @@ public class Voucher {
 
     @Column(name= "discount")
     private int discount;
-
-    @Column(name = "method")
-    private PaymentMethod method;
-
-    public Voucher () {
-
-    }
-
-    public Voucher(String voucherId, String voucherName, int voucherQuantity, int discount) {
-        this.voucherId = voucherId;
-        this.voucherName = voucherName;
-        this.voucherQuantity = voucherQuantity;
-        this.discount = discount;
-        this.method = PaymentMethod.VOUCHER;
-    }
 }
