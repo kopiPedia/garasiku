@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface VoucherRepository extends JpaRepository<Voucher, Integer>{
-    Voucher findByVoucherId(String voucherId);
+public interface VoucherRepository extends JpaRepository<Voucher, String>{
+
 }

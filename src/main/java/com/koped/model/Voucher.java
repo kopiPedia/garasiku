@@ -20,6 +20,9 @@ public class Voucher {
     @Column(name = "voucher_quantity")
     private int  voucherQuantity;
 
+    @Column(name= "discount")
+    private int discount;
+
     @Column(name = "method")
     private PaymentMethod method;
 
@@ -27,10 +30,11 @@ public class Voucher {
 
     }
 
-    public Voucher(String voucherId, String voucherName, int voucherQuantity) {
+    public Voucher(String voucherId, String voucherName, int voucherQuantity, int discount) {
         this.voucherId = voucherId;
         this.voucherName = voucherName;
         this.voucherQuantity = voucherQuantity;
+        this.discount = discount;
         this.method = PaymentMethod.VOUCHER;
     }
 }
