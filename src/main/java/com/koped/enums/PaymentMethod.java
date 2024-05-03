@@ -3,7 +3,8 @@ import lombok.Getter;
 
 @Getter
 public enum PaymentMethod {
-    VOUCHER("voucher");
+    VOUCHER("voucher"),
+    ATM("atm");
     private final String value;
 
     private PaymentMethod(String value) {

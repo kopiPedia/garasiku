@@ -9,7 +9,7 @@ public class VoucherTest {
     Voucher voucher;
     @BeforeEach
     void setUp() {
-        this.voucher = new Voucher("eb558e9f-1c39-460e-8860-71af6af63bd6", "GOJEKINAJA", 2);
+        this.voucher = new Voucher("eb558e9f-1c39-460e-8860-71af6af63bd6", "GOJEKINAJA", 2, 50);
     }
 
     @Test
@@ -28,5 +28,5 @@ public class VoucherTest {
     }
 
     @Test
-    void testGetPaymentMethod() { assertEquals(voucher.getMethod().getValue(), PaymentMethod.VOUCHER.getValue());}
+    void testGetDiscount() { assertEquals(50, this.voucher.getDiscount());}
 }
