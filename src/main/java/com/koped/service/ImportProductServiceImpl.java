@@ -2,13 +2,11 @@ package com.koped.service;
 
 import java.util.List;
 import com.koped.model.ImportProduct;
-import com.koped.model.Product;
+
 import com.koped.repository.ImportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +39,11 @@ public class ImportProductServiceImpl implements ImportProductService {
     public ImportProduct createNewProduct(ImportProduct data) {
         return importRepo.save(data);
     }
+
+    @Override
+    public ImportProduct findByUserId(int userId) {
+        return importRepo.findByUserId(userId);
+    }
+
 }
 

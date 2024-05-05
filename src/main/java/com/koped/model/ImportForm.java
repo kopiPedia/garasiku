@@ -1,10 +1,6 @@
 package com.koped.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +8,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
+@Entity
 @Table(name = "ImportForms")
 public class ImportForm {
 
@@ -24,7 +21,7 @@ public class ImportForm {
     private Long userId;
 
     @Column(name = "requestId")
-    private int requestId;
+    private String requestId;
 
     @Column(name = "product_name")
     private String productName;

@@ -1,10 +1,6 @@
 package com.koped.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +8,7 @@ import java.math.BigDecimal;
 
 @Setter
 @Getter
+@Entity
 @Table(name = "ImportProducts")
 public class ImportProduct {
 
@@ -50,26 +47,26 @@ public class ImportProduct {
     @Column(name = "productId", unique = true)
     private String productId;
 
-    public void setProductId(String productId) {
-        if (productId == null || productId.isEmpty()) {
-            throw new IllegalArgumentException("Product ID cannot be null or empty");
-        }
-        this.productId = productId;
-    }
-
-    public void setTitle(String title) {
-        if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null or empty");
-        }
-        this.title = title;
-    }
-
-    public void setCategory(String category) {
-        if (category == null || category.isEmpty()) {
-            throw new IllegalArgumentException("Category cannot be null or empty");
-        }
-        this.category = category;
-    }
+//    public void setProductId(String productId) {
+//        if (productId == null || productId.isEmpty()) {
+//            throw new IllegalArgumentException("Product ID cannot be null or empty");
+//        }
+//        this.productId = productId;
+//    }
+//
+//    public void setTitle(String title) {
+//        if (title == null || title.isEmpty()) {
+//            throw new IllegalArgumentException("Title cannot be null or empty");
+//        }
+//        this.title = title;
+//    }
+//
+//    public void setCategory(String category) {
+//        if (category == null || category.isEmpty()) {
+//            throw new IllegalArgumentException("Category cannot be null or empty");
+//        }
+//        this.category = category;
+//    }
 
 
 }
