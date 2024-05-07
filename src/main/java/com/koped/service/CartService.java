@@ -3,7 +3,7 @@ import com.koped.model.Cart;
 import java.util.List;
 public interface CartService {
     Cart addProductToCart(Cart cart);
-    void removeProductFromCart(long id);
+    void removeProductFromCart(long id, String productId);
     Cart updateProductQuantityInCart(long id, int quantity, String productId);
     int gettotalCart(String username);
     int getPriceCart(String username);

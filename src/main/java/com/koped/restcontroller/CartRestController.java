@@ -31,9 +31,9 @@ public class CartRestController {
     public Cart addProductToCart(@RequestBody Cart cart){
         return cartService.addProductToCart(cart);
     }
-    @DeleteMapping("/delete/{id}")
-    public void removeProductFromCart(@PathVariable long id){
-        cartService.removeProductFromCart(id);
+    @DeleteMapping("/delete/{id}/{productId}")
+    public void removeProductFromCart(@PathVariable long id, @PathVariable String productId){
+        cartService.removeProductFromCart(id, productId);
     }
     @PutMapping("/update/{id}/{quantity}/{productId}")
     public Cart updateProductQuantityInCart(@PathVariable long id, @PathVariable int quantity, @PathVariable String productId){

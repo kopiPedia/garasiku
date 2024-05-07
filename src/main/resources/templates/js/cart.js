@@ -1,5 +1,5 @@
 window.onload = function() {
-    fetchCart('username');
+    fetchCart('john_doe');
 };
 
 function fetchCart(user) {
