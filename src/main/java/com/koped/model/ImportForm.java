@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-@Table(name = "ImportForms")
+@Table(name = "tbl_importform")
 public class ImportForm {
 
     @Id
@@ -34,6 +34,10 @@ public class ImportForm {
 
     @Column(name = "budget_range")
     private BigDecimal budgetRange;
+
+    @Column(name = "image")
+    private String image;
+
 
     @Column(name = "status")
     private String status;
