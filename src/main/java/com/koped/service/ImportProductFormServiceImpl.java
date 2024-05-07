@@ -2,7 +2,6 @@ package com.koped.service;
 
 import java.util.List;
 import com.koped.model.ImportForm;
-import com.koped.model.ImportProduct;
 import com.koped.repository.ImportFormRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

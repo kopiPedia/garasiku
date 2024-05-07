@@ -17,13 +17,25 @@ public class CartServiceImpl implements CartService{
 
     @Override
     public Cart addProductToCart(Cart cart) {
+        if(productRepository.findByProductId(cart.getProductId()).getStock() < cart.getQuantity()){
+            // return null if stock is not enough
+            return null;
+        }
+        productRepository.findByProductId(cart.getProductId()).setStock(productRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
         cartRepository.save(cart);
         return cart;
     }
 
     @Override
-    public void removeProductFromCart(long id) {
-        cartRepository.deleteById(id);
+    public void removeProductFromCart(long id, String productId) {
+        if(cartRepository.findById(id) == null){
+            return;
+        }
+        else{
+            Cart cart = cartRepository.findById(id).orElse(null);
+            productRepository.findByProductId(productId).setStock(productRepository.findByProductId(productId).getStock() + cart.getQuantity());
+            cartRepository.deleteById(id);
+        }
     }
 
     @Override
@@ -34,6 +46,7 @@ public class CartServiceImpl implements CartService{
                 return cart;
             }
             cart.setQuantity(quantity);
+            productRepository.findByProductId(productId).setStock(productRepository.findByProductId(productId).getStock() - quantity);
             cartRepository.save(cart);
         }
         return cart;

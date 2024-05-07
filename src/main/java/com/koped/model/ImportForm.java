@@ -9,16 +9,16 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-@Table(name = "ImportForms")
+@Table(name = "tbl_importform")
 public class ImportForm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private int id;
 
     @Column(name = "user_id")
-    private Long userId;
+    private int userId;
 
     @Column(name = "requestId")
     private String requestId;
@@ -34,6 +34,10 @@ public class ImportForm {
 
     @Column(name = "budget_range")
     private BigDecimal budgetRange;
+
+    @Column(name = "image")
+    private String image;
+
 
     @Column(name = "status")
     private String status;
