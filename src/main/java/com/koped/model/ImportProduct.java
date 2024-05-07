@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @Entity
-@Table(name = "ImportProducts")
+@Table(name = "tbl_importproduct")
 public class ImportProduct {
 
     @Id
@@ -47,26 +47,26 @@ public class ImportProduct {
     @Column(name = "productId", unique = true)
     private String productId;
 
-//    public void setProductId(String productId) {
-//        if (productId == null || productId.isEmpty()) {
-//            throw new IllegalArgumentException("Product ID cannot be null or empty");
-//        }
-//        this.productId = productId;
-//    }
-//
-//    public void setTitle(String title) {
-//        if (title == null || title.isEmpty()) {
-//            throw new IllegalArgumentException("Title cannot be null or empty");
-//        }
-//        this.title = title;
-//    }
-//
-//    public void setCategory(String category) {
-//        if (category == null || category.isEmpty()) {
-//            throw new IllegalArgumentException("Category cannot be null or empty");
-//        }
-//        this.category = category;
-//    }
+    public void setProductId(String productId) {
+        if (productId == null || productId.isEmpty()) {
+            throw new IllegalArgumentException("Product ID cannot be null or empty");
+        }
+        this.productId = productId;
+    }
+
+    public void setTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
+        this.title = title;
+    }
+
+    public void setCategory(String category) {
+        if (category == null || category.isEmpty()) {
+            throw new IllegalArgumentException("Category cannot be null or empty");
+        }
+        this.category = category;
+    }
 
 
 }
