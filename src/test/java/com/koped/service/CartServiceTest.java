@@ -38,9 +38,9 @@ public class CartServiceTest {
 
     @Test
     public void testRemoveProductFromCart_Success() {
-        Mockito.doNothing().when(cartService).removeProductFromCart(Mockito.anyLong());
+        Mockito.doNothing().when(cartService).removeProductFromCart(Mockito.anyLong(), Mockito.anyString());
 
-        assertDoesNotThrow(() -> cartService.removeProductFromCart(10));
+        assertDoesNotThrow(() -> cartService.removeProductFromCart(10, "Product1"));
     }
 
     @Test
@@ -110,10 +110,10 @@ public class CartServiceTest {
 
     @Test
     public void testRemoveProductFromCart_Failure() {
-        Mockito.doThrow(new IllegalArgumentException("Product does not exist")).when(cartService).removeProductFromCart(Mockito.anyLong());
+        Mockito.doThrow(new IllegalArgumentException("Product does not exist")).when(cartService).removeProductFromCart(Mockito.anyLong(), Mockito.anyString());
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            cartService.removeProductFromCart(999); // Assuming 999 does not exist
+            cartService.removeProductFromCart(999, "Product2"); // Assuming 999 does not exist
         });
         assertEquals("Product does not exist", exception.getMessage(), "Should throw an exception if product does not exist.");
     }
