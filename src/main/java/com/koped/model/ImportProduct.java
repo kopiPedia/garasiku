@@ -18,7 +18,7 @@ public class ImportProduct {
     private int id;
 
     @Column(name = "requestId")
-    private int requestId;
+    private String requestId;
 
     @Column(name = "user_Id")
     private int userId;
