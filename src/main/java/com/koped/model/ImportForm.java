@@ -15,13 +15,13 @@ public class ImportForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private int id;
 
     @Column(name = "user_id")
-    private Long userId;
+    private int userId;
 
     @Column(name = "requestId")
-    private String requestId;
+    private int requestId;
 
     @Column(name = "product_name")
     private String productName;
