@@ -2,6 +2,7 @@ package com.koped.restcontroller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.koped.model.ImportProduct;
-import com.koped.service.ImportProductServiceImpl;
+import com.koped.service.ImportProductService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,37 +24,36 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImportProductRestController {
 
-    private final ImportProductServiceImpl ImportprodService;
-
+    private final ImportProductService importProductService;
 
     @GetMapping("/list")
-    public List<ImportProduct> findAllProducts(){
-        return ImportprodService.findAllProducts();
+    public List<ImportProduct> findAllProducts() {
+        return importProductService.findAllProducts();
     }
 
-    @GetMapping("/search/{productid}")
-    public ImportProduct findByProductIds(@PathVariable String productid) {
-        return ImportprodService.findByProductIds(productid);
+    @GetMapping("/search/{productId}")
+    public ResponseEntity<ImportProduct> findByProductIds(@PathVariable String productId) {
+        return importProductService.findByProductIds(productId);
     }
 
     @PostMapping("/create")
-    public ImportProduct createNewProduct(@RequestBody ImportProduct data) {
-        return ImportprodService.createNewProduct(data);
+    public ResponseEntity<ImportProduct> createNewProduct(@RequestBody ImportProduct data) {
+        return importProductService.createNewProduct(data);
     }
 
-    @DeleteMapping("/delete/{productid}")
-    public String deleteProductByProductId(@PathVariable String productid) {
-        return ImportprodService.deleteByProductId(productid);
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<String> deleteProductByProductId(@PathVariable String productId) {
+        return importProductService.deleteByProductId(productId);
     }
 
-    @PutMapping("/update")
-    public ImportProduct updateProductByProductId(@RequestBody ImportProduct data) {
-        return ImportprodService.updateByProductIds(data);
+    @PutMapping("/update/{productId}") // Add productId path variable here
+    public ResponseEntity<ImportProduct> updateProductByProductId(@PathVariable String productId, @RequestBody ImportProduct data) {
+        return importProductService.updateByProductId(productId, data);
     }
 
-    @GetMapping("/search/{userid}")
-    public ImportProduct findByUserIds(@PathVariable int userid) {
-        return ImportprodService.findByUserId(userid);
-    }
 
+    @GetMapping("/search/user/{userId}")
+    public ResponseEntity<ImportProduct> findByUserIds(@PathVariable int userId) {
+        return importProductService.findByUserId(userId);
+    }
 }
