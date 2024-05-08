@@ -103,9 +103,9 @@ public class CartRepositoryTest {
         assertEquals(2, carts.size(), "Should retrieve two carts for user1");
         assertEquals("Product1", carts.get(0).getProduct());
         assertEquals(2, carts.get(0).getQuantity());
-        assertEquals(100, carts.get(0).getPrice());
+        assertEquals(new BigDecimal(100), carts.get(0).getPrice());
         assertEquals("Product2", carts.get(1).getProduct());
         assertEquals(3, carts.get(1).getQuantity());
-        assertEquals(200, carts.get(1).getPrice());
+        assertEquals(new BigDecimal(200), carts.get(1).getPrice());
     }
 }
