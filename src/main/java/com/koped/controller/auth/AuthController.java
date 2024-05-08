@@ -12,7 +12,7 @@ public class AuthController {
 //		return "Login";
 //	}
 //	
-//	@GetMapping("/home")
+//@GetMapping("/home")
 //	public String homePage() {
 //		return "Home";
 //	}

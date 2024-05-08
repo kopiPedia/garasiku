@@ -1,4 +1,5 @@
 package com.koped.restcontroller;
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.koped.service.CartServiceImpl;
@@ -44,7 +45,7 @@ public class CartRestController {
         return cartService.gettotalCart(user);
     }
     @GetMapping("/price/{user}")
-    public int getPriceCart(@PathVariable String user){
+    public BigDecimal getPriceCart(@PathVariable String user){
         return cartService.getPriceCart(user);
     }
     @PutMapping("/decrease/{id}/{productId}")
