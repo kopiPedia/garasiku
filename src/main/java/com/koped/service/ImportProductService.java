@@ -1,19 +1,16 @@
 package com.koped.service;
 
-
 import com.koped.model.ImportProduct;
-
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface ImportProductService {
 
-    ImportProduct findByProductIds(String productId);
+    ResponseEntity<ImportProduct> findByProductIds(String productId);
     List<ImportProduct> findAllProducts();
-    String deleteByProductId(String productId);
-    ImportProduct updateByProductIds(ImportProduct data);
-    ImportProduct createNewProduct(ImportProduct data);
-    ImportProduct findByUserId(int userId);
-
-
+    ResponseEntity<String> deleteByProductId(String productId);
+    ResponseEntity<ImportProduct> updateByProductId(String productId, ImportProduct data);
+    ResponseEntity<ImportProduct> createNewProduct(ImportProduct data);
+    ResponseEntity<ImportProduct> findByUserId(int userId);
 }

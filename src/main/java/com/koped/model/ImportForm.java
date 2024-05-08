@@ -38,7 +38,6 @@ public class ImportForm {
     @Column(name = "image")
     private String image;
 
-
     @Column(name = "status")
     private String status;
 
