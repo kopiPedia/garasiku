@@ -21,6 +21,14 @@ public class CartServiceImpl implements CartService{
             // return null if stock is not enough
             return null;
         }
+        if(cartRepository.findByProductIdAndUsername(cart.getProductId(), cart.getUsername()) != null){
+            // if product already in cart, increase quantity
+            Cart cart1 = cartRepository.findByProductIdAndUsername(cart.getProductId(), cart.getUsername());
+            cart1.setQuantity(cart1.getQuantity() + cart.getQuantity());
+            productRepository.findByProductId(cart.getProductId()).setStock(productRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
+            cartRepository.save(cart1);
+            return cart1;
+        }
         productRepository.findByProductId(cart.getProductId()).setStock(productRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
         cartRepository.save(cart);
         return cart;
