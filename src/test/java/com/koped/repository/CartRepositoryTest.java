@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -85,14 +86,14 @@ public class CartRepositoryTest {
         cart1.setUsername("user1");
         cart1.setProduct("Product1");
         cart1.setQuantity(2);
-        cart1.setPrice(100);
+        cart1.setPrice(new BigDecimal(100));
 
         Cart cart2 = new Cart();
         cart2.setId(2L);
         cart2.setUsername("user1");
         cart2.setProduct("Product2");
         cart2.setQuantity(3);
-        cart2.setPrice(200);
+        cart2.setPrice(new BigDecimal(200));
 
         when(cartRepository.findAllByUsername("user1")).thenReturn(Arrays.asList(cart1, cart2));
 
@@ -102,9 +103,9 @@ public class CartRepositoryTest {
         assertEquals(2, carts.size(), "Should retrieve two carts for user1");
         assertEquals("Product1", carts.get(0).getProduct());
         assertEquals(2, carts.get(0).getQuantity());
-        assertEquals(100, carts.get(0).getPrice());
+        assertEquals(new BigDecimal(100), carts.get(0).getPrice());
         assertEquals("Product2", carts.get(1).getProduct());
         assertEquals(3, carts.get(1).getQuantity());
-        assertEquals(200, carts.get(1).getPrice());
+        assertEquals(new BigDecimal(200), carts.get(1).getPrice());
     }
 }

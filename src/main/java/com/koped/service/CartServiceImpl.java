@@ -5,6 +5,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import com.koped.repository.ProductRepository;
 
@@ -13,7 +15,7 @@ import com.koped.repository.ProductRepository;
 @Transactional
 public class CartServiceImpl implements CartService{
   private final CartRepository cartRepository;
-    private final ProductRepository productRepository;
+  private final ProductRepository productRepository;
 
     @Override
     public Cart addProductToCart(Cart cart) {
@@ -25,10 +27,12 @@ public class CartServiceImpl implements CartService{
             // if product already in cart, increase quantity
             Cart cart1 = cartRepository.findByProductIdAndUsername(cart.getProductId(), cart.getUsername());
             cart1.setQuantity(cart1.getQuantity() + cart.getQuantity());
+            cart1.setPrice( cart1.getPrice().add(cart.getPrice()));
             productRepository.findByProductId(cart.getProductId()).setStock(productRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
             cartRepository.save(cart1);
             return cart1;
         }
+        cart.setPrice(productRepository.findByProductId(cart.getProductId()).getPrice().multiply(new BigDecimal(cart.getQuantity())));
         productRepository.findByProductId(cart.getProductId()).setStock(productRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
         cartRepository.save(cart);
         return cart;
@@ -71,11 +75,11 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public int getPriceCart(String user) {
-        int totalPrice = 0;
+    public BigDecimal getPriceCart(String user) {
+        BigDecimal totalPrice = BigDecimal.ZERO;
         List<Cart> userCart = cartRepository.findAllByUsername(user);
        for(Cart i : userCart){
-             totalPrice += i.getQuantity() * i.getPrice();
+             totalPrice  = i.getPrice().add(totalPrice);
         }
         return totalPrice;
     }
@@ -92,6 +96,7 @@ public class CartServiceImpl implements CartService{
                 cartRepository.deleteById(id);
             } else {cart.setQuantity(cart.getQuantity() - 1);}
             productRepository.findByProductId(productId).setStock(productRepository.findByProductId(productId).getStock() + 1);
+            cart.setPrice(cart.getPrice().subtract(productRepository.findByProductId(productId).getPrice()));
             cartRepository.save(cart);
         }
         return cart;
@@ -106,6 +111,7 @@ public class CartServiceImpl implements CartService{
             }else {
                 cart.setQuantity(cart.getQuantity() + 1);
                 productRepository.findByProductId(productId).setStock(productRepository.findByProductId(productId).getStock() - 1);
+                cart.setPrice(cart.getPrice().add(productRepository.findByProductId(productId).getPrice()));
             }
             cartRepository.save(cart);
         }

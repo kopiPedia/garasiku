@@ -1,9 +1,10 @@
-window.onload = function() {
-    fetchCart('john_doe');
+/*window.onload = function() {
+    const pathParts = window.location.pathname.split('/');
+    const user = pathParts[pathParts.length - 1]; // Get the username from the URL
+    fetchCart(user); // Fetch the cart items for the user
 };
-
 function fetchCart(user) {
-    fetch(`http://localhost:8080/cart/${user}/list`, {
+    fetch(`http://localhost:8080/cart/list/${user}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -83,4 +84,4 @@ function deleteAllItems(user) {
 
 function editItem(itemId) {
     console.log(`Edit functionality not implemented: ${itemId}`);
-}
+}*/
