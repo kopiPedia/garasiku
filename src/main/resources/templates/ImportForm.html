@@ -2,9 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products and Forms</title>
+    <style>
+        /* Style for horizontal list */
+        .horizontal-list {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        .item {
+            flex: 0 0 auto;
+            width: 200px; /* Adjust width as needed */
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
+<h1>Products</h1>
+<div class="horizontal-list" id="products-list">
+    <!-- Products will be displayed here -->
+</div>
 
+<h1>Import Forms</h1>
+<div class="horizontal-list" id="forms-list">
+    <!-- Import forms will be displayed here -->
+</div>
+
+<!-- Scripts to fetch and display data -->
+<script>
+    // Function to fetch and display products
+    async function fetchAndDisplayProducts() {
+        const response = await fetch('/importproduct/list');
+        const products = await response.json();
+        const productsList = document.getElementById('products-list');
+
+        products.forEach(product => {
+            const item = document.createElement('div');
+            item.classList.add('item');
+            item.textContent = product.title; // Adjust to display appropriate product data
+            productsList.appendChild(item);
+        });
+    }
+
+    // Function to fetch and display import forms
+    async function fetchAndDisplayImportForms() {
+        const response = await fetch('/importform/list');
+        const forms = await response.json();
+        const formsList = document.getElementById('forms-list');
+
+        forms.forEach(form => {
+            const item = document.createElement('div');
+            item.classList.add('item');
+            item.textContent = form.productName; // Adjust to display appropriate form data
+            formsList.appendChild(item);
+        });
+    }
+
+    // Call functions to fetch and display data when the page loads
+    window.onload = function() {
+        fetchAndDisplayProducts();
+        fetchAndDisplayImportForms();
+    };
+</script>
 </body>
 </html>
