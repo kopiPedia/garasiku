@@ -1,21 +1,16 @@
 package com.koped.model;
 
 import com.koped.enums.OrderStatus;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
-
 @Getter
 @Setter
+@Entity
 @Table(name = "tbl_order")
 public class Order {
     @Id
@@ -23,11 +18,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user")
-    private User user;
+    @Column(name = "user_id")
+    private int userId;
 
-    @Column(name = "cart")
-    private Cart cart;
+    @Column(name = "cart_id")
+    private int cartId;
 
     @Column(name = "order_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
