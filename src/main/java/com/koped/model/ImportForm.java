@@ -20,7 +20,7 @@ public class ImportForm {
     @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "requestId")
+    @Column(name = "requestId", unique = true)
     private String requestId;
 
     @Column(name = "product_name")
