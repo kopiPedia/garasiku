@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 //@RequestMapping("")
 public class AuthController {
-	
+
 	@GetMapping("/login")
 	public String loginPage() {
 		return "sign-in-basic";

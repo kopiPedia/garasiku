@@ -4,6 +4,9 @@ import com.koped.model.Cart;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -24,7 +27,7 @@ public class CartServiceTest {
         cart.setUsername("User1");
         cart.setProduct("Product1");
         cart.setQuantity(1);
-        cart.setPrice(100);
+        cart.setPrice(new BigDecimal(100));
 
         Mockito.when(cartService.addProductToCart(Mockito.any(Cart.class))).thenReturn(cart);
 
@@ -33,7 +36,7 @@ public class CartServiceTest {
         assertEquals("User1", result.getUsername());
         assertEquals("Product1", result.getProduct());
         assertEquals(1, result.getQuantity());
-        assertEquals(100, result.getPrice());
+        assertEquals(new BigDecimal(100), result.getPrice());
     }
 
     @Test
@@ -74,10 +77,10 @@ public class CartServiceTest {
 
     @Test
     public void testGetPriceCart_Success() {
-        Mockito.when(cartService.getPriceCart("User1")).thenReturn(300);
+        Mockito.when(cartService.getPriceCart("User1")).thenReturn(new BigDecimal(300));
 
-        int totalPrice = cartService.getPriceCart("User1");
-        assertEquals(300, totalPrice);
+        BigDecimal totalPrice = cartService.getPriceCart("User1");
+        assertEquals(new BigDecimal(300), totalPrice);
     }
 
     @Test
@@ -86,7 +89,7 @@ public class CartServiceTest {
         invalidCart.setUsername("User1");
         invalidCart.setProduct("");
         invalidCart.setQuantity(1);
-        invalidCart.setPrice(100);
+        invalidCart.setPrice(new BigDecimal(100));
 
         Mockito.when(cartService.addProductToCart(Mockito.any(Cart.class))).thenReturn(null);
 
@@ -100,7 +103,7 @@ public class CartServiceTest {
         invalidCart.setUsername("");
         invalidCart.setProduct("Product1");
         invalidCart.setQuantity(1);
-        invalidCart.setPrice(100);
+        invalidCart.setPrice(new BigDecimal(100));
 
         Mockito.when(cartService.addProductToCart(Mockito.any(Cart.class))).thenReturn(null);
 
@@ -128,20 +131,20 @@ public class CartServiceTest {
 
     @Test
     public void testGetPriceCart_Failure_InvalidUser() {
-        Mockito.when(cartService.getPriceCart("InvalidUser")).thenReturn(0);
+        Mockito.when(cartService.getPriceCart("InvalidUser")).thenReturn(new BigDecimal(0));
 
-        int totalPrice = cartService.getPriceCart("InvalidUser");
-        assertEquals(0, totalPrice, "Should return 0 for an invalid user.");
+        BigDecimal totalPrice = cartService.getPriceCart("InvalidUser");
+        assertEquals(new BigDecimal(0), totalPrice, "Should return 0 for an invalid user.");
     }
 
     @Test
     public void testEdgeCase_MaxIntegerPrice() {
         Cart cart = new Cart();
-        cart.setPrice(Integer.MAX_VALUE);
+        cart.setPrice(BigDecimal.valueOf(Integer.MAX_VALUE));
         Mockito.when(cartService.addProductToCart(Mockito.any(Cart.class))).thenReturn(cart);
 
         Cart result = cartService.addProductToCart(cart);
-        assertEquals(Integer.MAX_VALUE, result.getPrice(), "Should handle maximum integer value for price.");
+        assertEquals(BigDecimal.valueOf(Integer.MAX_VALUE), result.getPrice(), "Should handle maximum integer value for price.");
     }
     @Test
     public void testIncreaseProductQuantityInCart_Success() {

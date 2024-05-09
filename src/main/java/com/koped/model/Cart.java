@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 import lombok.Setter;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @Entity
@@ -24,7 +26,7 @@ public class Cart {
     private int quantity;
 
     @Column(name = "price")
-    private int price;
+    private BigDecimal price;
 
     @Column(name = "productId")
     private String productId;

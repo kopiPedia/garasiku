@@ -2,14 +2,121 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Cart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        #cartItems {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cart-item {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px 0;
+            padding: 20px;
+            width: 80%;
+        }
+
+        .cart-item p {
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .cart-item button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .cart-item button:hover {
+            background-color: #444;
+        }
+         #totalPriceCard {
+             position: fixed;
+             bottom: 0;
+             left: 50%;
+             transform: translateX(-50%);
+             background-color: #fff;
+             padding: 20px;
+             border-radius: 5px;
+             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+             text-align: center;
+             width: 200px;
+         }
+    </style>
 </head>
 <body>
-<h1>Cart Items</h1>
-<div id="cartItems"></div>
+<h1>Cart</h1>
+<div id="cartItems">
+    <!-- Cart items will be displayed here -->
+</div>
+<div id="totalPriceCard">
+    <!-- Total price will be displayed here -->
+</div>
 
 <script src="js/cart.js"></script>
+<script>
+    // Fetch cart items from the REST controller
+    var username = 'john_doe'; // Replace 'john_doe' with the actual username or user ID
+    fetch('/cart/list/' + username)
+        .then(response => response.json())
+        .then(cartItems => {
+            var cartItemsContainer = document.getElementById("cartItems");
+
+            cartItems.forEach(function(cartItem) {
+                var cartItemDiv = document.createElement("div");
+                cartItemDiv.classList.add("cart-item");
+
+                var itemNameParagraph = document.createElement("p");
+                itemNameParagraph.textContent = "Item: " + cartItem.product;
+                cartItemDiv.appendChild(itemNameParagraph);
+
+                var quantityParagraph = document.createElement("p");
+                quantityParagraph.textContent = "Quantity: " + cartItem.quantity;
+                cartItemDiv.appendChild(quantityParagraph);
+
+                var priceParagraph = document.createElement("p");
+                priceParagraph.textContent = "Price: $" + cartItem.price.toFixed(2);
+                cartItemDiv.appendChild(priceParagraph);
+
+                cartItemsContainer.appendChild(cartItemDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching cart items:', error);
+        });
+
+    // Fetch total price from the REST controller
+    fetch('/cart/price/' + username)
+        .then(response => response.json())
+        .then(totalPrice => {
+            var totalPriceCard = document.getElementById("totalPriceCard");
+            totalPriceCard.textContent = "Total Price: $" + totalPrice.toFixed(2);
+        })
+        .catch(error => {
+            console.error('Error fetching total price:', error);
+        });
+</script>
 </body>
 </html>
-
-
