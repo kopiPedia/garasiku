@@ -1,266 +1,178 @@
 package com.koped.service;
 
 import com.koped.model.Cart;
+import com.koped.model.Product;
+import com.koped.repository.CartRepository;
+import com.koped.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-
+import static org.mockito.Mockito.*;
 
 public class CartServiceTest {
-    private CartService cartService;
+
+    @Mock
+    private CartRepository cartRepository;
+
+    @Mock
+    private ProductRepository productRepository;
+
+    @InjectMocks
+    private CartServiceImpl cartService;
 
     @BeforeEach
-    public void setUp() {
-        cartService = Mockito.mock(CartService.class); // Mocking CartService
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testAddProductToCart_Success() {
+    void testAddProductToCart_StockSufficient() {
         Cart cart = new Cart();
-        cart.setUsername("User1");
-        cart.setProduct("Product1");
+        cart.setProductId("123");
         cart.setQuantity(1);
-        cart.setPrice(new BigDecimal(100));
+        cart.setUsername("user1");
 
-        Mockito.when(cartService.addProductToCart(Mockito.any(Cart.class))).thenReturn(cart);
+        Product product = new Product();
+        product.setProductId("123");
+        product.setStock(10);
+        product.setPrice(new BigDecimal("100.00"));
+
+        when(productRepository.findByProductId("123")).thenReturn(product);
+        when(cartRepository.findByProductIdAndUsername("123", "user1")).thenReturn(null);
 
         Cart result = cartService.addProductToCart(cart);
+
         assertNotNull(result);
-        assertEquals("User1", result.getUsername());
-        assertEquals("Product1", result.getProduct());
-        assertEquals(1, result.getQuantity());
-        assertEquals(new BigDecimal(100), result.getPrice());
+        verify(cartRepository, times(1)).save(any(Cart.class));
     }
 
     @Test
-    public void testRemoveProductFromCart_Success() {
-        Mockito.doNothing().when(cartService).removeProductFromCart(Mockito.anyLong(), Mockito.anyString());
+    void testFindCartByUser() {
+        List<Cart> cartList = new ArrayList<>();
+        cartList.add(new Cart());
+        cartList.add(new Cart());
 
-        assertDoesNotThrow(() -> cartService.removeProductFromCart(10, "Product1"));
+        when(cartRepository.findAllByUsername("user1")).thenReturn(cartList);
+
+        List<Cart> foundCarts = cartService.findCartByUser("user1");
+
+        assertEquals(2, foundCarts.size());
+
     }
 
     @Test
-    public void testUpdateProductQuantityInCart_Success() {
+    void testAddProductToCart_StockInsufficient() {
         Cart cart = new Cart();
-        cart.setId(10);
-        cart.setQuantity(5);
+        cart.setProductId("123");
+        cart.setQuantity(15); // Assuming there are only 10 items in stock
+        cart.setUsername("user1");
 
-        Mockito.when(cartService.updateProductQuantityInCart(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyString())).thenReturn(cart);
+        Product product = new Product();
+        product.setProductId("123");
+        product.setStock(10); // Available stock
+        product.setPrice(new BigDecimal("100.00"));
 
-        Cart updatedCart = cartService.updateProductQuantityInCart(10, 5, "Product1");
-        assertNotNull(updatedCart);
-        assertEquals(5, updatedCart.getQuantity());
-    }
-
-    @Test
-    public void testUpdateProductQuantityInCart_Failure() {
-        Mockito.when(cartService.updateProductQuantityInCart(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyString())).thenReturn(null);
-
-        Cart result = cartService.updateProductQuantityInCart(10, -1, "Product2"); // assuming negative quantity should fail
-        assertNull(result);
-    }
-
-    @Test
-    public void testGetTotalCart_Success() {
-        Mockito.when(cartService.gettotalCart("User1")).thenReturn(5);
-
-        int totalQuantity = cartService.gettotalCart("User1");
-        assertEquals(5, totalQuantity);
-    }
-
-    @Test
-    public void testGetPriceCart_Success() {
-        Mockito.when(cartService.getPriceCart("User1")).thenReturn(new BigDecimal(300));
-
-        BigDecimal totalPrice = cartService.getPriceCart("User1");
-        assertEquals(new BigDecimal(300), totalPrice);
-    }
-
-    @Test
-    public void testAddProductToCart_Failure_InvalidProduct() {
-        Cart invalidCart = new Cart();
-        invalidCart.setUsername("User1");
-        invalidCart.setProduct("");
-        invalidCart.setQuantity(1);
-        invalidCart.setPrice(new BigDecimal(100));
-
-        Mockito.when(cartService.addProductToCart(Mockito.any(Cart.class))).thenReturn(null);
-
-        Cart result = cartService.addProductToCart(invalidCart);
-        assertNull(result, "Should return null for invalid product.");
-    }
-
-    @Test
-    public void testAddProductToCart_Failure_EmptyUser() {
-        Cart invalidCart = new Cart();
-        invalidCart.setUsername("");
-        invalidCart.setProduct("Product1");
-        invalidCart.setQuantity(1);
-        invalidCart.setPrice(new BigDecimal(100));
-
-        Mockito.when(cartService.addProductToCart(Mockito.any(Cart.class))).thenReturn(null);
-
-        Cart result = cartService.addProductToCart(invalidCart);
-        assertNull(result, "Should return null for carts with an empty user field.");
-    }
-
-    @Test
-    public void testRemoveProductFromCart_Failure() {
-        Mockito.doThrow(new IllegalArgumentException("Product does not exist")).when(cartService).removeProductFromCart(Mockito.anyLong(), Mockito.anyString());
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            cartService.removeProductFromCart(999, "Product2"); // Assuming 999 does not exist
-        });
-        assertEquals("Product does not exist", exception.getMessage(), "Should throw an exception if product does not exist.");
-    }
-
-    @Test
-    public void testGetTotalCart_Failure_InvalidUser() {
-        Mockito.when(cartService.gettotalCart("InvalidUser")).thenReturn(0);
-
-        int totalQuantity = cartService.gettotalCart("InvalidUser");
-        assertEquals(0, totalQuantity, "Should return 0 for an invalid user.");
-    }
-
-    @Test
-    public void testGetPriceCart_Failure_InvalidUser() {
-        Mockito.when(cartService.getPriceCart("InvalidUser")).thenReturn(new BigDecimal(0));
-
-        BigDecimal totalPrice = cartService.getPriceCart("InvalidUser");
-        assertEquals(new BigDecimal(0), totalPrice, "Should return 0 for an invalid user.");
-    }
-
-    @Test
-    public void testEdgeCase_MaxIntegerPrice() {
-        Cart cart = new Cart();
-        cart.setPrice(BigDecimal.valueOf(Integer.MAX_VALUE));
-        Mockito.when(cartService.addProductToCart(Mockito.any(Cart.class))).thenReturn(cart);
+        when(productRepository.findByProductId("123")).thenReturn(product);
 
         Cart result = cartService.addProductToCart(cart);
-        assertEquals(BigDecimal.valueOf(Integer.MAX_VALUE), result.getPrice(), "Should handle maximum integer value for price.");
-    }
-    @Test
-    public void testIncreaseProductQuantityInCart_Success() {
-        Cart cart = new Cart();
-        cart.setId(1);
-        cart.setQuantity(1);
 
-        Mockito.when(cartService.increaseProductQuantityInCart(anyLong(), anyString())).thenAnswer(invocation -> {
-            cart.setQuantity(cart.getQuantity() + 1);
-            return cart;
-        });
-
-        Cart result = cartService.increaseProductQuantityInCart(1, "Product1");
-        assertNotNull(result);
-        assertEquals(2, result.getQuantity());
+        assertNull(result); // Expecting null as product couldn't be added due to insufficient stock
+        verify(cartRepository, never()).save(any(Cart.class)); // Ensure cart is not saved
     }
 
     @Test
-    public void testIncreaseProductQuantityInCart_Failure_NoStock() {
-        Mockito.when(cartService.increaseProductQuantityInCart(anyLong(), anyString())).thenReturn(null);
+    void testUpdateProductQuantityInCart_CartNotFound() {
+        long cartId = 1L;
+        when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
 
-        Cart result = cartService.increaseProductQuantityInCart(1, "Product1");
-        assertNull(result);
-    }
+        Cart result = cartService.updateProductQuantityInCart(cartId, 5, "123");
 
-    // Additional tests for decreaseProductQuantityInCart
-    @Test
-    public void testDecreaseProductQuantityInCart_Success() {
-        Cart cart = new Cart();
-        cart.setId(1);
-        cart.setQuantity(2);
-
-        Mockito.when(cartService.decreaseProductQuantityInCart(anyLong(), anyString())).thenAnswer(invocation -> {
-            cart.setQuantity(cart.getQuantity() - 1);
-            return cart;
-        });
-
-        Cart result = cartService.decreaseProductQuantityInCart(1, "Product1");
-        assertNotNull(result);
-        assertEquals(1, result.getQuantity());
-    }
-
-    @Test
-    public void testDecreaseProductQuantityInCart_RemoveProduct() {
-        Cart cart = new Cart();
-        cart.setId(1);
-        cart.setQuantity(1);
-
-        Mockito.when(cartService.decreaseProductQuantityInCart(anyLong(), anyString())).thenAnswer(invocation -> {
-            if (cart.getQuantity() == 1) {
-                return null;  // Simulating removal
-            }
-            return cart;
-        });
-
-        Cart result = cartService.decreaseProductQuantityInCart(1, "Product1");
         assertNull(result);
     }
 
     @Test
-    public void testIncreaseProductQuantityInCart_Positive() {
+    void testIncreaseProductQuantityInCart_NoStockAvailable() {
         Cart cart = new Cart();
-        cart.setId(1);
-        cart.setQuantity(2);
-
-        Mockito.when(cartService.increaseProductQuantityInCart(anyLong(), anyString())).thenAnswer(invocation -> {
-            int currentQuantity = cart.getQuantity();
-            if (currentQuantity < 10) { // Assume stock is enough
-                cart.setQuantity(currentQuantity + 1);
-            }
-            return cart;
-        });
-
-        Cart result = cartService.increaseProductQuantityInCart(1, "Product1");
-        assertNotNull(result);
-        assertEquals(3, result.getQuantity(), "Quantity should increase by 1");
-    }
-
-    @Test
-    public void testIncreaseProductQuantityInCart_Negative_NoStock() {
-        Mockito.when(cartService.increaseProductQuantityInCart(anyLong(), anyString())).thenReturn(null);
-
-        Cart result = cartService.increaseProductQuantityInCart(1, "Product1");
-        assertNull(result, "Should return null when there is no stock to increase");
-    }
-
-    @Test
-    public void testDecreaseProductQuantityInCart_Positive() {
-        Cart cart = new Cart();
-        cart.setId(1);
-        cart.setQuantity(3);
-
-        Mockito.when(cartService.decreaseProductQuantityInCart(anyLong(), anyString())).thenAnswer(invocation -> {
-            int currentQuantity = cart.getQuantity();
-            if (currentQuantity > 1) {
-                cart.setQuantity(currentQuantity - 1);
-            } else {
-                return null;
-            }
-            return cart;
-        });
-
-        Cart result = cartService.decreaseProductQuantityInCart(1, "Product1");
-        assertNotNull(result);
-        assertEquals(2, result.getQuantity(), "Quantity should decrease by 1");
-    }
-
-    @Test
-    public void testDecreaseProductQuantityInCart_Negative_AtMinimumQuantity() {
-        Cart cart = new Cart();
-        cart.setId(1);
+        cart.setId(1L);
+        cart.setProductId("123");
         cart.setQuantity(1);
 
-        Mockito.when(cartService.decreaseProductQuantityInCart(anyLong(), anyString())).thenReturn(null);
+        Product product = new Product();
+        product.setStock(0);
 
-        Cart result = cartService.decreaseProductQuantityInCart(1, "Product1");
-        assertNull(result, "Should return null or handle minimum quantity scenario");
+        when(cartRepository.findById(1L)).thenReturn(Optional.of(cart));
+        when(productRepository.findByProductId("123")).thenReturn(product);
+
+        Cart result = cartService.increaseProductQuantityInCart(1L, "123");
+
+        assertNotNull(result);
+        assertEquals(1, result.getQuantity()); // Quantity remains unchanged
     }
+
+    @Test
+    void testGetPriceCart_EmptyCart() {
+        when(cartRepository.findAllByUsername("user1")).thenReturn(new ArrayList<>());
+
+        BigDecimal result = cartService.getPriceCart("user1");
+
+        assertEquals(BigDecimal.ZERO, result);
+    }
+
+    @Test
+    void testUpdateProductQuantityInCart_CartDoesNotExist() {
+        long cartId = 1L;
+        String productId = "123";
+        int quantity = 5;
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
+
+        Cart result = cartService.updateProductQuantityInCart(cartId, quantity, productId);
+
+        verify(productRepository, never()).findByProductId(anyString());
+        verify(cartRepository, never()).save(any(Cart.class));
+
+        assertNull(result, "Cart should be null because it does not exist");
+    }
+
+    @Test
+    void testGetTotalCart_EmptyCart() {
+        String username = "user1";
+        when(cartRepository.findAllByUsername(username)).thenReturn(new ArrayList<>());
+
+        int total = cartService.gettotalCart(username);
+
+        assertEquals(0, total);
+    }
+
+    @Test
+    void testIncreaseProductQuantityInCart_NoStockAvailablee() {
+        long cartId = 1L;
+        String productId = "123";
+        Cart cart = new Cart();
+        cart.setId(cartId);
+        cart.setProductId(productId);
+        cart.setQuantity(1);
+
+        Product product = new Product();
+        product.setStock(0);  // No stock available
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+        when(productRepository.findByProductId(productId)).thenReturn(product);
+
+        Cart result = cartService.increaseProductQuantityInCart(cartId, productId);
+
+        assertNotNull(result);
+        assertEquals(1, result.getQuantity()); // Quantity remains unchanged
+        verify(cartRepository, never()).save(cart);
+    }
+
 }

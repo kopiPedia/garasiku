@@ -54,4 +54,15 @@ public class OrderTest {
 
         assertEquals(OrderStatus.PLACED, order.getStatus(), "The status should be correctly set in the order.");
     }
+
+
+    @Test
+    public void testSetOrderDate() {
+        Order order = new Order();
+        LocalDateTime expectedDate = LocalDateTime.of(2024, 5, 8, 15, 30);  // Example date and time
+        order.setOrderDate(expectedDate);
+
+        assertEquals(expectedDate, order.getOrderDate(), "The order date should be correctly set and retrieved.");
+    }
+
 }
