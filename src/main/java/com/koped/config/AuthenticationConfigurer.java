@@ -1,35 +1,41 @@
 package com.koped.config;
 
 
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
-//@Configuration
+
+@Configuration
+@EnableWebSecurity
 public class AuthenticationConfigurer {
-	
-//	@SuppressWarnings({ "deprecation", "removal" })
-//	protected void configure(HttpSecurity http)throws Exception {
-//        http
-//                .authorizeRequests(requests -> {
-//					try {
-//						requests
-//						        .requestMatchers("/").permitAll() // This will be your home screen URL
-//						        .requestMatchers("/css/**").permitAll()
-//						        .requestMatchers("/js/**").permitAll()
-//						        .anyRequest().authenticated()
-//						        .and()
-//						        .formLogin()
-//						        .defaultSuccessUrl("/auth/home") //configure screen after login success
-//						        .loginPage("/auth/login")
-//						        .permitAll()
-//						        .and()
-//						        .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").permitAll();
-//					} catch (Exception e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				});
-//    }
+
+
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http.authorizeHttpRequests((requests) -> requests.requestMatchers("/").permitAll()
+				.requestMatchers("/home").permitAll()
+				.requestMatchers("/register").permitAll()
+				.requestMatchers("/css/**")
+				.permitAll().requestMatchers("/js/**")
+				.permitAll().requestMatchers("/img/**")
+				.permitAll().requestMatchers("/scss/**")
+				.permitAll().requestMatchers("/fonts/**").permitAll()
+				.anyRequest().authenticated())
+				.formLogin(httpSecurityFormLoginConfigurer -> {
+					httpSecurityFormLoginConfigurer.loginPage("/login").permitAll()
+					.defaultSuccessUrl("/", true)
+					.failureUrl("/login?error=true");
+				}).build();
+	}
+
 
 }
