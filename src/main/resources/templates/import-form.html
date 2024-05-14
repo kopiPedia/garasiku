@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Import Forms</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Import Forms</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Expected Country</th>
+            <th>Details</th>
+            <th>Budget Range</th>
+            <th>Image</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="form : ${importForms}">
+            <td th:text="${form.id}"></td>
+            <td th:text="${form.productName}"></td>
+            <td th:text="${form.expectedCountry}"></td>
+            <td th:text="${form.details}"></td>
+            <td th:text="${form.budgetRange}"></td>
+            <td><img th:src="@{${form.image}}" alt="Product Image" width="100"></td>
+            <td th:text="${form.status}"></td>
+            <td>
+                <a th:href="@{'/importform/edit/' + ${form.requestId}}" class="btn btn-warning btn-sm">Edit</a>
+                <a th:href="@{'/importform/delete/' + ${form.requestId}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Import Products</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Stock</th>
+            <th>Country</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${importProducts}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.title}"></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.stock}"></td>
+            <td th:text="${product.country}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.category}"></td>
+            <td><img th:src="@{${product.image}}" alt="Product Image" width="100"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!-- Button to trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
+        Create New Import Form
+    </button>
+
+    <!-- Modal for creating new import form -->
+    <div class="modal fade" id="createFormModal" tabindex="-1" aria-labelledby="createFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createFormModalLabel">Create New Import Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for creating a new import form -->
+                    <form onsubmit="submitForm(event)">
+                        <div class="form-group">
+                            <label for="productName">Product Name</label>
+                            <input type="text" class="form-control" id="productName" name="productName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="expectedCountry">Expected Country</label>
+                            <input type="text" class="form-control" id="expectedCountry" name="expectedCountry" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="details">Details</label>
+                            <textarea class="form-control" id="details" name="details" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="budgetRange">Budget Range</label>
+                            <input type="number" class="form-control" id="budgetRange" name="budgetRange" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image URL</label>
+                            <input type="text" class="form-control" id="image" name="image" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userId">User ID</label>
+                            <input type="number" class="form-control" id="userId" name="userId" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select class="form-control" id="status" name="status" required>
+                                <option value="PLACED">PLACED</option>
+                                <option value="CONFIRMED">CONFIRMED</option>
+                                <option value="PROCESSED">PROCESSED</option>
+                                <option value="SHIPPING">SHIPPING</option>
+                                <option value="DELIVERED">DELIVERED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success" >Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to handle form submission
+    function submitForm(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Gather form data
+        var formData = {
+            productName: document.getElementById('productName').value,
+            expectedCountry: document.getElementById('expectedCountry').value,
+            details: document.getElementById('details').value,
+            budgetRange: parseFloat(document.getElementById('budgetRange').value),
+            image: document.getElementById('image').value,
+            status: document.getElementById('status').value,
+            userId: document.getElementById('userId').value
+        };
+
+        // Send AJAX request
+        fetch('/importform/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to create import form');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful response
+                console.log('Import form created:', data);
+
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Error creating import form:', error.message);
+
+            });
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
