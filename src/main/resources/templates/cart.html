@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/kit-pro.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-icons.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-svg.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,6 +26,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 20px;
         }
 
         .cart-item {
@@ -31,6 +36,7 @@
             margin: 10px 0;
             padding: 20px;
             width: 80%;
+            font-size: 1.2em;
         }
 
         .cart-item p {
@@ -47,76 +53,44 @@
             padding: 10px 20px;
             margin: 10px 0;
             cursor: pointer;
+            font-size: 1em;
         }
 
         .cart-item button:hover {
             background-color: #444;
         }
-         #totalPriceCard {
-             position: fixed;
-             bottom: 0;
-             left: 50%;
-             transform: translateX(-50%);
-             background-color: #fff;
-             padding: 20px;
-             border-radius: 5px;
-             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-             text-align: center;
-             width: 200px;
-         }
+
+        #totalPriceCard {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
 <h1>Cart</h1>
 <div id="cartItems">
-    <!-- Cart items will be displayed here -->
+    <div class="card cart-item" th:each="cartItem : ${cart}">
+        <p th:text="'Item: ' + ${cartItem.product}"></p>
+        <p th:text="'Quantity: ' + ${cartItem.quantity}" th:id="'quantity-' + ${cartItem.id}"></p>
+        <button class="decrease-btn" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">-</button>
+        <button class="increase-btn" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">+</button>
+        <p th:text="'Price: $' + ${(cartItem.price)}" th:id="'price-' + ${cartItem.id}"></p>
+        <button class="delete-btn" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">Delete</button>
+    </div>
 </div>
 <div id="totalPriceCard">
-    <!-- Total price will be displayed here -->
+    <p th:text="'Total Price: $' + ${(total)}"></p>
 </div>
 
-<script src="js/cart.js"></script>
-<script>
-    // Fetch cart items from the REST controller
-    var username = 'john_doe'; // Replace 'john_doe' with the actual username or user ID
-    fetch('/cart/list/' + username)
-        .then(response => response.json())
-        .then(cartItems => {
-            var cartItemsContainer = document.getElementById("cartItems");
-
-            cartItems.forEach(function(cartItem) {
-                var cartItemDiv = document.createElement("div");
-                cartItemDiv.classList.add("cart-item");
-
-                var itemNameParagraph = document.createElement("p");
-                itemNameParagraph.textContent = "Item: " + cartItem.product;
-                cartItemDiv.appendChild(itemNameParagraph);
-
-                var quantityParagraph = document.createElement("p");
-                quantityParagraph.textContent = "Quantity: " + cartItem.quantity;
-                cartItemDiv.appendChild(quantityParagraph);
-
-                var priceParagraph = document.createElement("p");
-                priceParagraph.textContent = "Price: $" + cartItem.price.toFixed(2);
-                cartItemDiv.appendChild(priceParagraph);
-
-                cartItemsContainer.appendChild(cartItemDiv);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching cart items:', error);
-        });
-
-    // Fetch total price from the REST controller
-    fetch('/cart/price/' + username)
-        .then(response => response.json())
-        .then(totalPrice => {
-            var totalPriceCard = document.getElementById("totalPriceCard");
-            totalPriceCard.textContent = "Total Price: $" + totalPrice.toFixed(2);
-        })
-        .catch(error => {
-            console.error('Error fetching total price:', error);
-        });
-</script>
+<script th:src="@{/js/cart.js}"></script>
 </body>
 </html>

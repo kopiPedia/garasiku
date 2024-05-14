@@ -14,6 +14,7 @@ public class CartController {
     public String cartPage(Model model) {
         List <Cart> cart = cartService.findCartByUser("john_doe");
         model.addAttribute("cart", cart);
+        model.addAttribute("total", cartService.getPriceCart("john_doe"));
         return "cart";
     }
 }
