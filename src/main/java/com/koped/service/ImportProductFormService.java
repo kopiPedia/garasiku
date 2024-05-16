@@ -1,16 +1,16 @@
 package com.koped.service;
 
 import com.koped.model.ImportForm;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface ImportProductFormService {
 
-    ImportForm findByRequestIds(String requestId);
+    ResponseEntity<ImportForm> findByRequestIds(String requestId);
     List<ImportForm> findAllRequests();
-    String deleteByRequestId(String requestId);
-    ImportForm updateByRequestIds(ImportForm data);
-    ImportForm createNewRequests(ImportForm data);
-
-
+    ResponseEntity<String> deleteByRequestId(String requestId);
+    ResponseEntity<ImportForm> updateByRequestIds(String requestId, ImportForm data);
+    ResponseEntity<ImportForm> createNewRequests(ImportForm data);
+    List<ImportForm> findAllByUserId(int userId);
 }

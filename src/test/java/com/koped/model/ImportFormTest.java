@@ -1,152 +1,100 @@
-/*package com.koped.model;
+package com.koped.model;
 
 import org.junit.jupiter.api.Test;
-
+import static org.junit.jupiter.api.Assertions.*;
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class ImportFormTest {
+
     @Test
-    public void testGetId() {
-        ImportForm importForm = new ImportForm();
-        importForm.setId(1L);
-        assertEquals(1L, importForm.getId());
+    public void testSetBudgetRange_Positive() {
+        ImportForm form = new ImportForm();
+        BigDecimal positiveRange = new BigDecimal("5000.00");
+        form.setBudgetRange(positiveRange);
+        assertEquals(positiveRange, form.getBudgetRange(), "Budget range should be correctly set.");
     }
 
     @Test
-    public void testGetUserId() {
-        ImportForm importForm = new ImportForm();
-        importForm.setUserId(1L);
-        assertEquals(1L, importForm.getUserId());
+    public void testSetBudgetRange_Negative() {
+        ImportForm form = new ImportForm();
+        BigDecimal negativeRange = new BigDecimal("-1");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> form.setBudgetRange(negativeRange));
+        assertEquals("Budget range cannot be negative", exception.getMessage(), "Exception message should match expected.");
     }
 
     @Test
-    public void testGetProductName() {
-        ImportForm importForm = new ImportForm();
-        importForm.setProductName("productName");
-        assertEquals("productName", importForm.getProductName());
+    public void testSetBudgetRange_Zero() {
+        ImportForm form = new ImportForm();
+        BigDecimal zeroRange = BigDecimal.ZERO;
+        form.setBudgetRange(zeroRange);
+        assertEquals(zeroRange, form.getBudgetRange(), "Setting budget range to zero should be valid.");
     }
 
     @Test
-    public void testGetExpectedCountry() {
-        ImportForm importForm = new ImportForm();
-        importForm.setExpectedCountry("expectedCountry");
-        assertEquals("expectedCountry", importForm.getExpectedCountry());
+    public void testSetProductName_NonEmpty() {
+        ImportForm form = new ImportForm();
+        String productName = "Laptop";
+        form.setProductName(productName);
+        assertEquals(productName, form.getProductName(), "Product name should be correctly set.");
     }
 
     @Test
-    public void testGetDetails() {
-        ImportForm importForm = new ImportForm();
-        importForm.setDetails("details");
-        assertEquals("details", importForm.getDetails());
+    public void testSetProductName_Empty() {
+        ImportForm form = new ImportForm();
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> form.setProductName(""));
+        assertEquals("Product name cannot be empty", exception.getMessage(), "Exception message should match expected.");
     }
 
     @Test
-    public void testGetBudgetRange() {
-        ImportForm importForm = new ImportForm();
-        BigDecimal expectedBudgetRange = BigDecimal.valueOf(1.0);
-        importForm.setBudgetRange(expectedBudgetRange);
-        assertEquals(expectedBudgetRange, importForm.getBudgetRange());
-    }
-    @Test
-    public void testGetStatus() {
-        ImportForm importForm = new ImportForm();
-        importForm.setStatus("status");
-        assertEquals("status", importForm.getStatus());
+    public void testSetProductName_Null() {
+        ImportForm form = new ImportForm();
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> form.setProductName(null));
+        assertEquals("Product name cannot be empty", exception.getMessage(), "Exception message should match expected.");
     }
 
     @Test
-    public void testCreateImportForm() {
-        ImportForm importForm = new ImportForm();
-        importForm.setId(1L);
-        importForm.setUserId(1L);
-        importForm.setProductName("productName");
-        importForm.setExpectedCountry("expectedCountry");
-        importForm.setDetails("details");
-        importForm.setBudgetRange(BigDecimal.valueOf(1.0));
-        importForm.setStatus("status");
-
-        assertEquals(1L, importForm.getId());
-        assertEquals(1L, importForm.getUserId());
-        assertEquals("productName", importForm.getProductName());
-        assertEquals("expectedCountry", importForm.getExpectedCountry());
-        assertEquals("details", importForm.getDetails());
-        assertEquals(BigDecimal.valueOf(1.0), importForm.getBudgetRange());
-        assertEquals("status", importForm.getStatus());
-    }
-    @Test
-    public void testImportFormDatabase() {
-        ImportForm importForm = new ImportForm();
-        importForm.setId(1L);
-        importForm.setUserId(1L);
-        importForm.setProductName("productName");
-        importForm.setExpectedCountry("expectedCountry");
-        importForm.setDetails("details");
-        importForm.setBudgetRange(BigDecimal.valueOf(1.0));
-        importForm.setStatus("status");
-
-        // Validate all attributes are set correctly
-        assertEquals(1L, importForm.getId());
-        assertEquals(1L, importForm.getUserId());
-        assertEquals("productName", importForm.getProductName());
-        assertEquals("expectedCountry", importForm.getExpectedCountry());
-        assertEquals("details", importForm.getDetails());
-        assertEquals(BigDecimal.valueOf(1.0), importForm.getBudgetRange());
-        assertEquals("status", importForm.getStatus());
+    public void testSetId() {
+        ImportForm form = new ImportForm();
+        form.setId(1);
+        assertEquals(1, form.getId(), "ID should be set correctly.");
     }
 
     @Test
-    public void testGettersAndSetters() {
-        ImportForm importForm = new ImportForm();
-        importForm.setId(1L);
-        importForm.setUserId(1L);
-        importForm.setProductName("productName");
-        importForm.setExpectedCountry("expectedCountry");
-        importForm.setDetails("details");
-        importForm.setBudgetRange(BigDecimal.valueOf(1.0));
-        importForm.setStatus("status");
-
-        assertEquals(1L, importForm.getId());
-        assertEquals(1L, importForm.getUserId());
-        assertEquals("productName", importForm.getProductName());
-        assertEquals("expectedCountry", importForm.getExpectedCountry());
-        assertEquals("details", importForm.getDetails());
-        assertEquals(BigDecimal.valueOf(1.0), importForm.getBudgetRange());
-        assertEquals("status", importForm.getStatus());
-    }
-    @Test
-    public void testNegativeBudgetRange() {
-        ImportForm importForm = new ImportForm();
-        assertThrows(IllegalArgumentException.class, () -> importForm.setBudgetRange(BigDecimal.valueOf(-1.0)));
+    public void testSetUserId() {
+        ImportForm form = new ImportForm();
+        form.setUserId(100);
+        assertEquals(100, form.getUserId(), "User ID should be set correctly.");
     }
 
     @Test
-    public void testEmptyProductName() {
-        ImportForm importForm = new ImportForm();
-        assertThrows(IllegalArgumentException.class, () -> importForm.setProductName(""));
+    public void testSetExpectedCountry() {
+        ImportForm form = new ImportForm();
+        String country = "USA";
+        form.setExpectedCountry(country);
+        assertEquals(country, form.getExpectedCountry(), "Expected country should be set correctly.");
     }
 
     @Test
-    public void testNullProductName() {
-        ImportForm importForm = new ImportForm();
-        assertThrows(IllegalArgumentException.class, () -> importForm.setProductName(null));
+    public void testSetDetails() {
+        ImportForm form = new ImportForm();
+        String details = "Product details here.";
+        form.setDetails(details);
+        assertEquals(details, form.getDetails(), "Details should be set correctly.");
     }
 
     @Test
-    public void testLargeBudgetRange() {
-        ImportForm importForm = new ImportForm();
-        BigDecimal expectedBudgetRange = BigDecimal.valueOf(Double.MAX_VALUE);
-        importForm.setBudgetRange(expectedBudgetRange);
-        assertEquals(expectedBudgetRange, importForm.getBudgetRange());
+    public void testSetImage() {
+        ImportForm form = new ImportForm();
+        String image = "image.jpg";
+        form.setImage(image);
+        assertEquals(image, form.getImage(), "Image should be set correctly.");
     }
 
     @Test
-    public void testZeroBudgetRange() {
-        ImportForm importForm = new ImportForm();
-        BigDecimal expectedBudgetRange = BigDecimal.ZERO;
-        importForm.setBudgetRange(expectedBudgetRange);
-        assertEquals(expectedBudgetRange, importForm.getBudgetRange());
+    public void testSetStatus() {
+        ImportForm form = new ImportForm();
+        String status = "Pending";
+        form.setStatus(status);
+        assertEquals(status, form.getStatus(), "Status should be set correctly.");
     }
 }
-*/

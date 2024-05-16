@@ -68,5 +68,60 @@ public class UserTest {
             assertNotNull(e.getMessage());
         }
     }
+
+    @Test
+    public void testSetUsernameWithNull() {
+        User user = new User();
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.setUsername(null);
+        });
+        assertEquals("Username cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    public void testSetUsernameWithEmptyString() {
+        User user = new User();
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.setUsername("");
+        });
+        assertEquals("Username cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    public void testSetPasswordWithShortPassword() {
+        User user = new User();
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.setPassword("pass");
+        });
+        assertEquals("Password must be at least 8 characters long", exception.getMessage());
+    }
+
+    @Test
+    public void testSetPasswordWithNull() {
+        User user = new User();
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.setPassword(null);
+        });
+        assertEquals("Password must be at least 8 characters long", exception.getMessage());
+    }
+
+    @Test
+    public void testSetEmailWithInvalidEmail() {
+        User user = new User();
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.setEmail("test@.com");
+        });
+        assertEquals("Invalid email format", exception.getMessage());
+    }
+
+    @Test
+    public void testSetEmailWithNull() {
+        User user = new User();
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.setEmail(null);
+        });
+        assertEquals("Invalid email format", exception.getMessage());
+    }
+
 }
 

@@ -1,21 +1,12 @@
 package com.koped.restcontroller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.koped.model.ImportForm;
-import com.koped.service.ImportProductFormServiceImpl;
-
+import com.koped.service.ImportProductFormService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -23,30 +14,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImportFormRestController {
 
-    private final ImportProductFormServiceImpl importFormService;
+    private final ImportProductFormService importProductFormService;
 
     @GetMapping("/list")
     public List<ImportForm> findAllRequests() {
-        return importFormService.findAllRequests();
+        return importProductFormService.findAllRequests();
     }
 
     @GetMapping("/search/{requestId}")
-    public ImportForm findByRequestId(@PathVariable String requestId) {
-        return importFormService.findByRequestIds(requestId);
+    public ResponseEntity<ImportForm> findByRequestIds(@PathVariable String requestId) {
+        return importProductFormService.findByRequestIds(requestId);
     }
 
     @PostMapping("/create")
-    public ImportForm createNewRequests(@RequestBody ImportForm data) {
-        return importFormService.createNewRequests(data);
+    public ResponseEntity<ImportForm> createNewRequests(@RequestBody ImportForm data) {
+        return importProductFormService.createNewRequests(data);
     }
 
     @DeleteMapping("/delete/{requestId}")
-    public String deleteRequestByRequestId(@PathVariable String requestId) {
-        return importFormService.deleteByRequestId(requestId);
+    public ResponseEntity<String> deleteRequestByRequestId(@PathVariable String requestId) {
+        return importProductFormService.deleteByRequestId(requestId);
     }
 
-    @PutMapping("/update")
-    public ImportForm updateRequestByRequestId(@RequestBody ImportForm data) {
-        return importFormService.updateByRequestIds(data);
+    @PutMapping("/update/{requestId}")
+    public ResponseEntity<ImportForm> updateRequestByRequestId(@PathVariable String requestId, @RequestBody ImportForm data) {
+        return importProductFormService.updateByRequestIds(requestId, data);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<ImportForm> findAllByUserId(@PathVariable int userId) {
+        return importProductFormService.findAllByUserId(userId);
     }
 }

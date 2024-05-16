@@ -29,8 +29,8 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
     
-    @Column(name = "isAdmin")
-	private boolean isAdmin;
+    @Column(name = "role")
+	private String role;
 
     
     public User() {

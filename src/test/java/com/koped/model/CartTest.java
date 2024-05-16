@@ -113,4 +113,42 @@ public class CartTest {
 
         assertEquals(0, cart.getQuantity(), "Setting quantity to zero should simulate removing the product.");
     }
+
+    @Test
+    public void testSetProductId() {
+        String productId = "P123";
+        Cart cart = new Cart();
+        cart.setProductId(productId);
+        assertEquals(productId, cart.getProductId(), "The product ID should be correctly set in the cart.");
+    }
+
+    @Test
+    public void testtSetProductId() {
+        Cart cart = new Cart();
+        String expectedProductId = "XYZ789";
+        cart.setProductId(expectedProductId);
+        assertEquals(expectedProductId, cart.getProductId(), "The product ID should be correctly set in the cart.");
+    }
+    @Test
+    public void testProductId() {
+        Cart cart = new Cart();
+        String expectedProductId = "Prod123";
+        cart.setProductId(expectedProductId);
+        assertEquals(expectedProductId, cart.getProductId(), "Product ID should match the set value.");
+    }
+
+    @Test
+    public void testEmptyProductId() {
+        Cart cart = new Cart();
+        cart.setProductId("");
+        assertEquals("", cart.getProductId(), "Product ID should handle empty strings.");
+    }
+
+    @Test
+    public void testNullProductId() {
+        Cart cart = new Cart();
+        cart.setProductId(null);
+        assertNull(cart.getProductId(), "Product ID should handle null inputs.");
+    }
+
 }
