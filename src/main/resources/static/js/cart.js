@@ -78,7 +78,7 @@ async function deleteProduct(id, productId) {
         }
 
         // Refresh the cart after successful deletion
-        refreshCart(null, id);
+        refreshCart2(id);
     } catch (error) {
         console.error('Error deleting product:', error);
         // Handle error gracefully
@@ -86,3 +86,18 @@ async function deleteProduct(id, productId) {
     }
 }
 
+function refreshCart2(deletedItemId) {
+    // Find the item card to be deleted
+    const itemCard = document.querySelector(`.cart-item[data-id='${deletedItemId}']`);
+
+    if (itemCard) {
+        // Remove the item card from the DOM
+        itemCard.remove();
+    }
+
+    // Update the total price
+    const totalPriceElement = document.querySelector('#totalPriceCard p');
+    fetchTotalPrice().then(totalPrice => {
+        totalPriceElement.textContent = `Total Price: $${totalPrice}`;
+    });
+}
