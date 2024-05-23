@@ -92,9 +92,7 @@ public class CartServiceImpl implements CartService{
     public Cart decreaseProductQuantityInCart(long id, String productId){
         Cart cart = cartRepository.findById(id).orElse(null);
         if (cart != null) {
-            if (cart.getQuantity() == 1) {
-                cartRepository.deleteById(id);
-            } else {cart.setQuantity(cart.getQuantity() - 1);}
+            cart.setQuantity(cart.getQuantity() - 1);
             productRepository.findByProductId(productId).setStock(productRepository.findByProductId(productId).getStock() + 1);
             cart.setPrice(cart.getPrice().subtract(productRepository.findByProductId(productId).getPrice()));
             cartRepository.save(cart);

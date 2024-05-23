@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Cart</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-icons.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-svg.css}" />
@@ -10,15 +12,16 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #e8f5e9; /* Soft green background */
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
         }
 
         h1 {
-            color: #333;
+            color: #388e3c;
             text-align: center;
             padding: 20px 0;
+            font-size: 2.5em;
         }
 
         #cartItems {
@@ -31,6 +34,7 @@
         .cart-item {
             background-color: #fff;
             border-radius: 5px;
+            border: 2px solid #388e3c; /* Border to look like a branded navbar */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             margin: 10px 0;
             padding: 20px;
@@ -44,27 +48,50 @@
             color: #333;
         }
 
+        .cart-item .btn-group {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
         .cart-item button {
-            background-color: #333;
+            background-color: #007bff; /* Blue color for buttons */
             color: #fff;
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
-            margin: 10px 0;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.2em;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px; /* Add space between buttons */
         }
 
         .cart-item button:hover {
-            background-color: #444;
+            background-color: #0056b3;
+        }
+
+        .cart-item .delete-btn {
+            background-color: #d32f2f;
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+
+        .cart-item .delete-btn:hover {
+            background-color: #c62828;
         }
 
         #totalPriceCard {
             position: fixed;
-            bottom: 0;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #fff;
+            background-color: #388e3c;
+            color: #fff;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -80,10 +107,12 @@
     <div class="card cart-item" th:each="cartItem : ${cart}">
         <p th:text="'Item: ' + ${cartItem.product}"></p>
         <p th:text="'Quantity: ' + ${cartItem.quantity}" th:id="'quantity-' + ${cartItem.id}"></p>
-        <button class="decrease-btn" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">-</button>
-        <button class="increase-btn" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">+</button>
+        <div class="btn-group" role="group">
+            <button class="decrease-btn btn btn-sm" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">-</button>
+            <button class="increase-btn btn btn-sm" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">+</button>
+        </div>
         <p th:text="'Price: $' + ${(cartItem.price)}" th:id="'price-' + ${cartItem.id}"></p>
-        <button class="delete-btn" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">Delete</button>
+        <button class="delete-btn btn btn-sm" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">Delete</button>
     </div>
 </div>
 <div id="totalPriceCard">
