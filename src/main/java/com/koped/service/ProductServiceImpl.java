@@ -1,9 +1,16 @@
 package com.koped.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.koped.model.Product;
 import com.koped.repository.ProductRepository;
@@ -38,7 +45,23 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product createNewProduct(Product data) {
+	public Product createNewProduct(Product data, MultipartFile image) throws IOException {
+		if(image != null || !image.isEmpty()) {
+			
+			String randomUUID = String.valueOf(UUID.randomUUID().toString());
+			
+			String fileName = String.valueOf(randomUUID + "_" + StringUtils.cleanPath(image.getOriginalFilename()));
+            String uploadDir = "src/main/resources/static/productImages/";
+            String uploadPath = uploadDir + fileName;
+            Path uploadAbsolutePath = Paths.get(uploadPath);
+            Files.createDirectories(uploadAbsolutePath.getParent());
+            Files.copy(image.getInputStream(), uploadAbsolutePath);
+            
+            String fileNameDB = "../productImages/" + fileName;
+            
+            data.setImage(fileNameDB);
+            data.setProductId(randomUUID);
+		}
 		return prodRepo.save(data);
 	}
 

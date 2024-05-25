@@ -24,14 +24,11 @@ public class ProductTest {
         product.setDescription("This is a test product.");
         assertEquals("This is a test product.", product.getDescription());
         
-        product.setPrice(new BigDecimal("10.50"));
-        assertEquals(new BigDecimal("10.50"), product.getPrice());
+        product.setPrice(10.50);
+        assertEquals(10.50, product.getPrice());
         
         product.setCategory("Electronics");
         assertEquals("Electronics", product.getCategory());
-        
-        product.setCountry("IDN");
-        assertEquals("IDN", product.getCountry());
         
         product.setStock(100);
         assertEquals(Integer.valueOf(100), product.getStock());
@@ -51,14 +48,13 @@ public class ProductTest {
         Assertions.assertNull(product.getDescription());
         Assertions.assertNull(product.getPrice());
         Assertions.assertNull(product.getCategory());
-        Assertions.assertNull(product.getCountry());
         Assertions.assertNull(product.getStock());
         Assertions.assertNull(product.getImage());
         Assertions.assertNull(product.getProductId());
 
       
         Assertions.assertThrows(IllegalArgumentException.class, () -> product.setId(-1));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> product.setPrice(new BigDecimal("-10.50")));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> product.setPrice(-10.50));
         Assertions.assertThrows(IllegalArgumentException.class, () -> product.setStock(-100));
     }
 
@@ -83,8 +79,8 @@ public class ProductTest {
     @Test
     public void testSetPriceWithZero() {
         Product product = new Product();
-        product.setPrice(BigDecimal.ZERO);
-        assertEquals(BigDecimal.ZERO, product.getPrice());
+        product.setPrice(0.0);
+        assertEquals(0, product.getPrice());
     }
 
     @Test
@@ -107,20 +103,18 @@ public class ProductTest {
     public void testProductConstructor() {
         String title = "Laptop";
         String description = "High-performance laptop";
-        BigDecimal price = new BigDecimal("999.99");
+        Double price = 999.99;
         String category = "Electronics";
-        String country = "USA";
         Integer stock = 25;
         String image = "laptop.jpg";
         String productId = "LP12345";
 
-        Product product = new Product(title, description, price, category, country, stock, image, productId);
+        Product product = new Product(title, description, price, category, stock, image, productId);
 
         assertEquals(title, product.getTitle(), "Title should match the constructor input");
         assertEquals(description, product.getDescription(), "Description should match the constructor input");
         assertEquals(0, price.compareTo(product.getPrice()), "Price should match the constructor input");
         assertEquals(category, product.getCategory(), "Category should match the constructor input");
-        assertEquals(country, product.getCountry(), "Country should match the constructor input");
         assertEquals(stock, product.getStock(), "Stock should match the constructor input");
         assertEquals(image, product.getImage(), "Image should match the constructor input");
         assertEquals(productId, product.getProductId(), "Product ID should match the constructor input");

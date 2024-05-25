@@ -8,7 +8,7 @@ public interface CartService {
     void removeProductFromCart(long id, String productId);
     Cart updateProductQuantityInCart(long id, int quantity, String productId);
     int gettotalCart(String username);
-    BigDecimal getPriceCart(String username);
+    double getPriceCart(long id);
     List<Cart> findCartByUser(String username);
     Cart decreaseProductQuantityInCart(long id, String productId);
     Cart increaseProductQuantityInCart(long id, String productId);

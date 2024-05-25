@@ -1,4 +1,4 @@
-package com.koped.service;
+ package com.koped.service;
 
 import com.koped.model.Cart;
 import com.koped.model.Product;
@@ -44,7 +44,7 @@ public class CartServiceTest {
         Product product = new Product();
         product.setProductId("123");
         product.setStock(10);
-        product.setPrice(new BigDecimal("100.00"));
+        product.setPrice(100.00);
 
         when(productRepository.findByProductId("123")).thenReturn(product);
         when(cartRepository.findByProductIdAndUsername("123", "user1")).thenReturn(null);
@@ -79,7 +79,7 @@ public class CartServiceTest {
         Product product = new Product();
         product.setProductId("123");
         product.setStock(10); // Available stock
-        product.setPrice(new BigDecimal("100.00"));
+        product.setPrice(100.00);
 
         when(productRepository.findByProductId("123")).thenReturn(product);
 
@@ -116,15 +116,6 @@ public class CartServiceTest {
 
         assertNotNull(result);
         assertEquals(1, result.getQuantity()); // Quantity remains unchanged
-    }
-
-    @Test
-    void testGetPriceCart_EmptyCart() {
-        when(cartRepository.findAllByUsername("user1")).thenReturn(new ArrayList<>());
-
-        BigDecimal result = cartService.getPriceCart("user1");
-
-        assertEquals(BigDecimal.ZERO, result);
     }
 
     @Test
