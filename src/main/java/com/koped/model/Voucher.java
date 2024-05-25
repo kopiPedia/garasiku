@@ -1,7 +1,5 @@
 package com.koped.model;
 
-import com.koped.enums.PaymentMethod;
-
 import jakarta.persistence.*;
 import lombok.*;
 
