@@ -44,9 +44,9 @@ public class CartRestController {
     public int gettotalCart(@PathVariable String user){
         return cartService.gettotalCart(user);
     }
-    @GetMapping("/price/{user}")
-    public BigDecimal getPriceCart(@PathVariable String user){
-        return cartService.getPriceCart(user);
+    @GetMapping("/price/{id}")
+    public BigDecimal getPriceCart(@PathVariable long id){
+        return cartService.getPriceCart(id);
     }
     @PutMapping("/decrease/{id}/{productId}")
     public Cart decreaseProductQuantityInCart(@PathVariable long id, @PathVariable String productId){
