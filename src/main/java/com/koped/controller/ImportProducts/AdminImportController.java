@@ -22,11 +22,13 @@ public class AdminImportController {
     @Autowired
     private ImportProductService importProductService;
 
-    @GetMapping("/forms")
-    public String importFormsPage(Model model) {
+    @GetMapping("/main")
+    public String importMainPage(Model model) {
         List<ImportForm> importForms = importProductFormService.findAllRequests();
+        List<ImportProduct> importProducts = importProductService.findAllProducts();
         model.addAttribute("importForms", importForms);
-        return "AdminImport/import-forms";
+        model.addAttribute("importProducts", importProducts);
+        return "AdminImport/import-main";
     }
 
     @GetMapping("/form/view/{requestId}")
@@ -46,41 +48,38 @@ public class AdminImportController {
         return "redirect:/admin/import/form/view/" + requestId;
     }
 
-    @GetMapping("/products")
-    public String importProductsPage(Model model) {
-        List<ImportProduct> importProducts = importProductService.findAllProducts();
-        model.addAttribute("importProducts", importProducts);
-        return "AdminImport/import-products";
-    }
-
     @GetMapping("/product/create")
     public String createProductPage(Model model) {
         model.addAttribute("importProduct", new ImportProduct());
+        List<ImportForm> importForms = importProductFormService.findAllRequests();
+        model.addAttribute("importForms", importForms);
         return "AdminImport/create-import-product";
     }
 
     @PostMapping("/product/create")
     public String createProduct(@ModelAttribute ImportProduct importProduct) {
         importProductService.createNewProduct(importProduct);
-        return "redirect:/admin/import/products";
+        return "redirect:/admin/import/main";
     }
 
     @GetMapping("/product/edit/{productId}")
     public String editProductPage(@PathVariable String productId, Model model) {
         ImportProduct importProduct = importProductService.findByProductIds(productId).getBody();
         model.addAttribute("importProduct", importProduct);
+        List<ImportForm> importForms = importProductFormService.findAllRequests();
+        model.addAttribute("importForms", importForms);
         return "AdminImport/edit-import-product";
     }
 
     @PostMapping("/product/edit")
     public String updateProduct(@ModelAttribute ImportProduct importProduct) {
         importProductService.updateByProductId(importProduct.getProductId(), importProduct);
-        return "redirect:/admin/import/products";
+        return "redirect:/admin/import/main";
     }
 
     @GetMapping("/product/delete/{productId}")
     public String deleteProduct(@PathVariable String productId) {
         importProductService.deleteByProductId(productId);
-        return "redirect:/admin/import/products";
+        return "redirect:/admin/import/main";
     }
 }
