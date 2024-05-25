@@ -12,12 +12,12 @@ import org.springframework.ui.Model;
 public class VoucherController {
     @Autowired
     private VoucherService voucherService;
-//    @GetMapping("/list")
-//    public String voucherPage(Model model) {
-//        List<Voucher> voucherList = voucherService.findAllVoucher();
-//        model.addAttribute("voucher", voucherList);
-//        return "Voucher/VoucherList";
-//    }
+    @GetMapping("/list")
+    public String voucherPage(Model model) {
+        List<Voucher> voucherList = voucherService.findAllVoucher();
+        model.addAttribute("voucher", voucherList);
+        return "Voucher/VoucherList";
+    }
 
     @GetMapping("/create")
     public String createVoucherPage(Model model){
@@ -35,6 +35,22 @@ public class VoucherController {
     @GetMapping("/delete/{id}")
     public String deleteProduct (@PathVariable String id){
         voucherService.deleteVoucher(id);
+        return "redirect:/voucher/list";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editVoucher (@PathVariable String id, Model model) {
+        Voucher voucher = voucherService.findByVoucherId(id).orElseThrow(null);
+        model.addAttribute("voucher", voucher);
+        model.addAttribute("voucherId", id);
+        return "Voucher/EditVoucher";
+    }
+
+    @PostMapping("/update/{voucherId}")
+    public String updateVoucher(@PathVariable String voucherId, @ModelAttribute("voucher") Voucher updatedVoucher) {
+        Voucher voucher = voucherService.findByVoucherId(voucherId).orElseThrow(null);
+        updatedVoucher.setVoucherId(voucher.getVoucherId());
+        voucherService.updateVoucher(updatedVoucher);
         return "redirect:/voucher/list";
     }
 }

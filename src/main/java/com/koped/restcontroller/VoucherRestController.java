@@ -1,6 +1,7 @@
 package com.koped.restcontroller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,8 @@ public class VoucherRestController {
     }
 
     @GetMapping("/search/{voucherId}")
-    public Voucher findByVoucherId(@PathVariable String voucherId) {
-        return voucherService.findByVoucherId(voucherId);
+    public Optional<Voucher> findByVoucherId(@PathVariable String voucherId) {
+        return Optional.ofNullable(voucherService.findByVoucherId(voucherId).orElseThrow(null));
     }
 
     @PostMapping("/create")
@@ -37,8 +38,8 @@ public class VoucherRestController {
         voucherService.deleteVoucher(voucherId);
     }
 
-    @PutMapping("/update/{voucherId}")
-    public Voucher updateVoucher(@PathVariable String voucherId, @RequestBody Voucher updatedVoucher) {
-        return voucherService.updateVoucher(voucherId, updatedVoucher);
-    }
+//    @PutMapping("/update/{voucherId}")
+//    public Voucher updateVoucher(@PathVariable String voucherId, @RequestBody Voucher updatedVoucher) {
+//        return voucherService.updateVoucher(voucherId, updatedVoucher);
+//    }
 }
