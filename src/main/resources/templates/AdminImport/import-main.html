@@ -25,25 +25,18 @@
 
     <div>
         <h3>Import Products</h3>
-        <button class="btn btn-primary mb-3" onclick="location.href='/admin/import/product/create'">Create New Product</button>
         <ul class="list-group">
-            <li th:each="product : ${importProducts}" class="list-group-item">
+            <li th:each="product : ${importProducts}" class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
-                    <h5 th:text="${product.title}"></h5>
-                    <p th:text="'Request ID: ' + ${product.requestId}"></p>
-                    <p th:text="${product.description}"></p>
-                    <p th:text="'Stock: ' + ${product.stock}"></p>
-                    <p th:text="'Country: ' + ${product.country}"></p>
-                    <p th:text="'Price: $' + ${product.price}"></p>
-                    <p th:text="'Category: ' + ${product.category}"></p>
-                    <p><img th:src="${product.image}" alt="Product Image" width="200"></p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <button class="btn btn-success btn-sm" th:attr="onclick=|location.href='/admin/import/product/edit/' + '${product.productId}'|">Edit</button>
-                        <button class="btn btn-danger btn-sm" th:attr="onclick=|location.href='/admin/import/product/delete/' + '${product.productId}'|">Delete</button>
-                    </div>
+                    <span th:text="${product.title}" class="fw-bold"></span>
+                    <span th:text="'(' + ${product.requestId} + ')'"></span>
+                </div>
+                <div>
+                    <button class="btn btn-info btn-sm" th:attr="onclick=|location.href='/admin/import/product/view/' + '${product.productId}'|">View</button>
                 </div>
             </li>
         </ul>
+        <button class="btn btn-primary mt-3" onclick="location.href='/admin/import/product/create'">Create New Product</button>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
