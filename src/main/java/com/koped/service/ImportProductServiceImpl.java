@@ -103,7 +103,7 @@ public class ImportProductServiceImpl implements ImportProductService {
         if (product.getCountry() == null || product.getCountry().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Country cannot be null or empty");
         }
-        if (product.getPrice() == null || product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+        if (product.getPrice() == null || product.getPrice() <= 0.0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Price must be greater than 0");
         }
         if (product.getCategory() == null || product.getCategory().isEmpty()) {
