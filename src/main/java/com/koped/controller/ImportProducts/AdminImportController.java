@@ -48,14 +48,6 @@ public class AdminImportController {
         return "redirect:/admin/import/form/view/" + requestId;
     }
 
-    @GetMapping("/product/view/{productId}")
-    public String viewProductPage(@PathVariable String productId, Model model) {
-        ImportProduct importProduct = importProductService.findByProductIds(productId).getBody();
-        model.addAttribute("importProduct", importProduct);
-        return "AdminImport/view-import-product";
-    }
-
-
     @GetMapping("/product/create")
     public String createProductPage(Model model) {
         model.addAttribute("importProduct", new ImportProduct());
@@ -89,5 +81,12 @@ public class AdminImportController {
     public String deleteProduct(@PathVariable String productId) {
         importProductService.deleteByProductId(productId);
         return "redirect:/admin/import/main";
+    }
+
+    @GetMapping("/product/view/{productId}")
+    public String viewProductPage(@PathVariable String productId, Model model) {
+        ImportProduct importProduct = importProductService.findByProductIds(productId).getBody();
+        model.addAttribute("importProduct", importProduct);
+        return "AdminImport/view-import-product";
     }
 }

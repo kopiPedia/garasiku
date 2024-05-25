@@ -1,10 +1,81 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8" />
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <div th:insert="~{blocks/fragments :: cssuserproductpage}"></div>
+    <style>
+        body {
+            background-color: cadetblue;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+        }
+        .navbar-toggler {
+            display: none;
+        }
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .product-card {
+            background-color: white;
+            color: black;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+        .product-card img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .price {
+            color: cadetblue;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-	<p>product page</p>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="javascript:;">Garasiku</a>
+        </div>
+        <div class="navbar-menu">
+            <a href="javascript:;">Home</a>
+            <a href="javascript:;">Categories</a>
+            <a href="javascript:;">Contact</a>
+        </div>
+        <button class="navbar-toggler">
+            <span class="navbar-toggler-icon">&#9776;</span>
+        </button>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="product-container">
+        <div th:each="product : ${products}" class="product-card">
+            <img th:src="@{${product.image}}" alt="Product Image">
+            <h3 th:text="${product.title}">Product Name</h3>
+            <p class="price" th:text="'$ ' + ${product.price}">Rp0</p>
+            <p th:text="${product.category}">Product Category</p>
+        </div>
+    </div>
 </body>
 </html>

@@ -7,140 +7,88 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.Random;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ImportProductFormServiceImpl implements ImportProductFormService {
 
-    private final ImportFormRepository importFormRepo;
+    private final ImportFormRepository importFormRepository;
 
     @Override
     public ResponseEntity<ImportForm> findByRequestIds(String requestId) {
-        ImportForm form = importFormRepo.findByRequestId(requestId);
-        if (form == null) {
+        ImportForm importForm = importFormRepository.findByRequestId(requestId);
+        if (importForm == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(form);
+        return ResponseEntity.status(HttpStatus.OK).body(importForm);
     }
-
-    @Override
-    public List<ImportForm> findAllByUserId(int userId) {
-        return importFormRepo.findAllByUserId(userId);
-    }
-
 
     @Override
     public List<ImportForm> findAllRequests() {
-        return importFormRepo.findAll();
+        return importFormRepository.findAll();
     }
 
     @Override
     public ResponseEntity<String> deleteByRequestId(String requestId) {
-        if (importFormRepo.findByRequestId(requestId) == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Request not found");
+        ImportForm importForm = importFormRepository.findByRequestId(requestId);
+        if (importForm == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Import form not found");
         }
-        importFormRepo.deleteByRequestId(requestId);
-        return ResponseEntity.status(HttpStatus.OK).body("Request deleted successfully");
+        importFormRepository.delete(importForm);
+        return ResponseEntity.status(HttpStatus.OK).body("Import form deleted successfully");
     }
 
     @Override
-    public ResponseEntity<ImportForm> updateByRequestIds(String requestId, ImportForm data) {
-        ImportForm existingForm = importFormRepo.findByRequestId(requestId);
-        if (existingForm == null) {
+    public ResponseEntity<ImportForm> updateByRequestIds(String requestId, ImportForm updatedImportForm) {
+        ImportForm existingImportForm = importFormRepository.findByRequestId(requestId);
+        if (existingImportForm == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        // Update form data
-        existingForm.setProductName(data.getProductName());
-        existingForm.setExpectedCountry(data.getExpectedCountry());
-        existingForm.setDetails(data.getDetails());
-        existingForm.setBudgetRange(data.getBudgetRange());
-        existingForm.setImage(data.getImage());
+        existingImportForm.setProductName(updatedImportForm.getProductName());
+        existingImportForm.setExpectedCountry(updatedImportForm.getExpectedCountry());
+        existingImportForm.setDetails(updatedImportForm.getDetails());
+        existingImportForm.setBudgetRange(updatedImportForm.getBudgetRange());
+        existingImportForm.setStatus(updatedImportForm.getStatus());
 
-        // Validate and set status
-        ResponseEntity<String> validationResponse = validateAndSetStatus(data.getStatus());
-        if (validationResponse != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        existingForm.setStatus(data.getStatus());
-
-        ImportForm updatedForm = importFormRepo.save(existingForm);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedForm);
+        importFormRepository.save(existingImportForm);
+        return ResponseEntity.status(HttpStatus.OK).body(existingImportForm);
     }
-
 
     @Override
     public ResponseEntity<ImportForm> createNewRequests(ImportForm data) {
-        // Generate unique requestId
-        String requestId = generateUniqueRequestId();
-        data.setRequestId(requestId);
-
-        // Validate and set status
-        ResponseEntity<String> validationResponse = validateAndSetStatus(data.getStatus());
-        if (validationResponse != null) {
-            // Return the validation response if the status is invalid
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-
-        // Validate the fields before saving
-        ResponseEntity<String> fieldValidationResponse = validateImportForm(data);
-        if (fieldValidationResponse != null) {
-            // Return the field validation response if there are errors
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-
-        ImportForm savedForm = importFormRepo.save(data);
+        ImportForm savedForm = importFormRepository.save(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedForm);
     }
 
+    @Override
+    public ResponseEntity<ImportForm> createNewRequests(ImportForm data, MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            String fileName = String.valueOf(data.getRequestId()) + StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
+            String uploadDir = "resources/docs/";
+            String uploadPath = uploadDir + fileName;
+            Path uploadAbsolutePath = Paths.get(uploadPath);
+            Files.createDirectories(uploadAbsolutePath.getParent());
+            Files.copy(image.getInputStream(), uploadAbsolutePath);
 
-    // Method to validate and set status
-    private ResponseEntity<String> validateAndSetStatus(String status) {
-        List<String> validStatusList = List.of("PLACED", "CONFIRMED", "PROCESSED", "SHIPPING", "DELIVERED", "FAILED");
-        if (!validStatusList.contains(status)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid status: " + status);
+            data.setImage(fileName);
         }
-        return null;
+        ImportForm savedForm = importFormRepository.save(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedForm);
     }
 
-    // Method to validate the ImportForm fields
-    private ResponseEntity<String> validateImportForm(ImportForm form) {
-        if (form == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Form data cannot be null");
-        }
-
-        return null;
-    }
-
-    // Method to generate unique requestId
-    private String generateUniqueRequestId() {
-        Random random = new Random();
-        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String numbers = "0123456789";
-
-        StringBuilder requestId = new StringBuilder();
-        for (int i = 0; i < 3; i++) {
-            requestId.append(letters.charAt(random.nextInt(letters.length())));
-        }
-        for (int i = 0; i < 3; i++) {
-            requestId.append(numbers.charAt(random.nextInt(numbers.length())));
-        }
-
-        // Check if requestId already exists, generate a new one if needed
-        while (importFormRepo.findByRequestId(requestId.toString()) != null) {
-            for (int i = 0; i < 3; i++) {
-                requestId.setCharAt(i, letters.charAt(random.nextInt(letters.length())));
-            }
-            for (int i = 3; i < 6; i++) {
-                requestId.setCharAt(i, numbers.charAt(random.nextInt(numbers.length())));
-            }
-        }
-
-        return requestId.toString();
+    @Override
+    public List<ImportForm> findAllByUserId(int userId) {
+        return importFormRepository.findAllByUserId(userId);
     }
 }

@@ -1,6 +1,9 @@
 package com.koped.service;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.koped.model.Product;
 
@@ -10,6 +13,6 @@ public interface ProductService {
 	List<Product> findAllProducts();
 	String deleteByProductId(String productId);
 	Product updateByProductIds(Product data);
-	Product createNewProduct(Product data);
+	Product createNewProduct(Product data, MultipartFile image) throws IOException;
 
 }
