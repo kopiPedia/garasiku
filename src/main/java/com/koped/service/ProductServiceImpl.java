@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
             Files.createDirectories(uploadAbsolutePath.getParent());
             Files.copy(image.getInputStream(), uploadAbsolutePath);
             
-            String fileNameDB = "../static/productImages/" + fileName;
+            String fileNameDB = "../productImages/" + fileName;
             
             data.setImage(fileNameDB);
             data.setProductId(randomUUID);
