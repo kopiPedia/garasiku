@@ -50,6 +50,7 @@ public class ImportFormController {
     @PostMapping("/form/create")
     public String createForm(@ModelAttribute ImportForm importForm) {
         importForm.setUserId(userId);
+        importForm.setStatus("PLACED");  // Automatically set status to PLACED
         importProductFormService.createNewRequests(importForm);
         return "redirect:/import/forms";
     }
