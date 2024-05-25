@@ -80,7 +80,7 @@ public class ProductTest {
     public void testSetPriceWithZero() {
         Product product = new Product();
         product.setPrice(0.0);
-        assertEquals(BigDecimal.ZERO, product.getPrice());
+        assertEquals(0, product.getPrice());
     }
 
     @Test

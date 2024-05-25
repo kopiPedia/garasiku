@@ -18,13 +18,13 @@ public class CartTest {
         cart.setProduct(productIdentifier);
         cart.setQuantity(5);
         cart.setId(10);
-        cart.setPrice(new BigDecimal(100));
+        cart.setPrice(100);
 
         assertEquals(userIdentifier, cart.getUsername(), "The user identifier should be correctly set in the cart.");
         assertEquals(productIdentifier, cart.getProduct(), "The product identifier should be correctly set in the cart.");
         assertEquals(5, cart.getQuantity(), "The quantity should be correctly set in the cart.");
         assertEquals(10, cart.getId(), "The ID should be correctly set in the cart.");
-        assertEquals(new BigDecimal(100), cart.getPrice(), "The price should be correctly set in the cart.");
+        assertEquals(100, cart.getPrice(), "The price should be correctly set in the cart.");
     }
 
     @Test
@@ -54,9 +54,9 @@ public class CartTest {
     @Test
     public void testCartHighPrice() {
         Cart cart = new Cart();
-        cart.setPrice(new BigDecimal(Integer.MAX_VALUE));
+        cart.setPrice(Integer.MAX_VALUE);
 
-        assertEquals(new BigDecimal(Integer.MAX_VALUE), cart.getPrice(), "The cart should be able to handle the maximum integer price value.");
+        assertEquals(Integer.MAX_VALUE, cart.getPrice(), "The cart should be able to handle the maximum integer price value.");
     }
 
     @Test
@@ -91,13 +91,13 @@ public class CartTest {
         cart1.setUsername("User1");
         cart1.setProduct("Product1");
         cart1.setQuantity(1);
-        cart1.setPrice(new BigDecimal(100));
+        cart1.setPrice(100);
 
         Cart cart2 = new Cart();
         cart2.setUsername("User1");
         cart2.setProduct("Product2");
         cart2.setQuantity(2);
-        cart2.setPrice(new BigDecimal(200));
+        cart2.setPrice(200);
 
         assertNotEquals(cart1.getProduct(), cart2.getProduct(), "Each cart entry should handle different products.");
         assertNotEquals(cart1.getPrice(), cart2.getPrice(), "Each cart entry should handle different prices.");

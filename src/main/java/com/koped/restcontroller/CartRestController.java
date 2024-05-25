@@ -45,7 +45,7 @@ public class CartRestController {
         return cartService.gettotalCart(user);
     }
     @GetMapping("/price/{id}")
-    public BigDecimal getPriceCart(@PathVariable long id){
+    public double getPriceCart(@PathVariable long id){
         return cartService.getPriceCart(id);
     }
     @PutMapping("/decrease/{id}/{productId}")
