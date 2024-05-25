@@ -54,7 +54,7 @@ public class AuthController {
 
 	@GetMapping("/home")
 	public String homePage() {
-		return "main-product";
+		return "redirect:/product/products";
 	}
 
 	@GetMapping("/logout")
