@@ -24,8 +24,8 @@ public class ProductTest {
         product.setDescription("This is a test product.");
         assertEquals("This is a test product.", product.getDescription());
         
-        product.setPrice(new BigDecimal("10.50"));
-        assertEquals(new BigDecimal("10.50"), product.getPrice());
+        product.setPrice(10.50);
+        assertEquals(10.50, product.getPrice());
         
         product.setCategory("Electronics");
         assertEquals("Electronics", product.getCategory());
@@ -58,7 +58,7 @@ public class ProductTest {
 
       
         Assertions.assertThrows(IllegalArgumentException.class, () -> product.setId(-1));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> product.setPrice(new BigDecimal("-10.50")));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> product.setPrice(-10.50));
         Assertions.assertThrows(IllegalArgumentException.class, () -> product.setStock(-100));
     }
 
@@ -83,7 +83,7 @@ public class ProductTest {
     @Test
     public void testSetPriceWithZero() {
         Product product = new Product();
-        product.setPrice(BigDecimal.ZERO);
+        product.setPrice(0.0);
         assertEquals(BigDecimal.ZERO, product.getPrice());
     }
 
@@ -107,7 +107,7 @@ public class ProductTest {
     public void testProductConstructor() {
         String title = "Laptop";
         String description = "High-performance laptop";
-        BigDecimal price = new BigDecimal("999.99");
+        Double price = 999.99;
         String category = "Electronics";
         String country = "USA";
         Integer stock = 25;

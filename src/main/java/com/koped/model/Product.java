@@ -1,7 +1,5 @@
 package com.koped.model;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,13 +27,10 @@ public class Product {
 	private String description;
 
 	@Column(name = "price")
-	private BigDecimal price;
+	private Double price;
 
 	@Column(name = "category")
 	private String category;
-
-	@Column(name = "country")
-	private String country;
 
 	@Column(name = "stock")
 	private Integer stock;
@@ -51,13 +46,12 @@ public class Product {
 		
 	}
 
-	public Product(String title, String description, BigDecimal price, String category, String country, Integer stock,
+	public Product(String title, String description, Double price, String category, Integer stock,
 			String image, String productId) {
 		this.title = title;
 		this.description = description;
 		this.price = price;
 		this.category = category;
-		this.country = country;
 		this.stock = stock;
 		this.image = image;
 		this.productId = productId;
@@ -72,8 +66,8 @@ public class Product {
 		}
 	}
 
-	public void setPrice(BigDecimal price) {
-		if (price != null && price.compareTo(BigDecimal.ZERO) >= 0) {
+	public void setPrice(Double price) {
+		if (price != null && price >= 0) {
 			this.price = price;
 		} else {
 			throw new IllegalArgumentException("Price must be >= 0");
