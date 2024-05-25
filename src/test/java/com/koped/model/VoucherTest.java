@@ -3,7 +3,6 @@ package com.koped.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.koped.enums.PaymentMethod;
 
 public class VoucherTest {
     Voucher voucher;
@@ -29,4 +28,32 @@ public class VoucherTest {
 
     @Test
     void testGetDiscount() { assertEquals(50, this.voucher.getDiscount());}
+
+    @Test
+    void testSetVoucherId() {
+        String newVoucherId = "a0f9de47-90b1-437d-a0bf-d0821dde9096";
+        this.voucher.setVoucherId(newVoucherId);
+        assertEquals(newVoucherId, this.voucher.getVoucherId());
+    }
+
+    @Test
+    void testSetVoucherName() {
+        String newVoucherName = "NEW_NAME";
+        this.voucher.setVoucherName(newVoucherName);
+        assertEquals(newVoucherName, this.voucher.getVoucherName());
+    }
+
+    @Test
+    void testSetVoucherQuantity() {
+        int newQuantity = 5;
+        this.voucher.setVoucherQuantity(newQuantity);
+        assertEquals(newQuantity, this.voucher.getVoucherQuantity());
+    }
+
+    @Test
+    void testSetDiscount() {
+        int newDiscount = 20;
+        this.voucher.setDiscount(newDiscount);
+        assertEquals(newDiscount, this.voucher.getDiscount());
+    }
 }
