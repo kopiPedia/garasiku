@@ -11,6 +11,8 @@ import com.koped.service.ImportProductFormService;
 import com.koped.service.ImportProductService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/import")
@@ -29,8 +31,13 @@ public class ImportFormController {
     public String importFormsPage(Model model) {
         List<ImportForm> importForms = importProductFormService.findAllByUserId(userId);
         List<ImportProduct> importProducts = importProductService.findAllProducts();
+
+        // Group products by requestId
+        Map<String, List<ImportProduct>> productsByRequestId = importProducts.stream()
+                .collect(Collectors.groupingBy(ImportProduct::getRequestId));
+
         model.addAttribute("importForms", importForms);
-        model.addAttribute("importProducts", importProducts);
+        model.addAttribute("productsByRequestId", productsByRequestId);
         return "Import/import-form";
     }
 
@@ -73,17 +80,10 @@ public class ImportFormController {
         return "Import/view-import-form";
     }
 
-    @GetMapping("/products")
-    public String importProductsPage(Model model) {
-        List<ImportProduct> importProducts = importProductService.findAllProducts();
-        model.addAttribute("importProducts", importProducts);
-        return "Import/import-products";
-    }
-
     @GetMapping("/product/view/{productId}")
     public String viewProductPage(@PathVariable String productId, Model model) {
         ImportProduct importProduct = importProductService.findByProductIds(productId).getBody();
-        model.addAttribute("importProduct", importProduct);
-        return "view-import-product";
+        model.addAttribute("product", importProduct);
+        return "Import/view-import-product";
     }
 }
