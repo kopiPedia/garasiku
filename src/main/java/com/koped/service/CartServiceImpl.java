@@ -75,12 +75,10 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public BigDecimal getPriceCart(String user) {
+    public BigDecimal getPriceCart(long id) {
         BigDecimal totalPrice = BigDecimal.ZERO;
-        List<Cart> userCart = cartRepository.findAllByUsername(user);
-       for(Cart i : userCart){
-             totalPrice  = i.getPrice().add(totalPrice);
-        }
+        Cart userCart = cartRepository.findCartById(id);
+        totalPrice = userCart.getPrice();
         return totalPrice;
     }
     @Override
