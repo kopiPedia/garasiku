@@ -86,14 +86,14 @@ public class CartRepositoryTest {
         cart1.setUsername("user1");
         cart1.setProduct("Product1");
         cart1.setQuantity(2);
-        cart1.setPrice(new BigDecimal(100));
+        cart1.setPrice(100);
 
         Cart cart2 = new Cart();
         cart2.setId(2L);
         cart2.setUsername("user1");
         cart2.setProduct("Product2");
         cart2.setQuantity(3);
-        cart2.setPrice(new BigDecimal(200));
+        cart2.setPrice(200);
 
         when(cartRepository.findAllByUsername("user1")).thenReturn(Arrays.asList(cart1, cart2));
 

@@ -27,12 +27,12 @@ public class CartServiceImpl implements CartService{
             // if product already in cart, increase quantity
             Cart cart1 = cartRepository.findByProductIdAndUsername(cart.getProductId(), cart.getUsername());
             cart1.setQuantity(cart1.getQuantity() + cart.getQuantity());
-            cart1.setPrice( cart1.getPrice().add(cart.getPrice()));
+            cart1.setPrice( cart1.getPrice()+cart.getPrice());
             productRepository.findByProductId(cart.getProductId()).setStock(productRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
             cartRepository.save(cart1);
             return cart1;
         }
-        cart.setPrice(productRepository.findByProductId(cart.getProductId()).getPrice().multiply(new BigDecimal(cart.getQuantity())));
+        cart.setPrice(productRepository.findByProductId(cart.getProductId()).getPrice() * (cart.getQuantity()));
         productRepository.findByProductId(cart.getProductId()).setStock(productRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
         cartRepository.save(cart);
         return cart;
@@ -75,8 +75,8 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public BigDecimal getPriceCart(long id) {
-        BigDecimal totalPrice = BigDecimal.ZERO;
+    public double getPriceCart(long id) {
+        double totalPrice = 0;
         Cart userCart = cartRepository.findCartById(id);
         totalPrice = userCart.getPrice();
         return totalPrice;
@@ -92,7 +92,7 @@ public class CartServiceImpl implements CartService{
         if (cart != null) {
             cart.setQuantity(cart.getQuantity() - 1);
             productRepository.findByProductId(productId).setStock(productRepository.findByProductId(productId).getStock() + 1);
-            cart.setPrice(cart.getPrice().subtract(productRepository.findByProductId(productId).getPrice()));
+            cart.setPrice(cart.getPrice()- productRepository.findByProductId(productId).getPrice());
             cartRepository.save(cart);
         }
         return cart;
@@ -107,7 +107,7 @@ public class CartServiceImpl implements CartService{
             }else {
                 cart.setQuantity(cart.getQuantity() + 1);
                 productRepository.findByProductId(productId).setStock(productRepository.findByProductId(productId).getStock() - 1);
-                cart.setPrice(cart.getPrice().add(productRepository.findByProductId(productId).getPrice()));
+                cart.setPrice(cart.getPrice()+(productRepository.findByProductId(productId).getPrice()));
             }
             cartRepository.save(cart);
         }

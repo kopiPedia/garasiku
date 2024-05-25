@@ -19,9 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const totalPriceElement = document.querySelector('#totalPriceCard p');
         totalPriceElement.textContent = `Total Price: $${total.toFixed(2)}`;
-
-        // Update hidden input field
-        document.getElementById('totalPriceInput').value = total.toFixed(2);
     }
 
     async function increment(id, productId) {

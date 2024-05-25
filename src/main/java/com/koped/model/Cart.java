@@ -26,7 +26,7 @@ public class Cart {
     private int quantity;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private double price;
 
     @Column(name = "productId")
     private String productId;
