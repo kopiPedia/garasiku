@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Import Forms</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: cadetblue;
+            color: white;
+        }
+        .card {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            color: black;
+        }
+        .btn-primary {
+            background-color: #004085;
+            border-color: #004085;
+        }
+        .list-group-item {
+            background-color: #ffffff;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Import Forms</h2>
+    <ul class="list-group">
+        <li th:each="form : ${importForms}" class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <span th:text="${form.productName}" class="fw-bold"></span>
+            </div>
+            <div>
+                <button class="btn btn-info btn-sm" th:attr="onclick=|location.href='/import/form/view/' + '${form.requestId}'|">View</button>
+            </div>
+        </li>
+    </ul>
+
+    <button type="button" class="btn btn-primary mt-3" onclick="location.href='/import/form/create'">Create New Import Form</button>
+
+    <h2 class="mt-5">Available Products</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Stock</th>
+            <th>Country</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${importProducts}">
+            <td th:text="${product.productId}"></td>
+            <td th:text="${product.title}"></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.stock}"></td>
+            <td th:text="${product.country}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.category}"></td>
+            <td><img th:src="${product.image}" alt="Product Image" width="100"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

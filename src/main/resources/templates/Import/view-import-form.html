@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Import Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: cadetblue;
+            color: white;
+        }
+        .card {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            color: black;
+        }
+        .btn-primary {
+            background-color: #004085;
+            border-color: #004085;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Import Form Details</h1>
+            <p><strong>Product Name:</strong> <span th:text="${importForm.productName}"></span></p>
+            <p><strong>Expected Country:</strong> <span th:text="${importForm.expectedCountry}"></span></p>
+            <p><strong>Details:</strong> <span th:text="${importForm.details}"></span></p>
+            <p><strong>Budget Range:</strong> <span th:text="${importForm.budgetRange}"></span></p>
+            <p><strong>Image:</strong> <img th:src="${importForm.image}" alt="Product Image" width="200"></p>
+            <p><strong>Status:</strong> <span th:text="${importForm.status}"></span></p>
+            <button class="btn btn-secondary mt-3" onclick="location.href='/import/forms'">Back to Main</button>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

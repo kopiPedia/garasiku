@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Import Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Edit Import Form</h2>
+    <form th:action="@{/import/form/edit}" th:object="${importForm}" method="post">
+        <input type="hidden" th:field="*{requestId}"/>
+        <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName" th:field="*{productName}" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="expectedCountry">Expected Country</label>
+            <input type="text" id="expectedCountry" th:field="*{expectedCountry}" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="details">Details</label>
+            <textarea id="details" th:field="*{details}" class="form-control" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="budgetRange">Budget Range</label>
+            <input type="number" id="budgetRange" th:field="*{budgetRange}" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="image">Image URL</label>
+            <input type="text" id="image" th:field="*{image}" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" th:field="*{status}" class="form-control" required>
+                <option value="PLACED">PLACED</option>
+                <option value="CONFIRMED">CONFIRMED</option>
+                <option value="PROCESSED">PROCESSED</option>
+                <option value="SHIPPING">SHIPPING</option>
+                <option value="DELIVERED">DELIVERED</option>
+                <option value="FAILED">FAILED</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Update</button>
+        <button type="button" class="btn btn-secondary" onclick="location.href='/import/forms'">Cancel</button>
+    </form>
+</div>
+</body>
+</html>

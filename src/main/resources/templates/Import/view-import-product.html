@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Product</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: cadetblue;
+            color: white;
+        }
+        .card {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            color: black;
+        }
+        .btn-primary {
+            background-color: #004085;
+            border-color: #004085;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Product Details</h1>
+            <p><strong>Title:</strong> <span th:text="${product.title}"></span></p>
+            <p><strong>Description:</strong> <span th:text="${product.description}"></span></p>
+            <p><strong>Stock:</strong> <span th:text="${product.stock}"></span></p>
+            <p><strong>Country:</strong> <span th:text="${product.country}"></span></p>
+            <p><strong>Price:</strong> <span th:text="${product.price}"></span></p>
+            <p><strong>Category:</strong> <span th:text="${product.category}"></span></p>
+            <p><strong>Image:</strong> <img th:src="${product.image}" alt="Product Image" width="200"></p>
+            <button class="btn btn-secondary mt-3" onclick="location.href='/import/forms'">Back to Main</button>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

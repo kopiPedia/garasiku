@@ -5,15 +5,12 @@ import java.util.List;
 import java.util.UUID;
 
 import com.koped.model.ImportProduct;
-
 import com.koped.repository.ImportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Random;
-
 
 @Service
 @RequiredArgsConstructor
@@ -48,14 +45,11 @@ public class ImportProductServiceImpl implements ImportProductService {
 
     @Override
     public ResponseEntity<ImportProduct> updateByProductId(String productId, ImportProduct updatedProductData) {
-        // Find the existing product by productId
         ImportProduct existingProduct = importRepo.findByProductId(productId);
         if (existingProduct == null) {
-            // If the product with the given productId doesn't exist, return a NOT_FOUND response
             return ResponseEntity.notFound().build();
         }
 
-        // Update the fields of the existing product with the new data
         existingProduct.setTitle(updatedProductData.getTitle());
         existingProduct.setDescription(updatedProductData.getDescription());
         existingProduct.setStock(updatedProductData.getStock());
@@ -65,23 +59,17 @@ public class ImportProductServiceImpl implements ImportProductService {
         existingProduct.setImage(updatedProductData.getImage());
         existingProduct.setUserId(updatedProductData.getUserId());
 
-        // Save the updated product
         ImportProduct updatedProduct = importRepo.save(existingProduct);
-
-        // Return the updated product in the response
         return ResponseEntity.ok(updatedProduct);
     }
 
     @Override
     public ResponseEntity<ImportProduct> createNewProduct(ImportProduct data) {
-        // Validate the fields before saving
         ResponseEntity<String> validationResponse = validateImportProduct(data);
         if (validationResponse != null) {
-            // Return the validation response if there are errors
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        // Generate unique ID if not provided
         if (data.getProductId() == null || data.getProductId().isEmpty()) {
             data.setProductId(generateUniqueProductId());
         }
@@ -99,7 +87,6 @@ public class ImportProductServiceImpl implements ImportProductService {
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
-    // Method to validate the ImportProduct fields
     private ResponseEntity<String> validateImportProduct(ImportProduct product) {
         if (product == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product data cannot be null");
@@ -122,14 +109,10 @@ public class ImportProductServiceImpl implements ImportProductService {
         if (product.getCategory() == null || product.getCategory().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Category cannot be null or empty");
         }
-        // If all validations pass, return null to indicate success
         return null;
     }
 
-    // Method to generate unique product ID
     private String generateUniqueProductId() {
-        // Generate UUID as product ID
         return UUID.randomUUID().toString();
     }
 }
-
