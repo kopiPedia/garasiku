@@ -20,7 +20,7 @@ public class CartController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List <Cart> cart = cartService.findCartByUser(username);
         model.addAttribute("cart", cart);
-        model.addAttribute("total", cartService.getPriceCart(username));
+        model.addAttribute("total", 0);
         return "cart";
     }
 }

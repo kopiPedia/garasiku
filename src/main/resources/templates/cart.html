@@ -6,8 +6,6 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Cart</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-icons.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-svg.css}" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
@@ -41,6 +39,29 @@
             padding: 20px;
             width: 80%;
             font-size: 1.2em;
+            position: relative;
+            overflow: hidden; /* Ensure the hover effect doesn't overflow the item */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cart-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: scale(1.02); /* Slight zoom effect */
+        }
+
+        .cart-item:hover .mask {
+            opacity: 1;
+        }
+
+        .mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: hsla(195, 83%, 58%, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .cart-item p {
@@ -69,6 +90,7 @@
             align-items: center;
             justify-content: center;
             margin: 0 5px; /* Add space between buttons */
+            transition: background-color 0.3s ease;
         }
 
         .cart-item button:hover {
@@ -79,6 +101,7 @@
             background-color: #d32f2f;
             padding: 5px 10px;
             margin-top: 10px;
+            transition: background-color 0.3s ease;
         }
 
         .cart-item .delete-btn:hover {
@@ -86,18 +109,48 @@
         }
 
         #totalPriceCard {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            background-color: #ffffff;
+            color: #388e3c;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .checkbox-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .select-item {
+            z-index: 1;
+        }
+
+        .pay-button {
             position: fixed;
             bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            right: 20px;
             background-color: #388e3c;
             color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 200px;
-            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .pay-button:hover {
+            background-color: #2e7d32;
         }
     </style>
 </head>
@@ -106,6 +159,10 @@
 <h1>Cart</h1>
 <div id="cartItems">
     <div class="card cart-item" th:each="cartItem : ${cart}">
+        <div class="checkbox-container">
+            <input type="checkbox" class="select-item" th:attr="data-id=${cartItem.id}, data-price=${cartItem.price}">
+        </div>
+        <div class="mask"></div>
         <p th:text="'Item: ' + ${cartItem.product}"></p>
         <p th:text="'Quantity: ' + ${cartItem.quantity}" th:id="'quantity-' + ${cartItem.id}"></p>
         <div class="btn-group" role="group">
@@ -119,6 +176,8 @@
 <div id="totalPriceCard">
     <p th:text="'Total Price: $' + ${(total)}"></p>
 </div>
+
+<button class="pay-button">Pay</button>
 
 <script th:src="@{/js/cart.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
