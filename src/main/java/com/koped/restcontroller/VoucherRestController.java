@@ -2,15 +2,7 @@ package com.koped.restcontroller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.koped.model.Voucher;
 import com.koped.service.VoucherServiceImpl;
@@ -19,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/voucher")
+@RequestMapping("/voucher-rest")
 @RequiredArgsConstructor
 public class VoucherRestController {
 
@@ -36,7 +28,7 @@ public class VoucherRestController {
     }
 
     @PostMapping("/create")
-    public Voucher createVoucher(@RequestBody Voucher voucher) {
+    public Voucher createVoucher(@ModelAttribute Voucher voucher) {
         return voucherService.createVoucher(voucher);
     }
 
