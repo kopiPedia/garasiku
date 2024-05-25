@@ -30,9 +30,6 @@ public class ProductTest {
         product.setCategory("Electronics");
         assertEquals("Electronics", product.getCategory());
         
-        product.setCountry("IDN");
-        assertEquals("IDN", product.getCountry());
-        
         product.setStock(100);
         assertEquals(Integer.valueOf(100), product.getStock());
         
@@ -51,7 +48,6 @@ public class ProductTest {
         Assertions.assertNull(product.getDescription());
         Assertions.assertNull(product.getPrice());
         Assertions.assertNull(product.getCategory());
-        Assertions.assertNull(product.getCountry());
         Assertions.assertNull(product.getStock());
         Assertions.assertNull(product.getImage());
         Assertions.assertNull(product.getProductId());
@@ -109,18 +105,16 @@ public class ProductTest {
         String description = "High-performance laptop";
         Double price = 999.99;
         String category = "Electronics";
-        String country = "USA";
         Integer stock = 25;
         String image = "laptop.jpg";
         String productId = "LP12345";
 
-        Product product = new Product(title, description, price, category, country, stock, image, productId);
+        Product product = new Product(title, description, price, category, stock, image, productId);
 
         assertEquals(title, product.getTitle(), "Title should match the constructor input");
         assertEquals(description, product.getDescription(), "Description should match the constructor input");
         assertEquals(0, price.compareTo(product.getPrice()), "Price should match the constructor input");
         assertEquals(category, product.getCategory(), "Category should match the constructor input");
-        assertEquals(country, product.getCountry(), "Country should match the constructor input");
         assertEquals(stock, product.getStock(), "Stock should match the constructor input");
         assertEquals(image, product.getImage(), "Image should match the constructor input");
         assertEquals(productId, product.getProductId(), "Product ID should match the constructor input");
