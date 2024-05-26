@@ -40,12 +40,18 @@
             background-color: #6c757d;
             border-color: #6c757d;
         }
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .is-invalid:focus {
+            box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h2>Edit Import Form</h2>
-    <form th:action="@{/import/form/edit}" th:object="${importForm}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/import/form/edit}" th:object="${importForm}" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
         <input type="hidden" th:field="*{requestId}"/>
         <div class="form-group">
             <label for="productName">Product Name</label>
@@ -64,7 +70,7 @@
             <input type="number" id="budgetRange" th:field="*{budgetRange}" class="form-control" required/>
         </div>
         <div class="form-group">
-            <label for="images">Image</label>
+            <label for="image">Image</label>
             <input type="file" id="images" name="images" class="form-control"/>
         </div>
         <div class="form-group">
@@ -80,5 +86,21 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function validateForm() {
+        let isValid = true;
+        let inputs = document.querySelectorAll("input[type='text'], input[type='number'], textarea");
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                isValid = false;
+                input.classList.add("is-invalid");
+            } else {
+                input.classList.remove("is-invalid");
+            }
+        });
+
+        return isValid;
+    }
+</script>
 </body>
 </html>

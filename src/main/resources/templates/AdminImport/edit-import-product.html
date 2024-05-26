@@ -8,7 +8,7 @@
 <body>
 <div class="container mt-5">
   <h2>Edit Import Product</h2>
-  <form th:action="@{/admin/import/product/edit}" th:object="${importProduct}" method="post" enctype="multipart/form-data">
+  <form th:action="@{/admin/import/product/edit}" th:object="${importProduct}" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
     <input type="hidden" th:field="*{productId}"/>
     <div class="form-group">
       <label for="requestId">Request ID</label>
@@ -43,11 +43,27 @@
     </div>
     <div class="form-group">
       <label for="productImage">Product Image</label>
-      <input type="file" id="productImages" name="productImages" class="form-control" />
+      <input type="file" id="productImages" name="productImages" class="form-control"/>
     </div>
     <button type="submit" class="btn btn-success">Update</button>
     <button type="button" class="btn btn-secondary" onclick="location.href='/admin/import/main'">Cancel</button>
   </form>
 </div>
+<script>
+  function validateForm() {
+    let isValid = true;
+    let inputs = document.querySelectorAll("input[type='text'], input[type='number'], textarea, input[type='file']");
+    inputs.forEach(input => {
+      if (!input.value.trim()) {
+        isValid = false;
+        input.classList.add("is-invalid");
+      } else {
+        input.classList.remove("is-invalid");
+      }
+    });
+
+    return isValid;
+  }
+</script>
 </body>
 </html>
