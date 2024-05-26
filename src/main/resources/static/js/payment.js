@@ -23,13 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     confirmButton.addEventListener('click', () => {
         const selectedVoucherId = voucherInput.value;
-        const cartId = payButton.getAttribute('data-cart-id');  // Read cart ID from button data attribute
+        const cartId = payButton.getAttribute('data-cart-id');
 
         const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
         if (selectedVoucherId) {
-            // Make an AJAX request to update the voucher quantity and create order
             $.ajax({
                 url: `/voucher/decrement/${selectedVoucherId}`,
                 method: 'POST',
@@ -37,15 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: () => {
-                    // Create the order from the cart
                     $.ajax({
-                        url: `/create/${cartId}`,
+                        url: `/orders/create/${cartId}`,
                         method: 'POST',
                         beforeSend: function(xhr) {
                             xhr.setRequestHeader(csrfHeader, csrfToken);
                         },
                         success: () => {
-                            window.location.href = `/order`;
+                            window.location.href = `/orders/list`;
                         },
                         error: (err) => {
                             alert('Error creating order: ' + err.responseText);
@@ -57,15 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         } else {
-            // If no voucher selected, directly create the order
             $.ajax({
-                url: `/create/${cartId}`,
+                url: `/orders/create/${cartId}`,
                 method: 'POST',
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: () => {
-                    window.location.href = `/order`;
+                    window.location.href = `/orders/list`;
                 },
                 error: (err) => {
                     alert('Error creating order: ' + err.responseText);

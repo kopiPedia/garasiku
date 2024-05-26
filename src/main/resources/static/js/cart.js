@@ -76,3 +76,29 @@ document.querySelectorAll('.decrease-btn').forEach(button => {
         decrement(id, productId);
     });
 });
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const cartItemId = this.getAttribute('data-id');
+            const productId = this.getAttribute('data-product-id');
+
+            fetch(`/cart/${cartItemId}/${productId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        console.error('Failed to delete the cart item.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    })
+});

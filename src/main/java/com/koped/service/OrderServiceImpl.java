@@ -72,4 +72,9 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findByProductId(String productId) {
         return orderRepository.findByProductId(productId); // Ensure OrderRepository has this method
     }
+
+    @Override
+    public List<Order> getOrdersByUserId(String userId) {
+        return orderRepository.findByUserId(userId);
+    }
 }

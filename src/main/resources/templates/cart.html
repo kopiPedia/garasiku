@@ -135,6 +135,11 @@
         <div class="btn-group" role="group">
             <button class="decrease-btn btn btn-sm" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">-</button>
             <button class="increase-btn btn btn-sm" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">+</button>
+            <form th:action="@{/cart/delete/{cartItemId}/{productId}(cartItemId=${cartItem.id}, productId=${cartItem.productId})}" method="get">
+                <input type="hidden" name="_method" value="delete"/>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-success btn-just-icon btn-sm">Delete</button>
+            </form>
         </div>
         <p th:text="'Price: $' + ${(cartItem.price)}" th:id="'price-' + ${cartItem.id}"></p>
     </div>

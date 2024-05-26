@@ -11,7 +11,7 @@ public interface OrderService {
     String deleteOrder(int id);
     Order getOrderById(int id);
     List<Order> getAllOrders();
-
+    List<Order> getOrdersByUserId(String userId);
     void saveOrder(Order order);
     List<Order> findByProductId(String productId);
 
