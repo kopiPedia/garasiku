@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>View Import Product</title>
+    <title>View Product</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -19,6 +19,14 @@
             background-color: #004085;
             border-color: #004085;
         }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            max-height: 400px; /* Limit the height of the image */
+            object-fit: contain; /* Ensure the image fits within the dimensions */
+        }
     </style>
 </head>
 <body>
@@ -27,13 +35,15 @@
         <div class="card-body">
             <h1 class="card-title">Product Details</h1>
             <p><strong>Title:</strong> <span th:text="${importProduct.title}"></span></p>
-            <p><strong>Request ID:</strong> <span th:text="${importProduct.requestId}"></span></p>
             <p><strong>Description:</strong> <span th:text="${importProduct.description}"></span></p>
             <p><strong>Stock:</strong> <span th:text="${importProduct.stock}"></span></p>
             <p><strong>Country:</strong> <span th:text="${importProduct.country}"></span></p>
             <p><strong>Price:</strong> <span th:text="${importProduct.price}"></span></p>
             <p><strong>Category:</strong> <span th:text="${importProduct.category}"></span></p>
-            <p><strong>Image:</strong> <img th:src="${importProduct.image}" alt="Product Image" width="200"></p>
+            <p><strong>Image:</strong></p>
+            <div class="image-container">
+                <img th:src="@{'/images/' + ${importProduct.image}}" alt="Product Image">
+            </div>
             <button class="btn btn-secondary mt-3" onclick="location.href='/admin/import/main'">Back to Main</button>
         </div>
     </div>

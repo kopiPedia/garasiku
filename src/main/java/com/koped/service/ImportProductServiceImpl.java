@@ -11,6 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 @Service
 @RequiredArgsConstructor
@@ -44,10 +51,22 @@ public class ImportProductServiceImpl implements ImportProductService {
     }
 
     @Override
-    public ResponseEntity<ImportProduct> updateByProductId(String productId, ImportProduct updatedProductData) {
+    public ResponseEntity<ImportProduct> updateByProductId(String productId, ImportProduct updatedProductData, MultipartFile productImage) throws IOException {
         ImportProduct existingProduct = importRepo.findByProductId(productId);
         if (existingProduct == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        if (productImage != null && !productImage.isEmpty()) {
+            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(productImage.getOriginalFilename());
+            String uploadDir = "src/main/resources/static/productImages/";
+            String uploadPath = uploadDir + fileName;
+            Path uploadAbsolutePath = Paths.get(uploadPath);
+            Files.createDirectories(uploadAbsolutePath.getParent());
+            Files.copy(productImage.getInputStream(), uploadAbsolutePath);
+
+            String fileNameDB = "../productImages/" + fileName;
+            existingProduct.setImage(fileNameDB);
         }
 
         existingProduct.setTitle(updatedProductData.getTitle());
@@ -56,7 +75,6 @@ public class ImportProductServiceImpl implements ImportProductService {
         existingProduct.setCountry(updatedProductData.getCountry());
         existingProduct.setPrice(updatedProductData.getPrice());
         existingProduct.setCategory(updatedProductData.getCategory());
-        existingProduct.setImage(updatedProductData.getImage());
         existingProduct.setUserId(updatedProductData.getUserId());
 
         ImportProduct updatedProduct = importRepo.save(existingProduct);
@@ -64,20 +82,22 @@ public class ImportProductServiceImpl implements ImportProductService {
     }
 
     @Override
-    public ResponseEntity<ImportProduct> createNewProduct(ImportProduct data) {
-        ResponseEntity<String> validationResponse = validateImportProduct(data);
-        if (validationResponse != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+    public ResponseEntity<ImportProduct> createNewProduct(ImportProduct data, MultipartFile productImage) throws IOException {
+        if (productImage != null && !productImage.isEmpty()) {
+            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(productImage.getOriginalFilename());
+            String uploadDir = "src/main/resources/static/productImages/";
+            String uploadPath = uploadDir + fileName;
+            Path uploadAbsolutePath = Paths.get(uploadPath);
+            Files.createDirectories(uploadAbsolutePath.getParent());
+            Files.copy(productImage.getInputStream(), uploadAbsolutePath);
 
-        if (data.getProductId() == null || data.getProductId().isEmpty()) {
-            data.setProductId(generateUniqueProductId());
+            String fileNameDB = "../productImages/" + fileName;
+            data.setImage(fileNameDB);
         }
-
+        data.setProductId(UUID.randomUUID().toString());
         ImportProduct savedProduct = importRepo.save(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
-
     @Override
     public ResponseEntity<ImportProduct> findByUserId(int userId) {
         ImportProduct product = importRepo.findByUserId(userId);

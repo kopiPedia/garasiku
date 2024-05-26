@@ -12,6 +12,8 @@ import com.koped.service.ImportProductService;
 
 import java.io.IOException;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @Controller
 @RequestMapping("/admin/import")
@@ -58,8 +60,8 @@ public class AdminImportController {
     }
 
     @PostMapping("/product/create")
-    public String createProduct(@ModelAttribute ImportProduct importProduct) {
-        importProductService.createNewProduct(importProduct);
+    public String createProduct(@ModelAttribute ImportProduct importProduct, @RequestParam("productImages") MultipartFile productImage) throws IOException {
+        importProductService.createNewProduct(importProduct, productImage);
         return "redirect:/admin/import/main";
     }
 
@@ -73,8 +75,8 @@ public class AdminImportController {
     }
 
     @PostMapping("/product/edit")
-    public String updateProduct(@ModelAttribute ImportProduct importProduct) {
-        importProductService.updateByProductId(importProduct.getProductId(), importProduct);
+    public String updateProduct(@ModelAttribute ImportProduct importProduct, @RequestParam("productImages") MultipartFile productImage) throws IOException {
+        importProductService.updateByProductId(importProduct.getProductId(), importProduct, productImage);
         return "redirect:/admin/import/main";
     }
 

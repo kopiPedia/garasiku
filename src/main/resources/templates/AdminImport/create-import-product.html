@@ -8,7 +8,7 @@
 <body>
 <div class="container mt-5">
     <h2>Create Import Product</h2>
-    <form th:action="@{/admin/import/product/create}" th:object="${importProduct}" method="post">
+    <form th:action="@{/admin/import/product/create}" th:object="${importProduct}" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="requestId">Request ID</label>
             <select id="requestId" th:field="*{requestId}" class="form-control" required>
@@ -41,8 +41,8 @@
             <input type="text" id="category" th:field="*{category}" class="form-control" required/>
         </div>
         <div class="form-group">
-            <label for="image">Image URL</label>
-            <input type="text" id="image" th:field="*{image}" class="form-control" required/>
+            <label for="productImage">Product Image</label>
+            <input type="file" id="productImages" name="productImages" class="form-control" required/>
         </div>
         <button type="submit" class="btn btn-success">Create Product</button>
         <button type="button" class="btn btn-secondary" onclick="location.href='/admin/import/main'">Cancel</button>
