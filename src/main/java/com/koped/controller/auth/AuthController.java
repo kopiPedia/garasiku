@@ -34,7 +34,7 @@ public class AuthController {
 			User user = userRepo.findByUsername(auth.getName());
 
 			if (user.getRole().equals("Admin")) {
-				return "main-admin";
+				return "redirect:/home";
 			}
 			if (user.getRole().equals("User")) {
 				return "redirect:/home";

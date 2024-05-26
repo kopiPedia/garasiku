@@ -18,18 +18,18 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepo;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepo.findByUsername(username);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByUsername(username);
         if (!(user == null)) {
             return org.springframework.security.core.userdetails.User.builder()
                     .username(user.getUsername())
                     .password(user.getPassword())
-                    .roles("User")
+                    .roles(user.getRole())
                     .build();
         } else {
             throw new UsernameNotFoundException("User not found");
         }
-	}
+    }
 
 	@Override
 	public User createUser(String username, String password, String email) {
