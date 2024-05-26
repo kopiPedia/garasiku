@@ -65,19 +65,5 @@ public class ProductController {
         }
         return "redirect:/home";
     }
-	
-	@DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") String id) {
-        try {
-            boolean isDeleted = prodService.deleteByProductId(id);
-            if (isDeleted) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error deleting product: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
 }

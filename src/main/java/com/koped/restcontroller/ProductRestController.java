@@ -2,6 +2,8 @@ package com.koped.restcontroller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,10 +42,19 @@ public class ProductRestController {
 //		return prodService.createNewProduct(data);
 //	}
 	
-	@DeleteMapping("/delete/{productid}")
-	public String deleteProductByProductId(@PathVariable String productid) {
-		return prodService.deleteByProductId(productid);
-	}
+	@DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") String id) {
+        try {
+            boolean isDeleted = prodService.deleteByProductId(id);
+            if (isDeleted) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error deleting product: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 	
 	@PutMapping("/update")
 	public Product updateProductByProductId(@RequestBody Product data) {
