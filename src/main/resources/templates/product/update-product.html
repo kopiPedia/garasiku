@@ -90,7 +90,7 @@
                 <input type="file" class="form-control-file" id="images" name="images" accept=".jpg,.png">
 
                 <div th:if="${product.image != null}">
-                    <img th:src="@{'/images/'+${product.image}}" alt="Product Image">
+                    <img th:src="@{${product.image}}" alt="Product Image">
                 </div>
               
             </div>
