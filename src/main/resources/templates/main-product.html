@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Page</title>
     <div th:insert="~{blocks/fragments :: cssuserproductpage}"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             background-color: cadetblue;
@@ -42,10 +44,19 @@
             padding: 10px;
             text-align: center;
             transition: transform 0.2s;
+
+            position: relative;
+
         }
         .product-card:hover {
             transform: scale(1.05);
             cursor: pointer;
+
+        }
+        .product-card.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+
         }
         .product-card img {
             max-width: 100%;
@@ -61,9 +72,34 @@
             color: white;
             margin: 20px;
         }
+
+        .stock-zero {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+        .button-container {
+            margin-top: 10px;
+        }
+        .edit-button, .delete-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
     </style>
+    
 </head>
 <body>
+	
+	<input type="hidden" id="csrfToken" th:value="${_csrf.token}"/>
+    <input type="hidden" id="csrfHeader" th:value="${_csrf.headerName}"/>
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-brand">
@@ -85,12 +121,54 @@
     </div>
 
     <div class="product-container" th:unless="${#lists.isEmpty(products)}">
-        <div th:each="product : ${products}" class="product-card" th:onclick="'window.location.href=\'/product/' + ${product.id} + '\';'">
+        <div th:each="product : ${products}" class="product-card" th:classappend="${product.stock == 0} ? ' disabled' : ''">
+
             <img th:src="@{${product.image}}" alt="Product Image">
             <h3 th:text="${product.title}">Product Name</h3>
             <p class="price" th:text="'Rp ' + ${product.price}">Rp0</p>
             <p th:text="${product.category}">Product Category</p>
+            <div th:if="${product.stock == 0}" class="stock-zero">Product Unavailable</div>
+            <div class="button-container">
+                <button class="edit-button" th:onclick="'window.location.href=\'/edit/' + ${product.id} + '\';'">&#9998; Edit</button>
+                <button class="delete-button" th:attr="data-id=${product.productId}" onclick="deleteProduct(this)">&#10060; Delete</button>
+            </div>
         </div>
     </div>
 </body>
+
+<script>
+        function deleteProduct(element) {
+            var productId = $(element).attr('data-id');
+            var csrfToken = $('#csrfToken').val();
+            var csrfHeader = $('#csrfHeader').val();
+            
+            $.ajax({
+                url: '/product/' + productId,
+                type: 'DELETE',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function(result) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'The product has been deleted successfully.',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $(element).closest('.product-card').remove();
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to Delete',
+                        text: 'There was an error deleting the product: ' + error,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
+    </script>
 </html>

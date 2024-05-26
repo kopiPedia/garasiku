@@ -22,6 +22,17 @@
             text-decoration: none;
             padding: 0 15px;
         }
+
+        .back-btn {
+            background-color: white;
+            color: cadetblue;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
         .container {
             max-width: 1200px;
             margin: 20px auto;
@@ -115,6 +126,10 @@
             <a href="/contact">Contact</a>
         </div>
     </nav>
+
+    <br />
+    <a href="/product/products" class="back-btn">Kembali</a>
+
     <!-- End Navbar -->
 
     <!-- Breadcrumb -->
@@ -126,13 +141,20 @@
             <img th:src="@{${product.image}}" alt="Product Image">
             <div class="product-details">
                 <h1 class="product-title" th:text="${product.title}">Product Name</h1>
+
+                <p class="product-price" th:text="'$ ' + ${product.price}">Rp8.000</p>
+                <p class="product-description">Product Description:</p>
                 <p class="product-price" th:text="'Rp ' + ${product.price}">Rp8.000</p>
-                
+
                 <p class="product-description" th:text="${product.description}">Product Description</p>
 
                 <div class="product-info">
                     <div>
+
+                        <h4>Input quantity:</h4>
+
 						<h4>Input quantity:</h4>
+
                         <input type="number" id="quantity" name="quantity" value="1" min="1">
                         <p th:text="'Stock: ' + ${product.stock}"></p>
                         <input type="hidden" id="price" name="price" th:value="${product.price}">
