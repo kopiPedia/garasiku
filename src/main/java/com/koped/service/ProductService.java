@@ -14,5 +14,6 @@ public interface ProductService {
 	String deleteByProductId(String productId);
 	Product updateByProductIds(Product data);
 	Product createNewProduct(Product data, MultipartFile image) throws IOException;
+	Product findByIds(Integer id);
 
 }

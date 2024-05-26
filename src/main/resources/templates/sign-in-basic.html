@@ -10,6 +10,7 @@
   </title>
   <div th:insert="~{blocks/fragments :: css}"></div>
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body class="sign-in-basic">
@@ -87,6 +88,39 @@
     </footer>
   </div>
   <div th:insert="~{blocks/fragments :: scripts}"></div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:if="${success}">
+        Swal.fire({
+            icon: 'success',
+            title: 'Registration Successful',
+            text: 'You have successfully registered! Please log in.',
+            confirmButtonText: 'OK'
+        });
+    </script>
+    <script th:if="${param.success}">
+        Swal.fire({
+            icon: 'success',
+            title: 'Login Successful',
+            text: 'You have successfully logged in!',
+            confirmButtonText: 'OK'
+        });
+    </script>
+    <script th:if="${param.error}">
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'Invalid username or password.',
+            confirmButtonText: 'OK'
+        });
+    </script>
+    <script th:if="${param.logout}">
+        Swal.fire({
+            icon: 'success',
+            title: 'Logged Out',
+            text: 'You have successfully logged out.',
+            confirmButtonText: 'OK'
+        });
+    </script>
 </body>
 
 

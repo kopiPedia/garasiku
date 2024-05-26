@@ -37,10 +37,15 @@
             color: black;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 200px;
+            width: 250px;
             margin: 10px;
             padding: 10px;
             text-align: center;
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+            cursor: pointer;
         }
         .product-card img {
             max-width: 100%;
@@ -50,18 +55,24 @@
             color: cadetblue;
             font-weight: bold;
         }
+        .no-products {
+            text-align: center;
+            font-size: 1.5em;
+            color: white;
+            margin: 20px;
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-brand">
-            <a href="javascript:;">Garasiku</a>
+            <a href="/">Garasiku</a>
         </div>
         <div class="navbar-menu">
-            <a href="javascript:;">Home</a>
-            <a href="javascript:;">Categories</a>
-            <a href="javascript:;">Contact</a>
+            <a href="/">Home</a>
+            <a href="/categories">Categories</a>
+            <a href="/contact">Contact</a>
         </div>
         <button class="navbar-toggler">
             <span class="navbar-toggler-icon">&#9776;</span>
@@ -69,11 +80,15 @@
     </nav>
     <!-- End Navbar -->
 
-    <div class="product-container">
-        <div th:each="product : ${products}" class="product-card">
+    <div class="product-container" th:if="${#lists.isEmpty(products)}">
+        <p class="no-products">No Product Available</p>
+    </div>
+
+    <div class="product-container" th:unless="${#lists.isEmpty(products)}">
+        <div th:each="product : ${products}" class="product-card" th:onclick="'window.location.href=\'/product/' + ${product.id} + '\';'">
             <img th:src="@{${product.image}}" alt="Product Image">
             <h3 th:text="${product.title}">Product Name</h3>
-            <p class="price" th:text="'$ ' + ${product.price}">Rp0</p>
+            <p class="price" th:text="'Rp ' + ${product.price}">Rp0</p>
             <p th:text="${product.category}">Product Category</p>
         </div>
     </div>

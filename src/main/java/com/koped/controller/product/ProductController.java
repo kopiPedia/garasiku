@@ -1,17 +1,22 @@
 package com.koped.controller.product;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.koped.model.Cart;
 import com.koped.model.Product;
 import com.koped.service.ProductServiceImpl;
 
@@ -29,6 +34,18 @@ public class ProductController {
         List<Product> products = prodService.findAllProducts();
         model.addAttribute("products", products);
         return "main-product";
+    }
+	
+	@GetMapping("/{id}")
+    public String showDetailPage(Model model, @PathVariable Integer id) {
+		Product product = prodService.findByIds(id);
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Cart cart = new Cart();
+		
+        model.addAttribute("product", product);
+        model.addAttribute("cart", cart);
+        model.addAttribute("username", username);
+        return "product/detail-product";
     }
 	
 	@GetMapping("/new")
