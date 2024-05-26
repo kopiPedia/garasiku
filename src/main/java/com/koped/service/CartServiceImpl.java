@@ -50,7 +50,7 @@ public class CartServiceImpl implements CartService{
             Cart cart1 = cartRepository.findByProductIdAndUsername(cart.getProductId(), cart.getUsername());
             cart1.setQuantity(cart1.getQuantity() + cart.getQuantity());
             cart1.setPrice( cart1.getPrice()+cart.getPrice());
-            productRepository.findByProductId(cart.getProductId()).setStock(productRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
+            importRepository.findByProductId(cart.getProductId()).setStock(importRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
             cartRepository.save(cart1);
             return cart1;
         }

@@ -61,9 +61,16 @@ public class AdminImportController {
 
     @GetMapping("/form/view/{requestId}")
     public String viewFormPage(@PathVariable String requestId, Model model) {
-        ImportForm importForm = importProductFormService.findByRequestIds(requestId).getBody();
-        model.addAttribute("importForm", importForm);
-        return "AdminImport/view-import-form";
+        String role = getCurrentRole();
+
+        if ("Admin".equals(role)) {
+            ImportForm importForm = importProductFormService.findByRequestIds(requestId).getBody();
+            model.addAttribute("importForm", importForm);
+            return "AdminImport/view-import-form";
+        } else {
+            return "redirect:/admin/import/access-denied-import";
+        }
+
     }
 
     @PostMapping("/form/updateStatus")

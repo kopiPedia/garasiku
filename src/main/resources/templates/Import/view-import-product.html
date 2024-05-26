@@ -127,6 +127,18 @@
                     <p><strong>Category:</strong> <span th:text="${importProduct.category}"></span></p>
                 </div>
             </div>
+            <div class="product-info">
+                <form th:action="@{/cart/addImportForm}" th:object="${cart}" method="post">
+                    <h4>Input quantity:</h4>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1">
+                    <input type="hidden" id="price" name="price" th:value="${importProduct.price}">
+                    <input type="hidden" id="product" name="product" th:value="${importProduct.title}">
+                    <input type="hidden" id="productId" name="productId" th:value="${importProduct.productId}">
+                    <input type="hidden" id="username" name="username" th:value="${username}">
+                    <a href="/buy-now" class="btn">Buy Now</a>
+                    <button class="btn" type="submit">Add to cart</button>
+                </form>
+            </div>
             <a href="/import/forms" class="back-btn">Back to Main</a>
         </div>
     </div>

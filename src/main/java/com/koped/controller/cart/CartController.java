@@ -52,7 +52,7 @@ public class CartController {
             cart.setUsername(username);
             cart.setPrice(importService.findByProductId(productId).getPrice());
             cart.setProduct(importService.findByProductId(productId).getTitle());
-            cartService.addProductToCart(cart);
+            cartService.addProductToCartImportProduct(cart);
             model.addAttribute("cart", cart);
             model.addAttribute("username", username);
             model.addAttribute("importProduct", importService.findByProductId(productId));
