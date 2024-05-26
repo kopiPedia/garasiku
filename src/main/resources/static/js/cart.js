@@ -35,31 +35,6 @@ async function decrement(id, productId) {
     }
 }
 
-async function deleteProduct(id, productId) {
-    try {
-        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-        const response = await fetch(`/cart/delete/${id}/${productId}`, {
-            method: 'DELETE',
-            headers: {
-                [csrfHeader]: csrfToken
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to delete product from cart');
-        }
-
-        // Refresh the cart after successful deletion
-        refreshCart2(id);
-    } catch (error) {
-        console.error('Error deleting product:', error);
-        // Handle error gracefully
-        // For example, display a message to the user
-    }
-}
-
 async function refreshCart(cartItem, id) {
     if (cartItem) {
         const quantityElement = document.querySelector(`#quantity-${id}`);
@@ -83,7 +58,6 @@ async function fetchTotalPrice() {
     const userId = document.querySelector('#userId').value;
     const response = await fetch(`/cart/total/${userId}`);
     const totalPrice = await response.text();
-    localStorage.setItem('totalPrice', totalPrice.toFixed(2));
     return totalPrice;
 }
 

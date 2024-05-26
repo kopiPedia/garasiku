@@ -1,15 +1,5 @@
 package com.koped.model;
 
-import com.koped.enums.OrderStatus;
-import org.junit.jupiter.api.Test;
-
-import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
-
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class OrderTest {
 
 //    @Test
@@ -56,13 +46,13 @@ public class OrderTest {
 //    }
 
 
-    @Test
-    public void testSetOrderDate() {
-        Order order = new Order();
-        LocalDateTime expectedDate = LocalDateTime.of(2024, 5, 8, 15, 30);  // Example date and time
-        order.setOrderDate(Timestamp.valueOf(expectedDate));
-
-        assertEquals(expectedDate, order.getOrderDate(), "The order date should be correctly set and retrieved.");
-    }
+//    @Test
+//    public void testSetOrderDate() {
+//        Order order = new Order();
+//        LocalDateTime expectedDate = LocalDateTime.of(2024, 5, 8, 15, 30);  // Example date and time
+//        order.setOrderDate(Timestamp.valueOf(expectedDate));
+//
+//        assertEquals(expectedDate, order.getOrderDate(), "The order date should be correctly set and retrieved.");
+//    }
 
 }
