@@ -1,19 +1,18 @@
 package com.koped.restcontroller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.koped.enums.OrderStatus;
+import com.koped.model.Cart;
+import com.koped.model.Product;
+import com.koped.service.CartService;
+import com.koped.service.ProductService;
+import org.springframework.web.bind.annotation.*;
 
 import com.koped.model.Order;
 import com.koped.service.OrderServiceImpl;
+import com.koped.service.CartServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class OrderRestController {
 
     private final OrderServiceImpl orderService;
+    private final CartService cartService;
+    private final ProductService productService;
 
 
     @GetMapping("/list")
@@ -36,10 +37,32 @@ public class OrderRestController {
         return orderService.getOrderById(Integer.parseInt(orderId));
     }
 
-    @PostMapping("/create")
-    public Order createNewOrder(@RequestBody Order data) {
-        return orderService.createOrder(data);
-    }
+//    @PostMapping("/create")
+//    public Order createOrder(@RequestParam int userId, @RequestBody List<Cart> selectedItems) {
+//        List<OrderProduct> orderProducts = selectedItems.stream().map(cart -> {
+//            Product product = productService.findByProductIds(cart.getProductId());
+//            OrderProduct orderProduct = new OrderProduct();
+//            orderProduct.setProductId(cart.getProductId());
+//            orderProduct.setTitle(product.getTitle());
+//            orderProduct.setQuantity(cart.getQuantity());
+//            orderProduct.setPrice(cart.getPrice());
+//            orderProduct.setImage(product.getImage());
+//            return orderProduct;
+//        }).collect(Collectors.toList());
+//
+//        Order order = new Order();
+//        order.setUserId(userId);
+//        order.setStatus(OrderStatus.PLACED);
+//        orderService.saveOrder(order);
+//
+//        // Log the order details for debugging
+//        System.out.println("Created Order: " + order);
+//
+//        // Clear the selected items from the cart
+//        selectedItems.forEach(cart -> cartService.removeProductFromCart(cart.getId(), cart.getProductId()));
+//
+//        return order;
+//    }
 
     @DeleteMapping("/delete/{orderId}")
     public String deleteOrderByOrderId(@PathVariable String orderId) {

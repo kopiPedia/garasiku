@@ -1,7 +1,9 @@
 package com.koped.service;
 
 import com.koped.enums.OrderStatus;
+import com.koped.model.Cart;
 import com.koped.model.Order;
+import com.koped.model.Product;
 import com.koped.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,11 +11,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository) {
@@ -22,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Order order) {
-        return orderRepository.save(order);
+        return null;
     }
 
     @Override
@@ -30,7 +39,6 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> optionalOrder = orderRepository.findById(Integer.parseInt(String.valueOf(id)));
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
-            order.setStatus(OrderStatus.valueOf(status));
             orderRepository.save(order);
             return order;
         } else {
@@ -53,5 +61,15 @@ public class OrderServiceImpl implements OrderService {
     public String deleteOrder(int id) {
         orderRepository.deleteById(id);
         return null;
+    }
+
+    @Override
+    public void saveOrder(Order order) {
+        orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findByProductId(String productId) {
+        return orderRepository.findByProductId(productId); // Ensure OrderRepository has this method
     }
 }
