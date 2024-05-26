@@ -1,5 +1,6 @@
 package com.koped.controller.ImportProducts;
 
+import com.koped.model.Cart;
 import com.koped.model.User;
 import com.koped.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +98,14 @@ public class ImportFormController {
     @GetMapping("/product/view/{productId}")
     public String viewProductPage(@PathVariable String productId, Model model) {
         ImportProduct importProduct = importProductService.findByProductIds(productId).getBody();
+
+        Cart cart = new Cart();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        model.addAttribute("cart", cart);
+        model.addAttribute("username", username);
         model.addAttribute("importProduct", importProduct);
+
         return "Import/view-import-product";
     }
 }
