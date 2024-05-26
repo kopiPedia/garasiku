@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.koped.model.Cart;
 import com.koped.model.Product;
 import com.koped.service.ProductServiceImpl;
+import com.koped.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,11 +27,15 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 	
 	private final ProductServiceImpl prodService;
+	private final UserServiceImpl userService;
 	
 	@GetMapping("/products")
     public String listProducts(Model model) {
         List<Product> products = prodService.findAllProducts();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String role = userService.findByUsername(username).getRole();
         model.addAttribute("products", products);
+        model.addAttribute("role", role);
         return "main-product";
     }
 	

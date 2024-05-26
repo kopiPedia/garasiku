@@ -93,7 +93,7 @@
 						<a class="nav-link text-white" href="/cart"><i class="fas fa-shopping-cart"></i></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link text-white" href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+						<a class="nav-link text-white" href="/logout">Logout<i class="fas fa-sign-out-alt"></i></a>
 					</li>
 				</ul>
 			</div>
@@ -220,62 +220,82 @@
 
 <div th:fragment="cssuserproductpage">
 	<style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .navbar {
-            background-color: #00bfa5;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-        .navbar .navbar-toggler {
-            display: none;
-        }
-        .product-container {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-        .product-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin: 10px;
-            padding: 10px;
-            width: 200px;
-            text-align: center;
-        }
-        .product-card img {
-            width: 100%;
-            height: auto;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-        }
-        .product-card h3 {
-            font-size: 16px;
-            margin: 10px 0;
-        }
-        .product-card p {
-            margin: 5px 0;
-        }
-        .product-card .price {
-            color: #00bfa5;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .product-card .rating {
-            color: #ff9800;
-            font-size: 14px;
-        }
-    </style>
+		body {
+			background-color: cadetblue;
+			color: white;
+			font-family: Arial, sans-serif;
+		}
+
+		.product-container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			margin: 20px;
+		}
+
+		.product-card {
+			background-color: white;
+			color: black;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			width: 250px;
+			margin: 10px;
+			padding: 10px;
+			text-align: center;
+			transition: transform 0.2s;
+			position: relative;
+		}
+
+		.product-card:hover {
+			transform: scale(1.05);
+			cursor: pointer;
+		}
+
+		.product-card.disabled {
+			cursor: not-allowed;
+			opacity: 0.6;
+		}
+
+		.product-card img {
+			max-width: 100%;
+			border-radius: 8px;
+		}
+
+		.price {
+			color: cadetblue;
+			font-weight: bold;
+		}
+
+		.no-products {
+			text-align: center;
+			font-size: 1.5em;
+			color: white;
+			margin: 20px;
+		}
+
+		.stock-zero {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			background-color: red;
+			color: white;
+			padding: 5px;
+			border-radius: 5px;
+			font-size: 0.8em;
+		}
+
+		.button-container {
+			margin-top: 10px;
+		}
+
+		.edit-button,
+		.delete-button {
+			border: none;
+			background: none;
+			cursor: pointer;
+			font-size: 16px;
+		}
+	</style>
 	
 </div>
 
