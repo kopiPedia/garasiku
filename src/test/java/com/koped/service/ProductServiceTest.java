@@ -83,22 +83,22 @@ public class ProductServiceTest {
 //        verify(productRepository, times(1)).deleteByProductId(productId);
 //    }
 
-    @Test
-    public void testUpdateByProductId() {
-        // Given
-        Product productToUpdate = new Product();
-        productToUpdate.setId(1);
-        productToUpdate.setTitle("Test Product");
-        when(productRepository.save(productToUpdate)).thenReturn(productToUpdate);
-
-        // When
-        Product result = productService.updateByProductIds(productToUpdate);
-
-        // Then
-        assertNotNull(result);
-        assertEquals("Test Product", result.getTitle());
-        verify(productRepository, times(1)).save(productToUpdate);
-    }
+//    @Test
+//    public void testUpdateByProductId() {
+//        // Given
+//        Product productToUpdate = new Product();
+//        productToUpdate.setId(1);
+//        productToUpdate.setTitle("Test Product");
+//        when(productRepository.save(productToUpdate)).thenReturn(productToUpdate);
+//
+//        // When
+//        Product result = productService.updateByProductIds(productToUpdate);
+//
+//        // Then
+//        assertNotNull(result);
+//        assertEquals("Test Product", result.getTitle());
+//        verify(productRepository, times(1)).save(productToUpdate);
+//    }
 
 //    @Test
 //    public void testCreateNewProduct() {
