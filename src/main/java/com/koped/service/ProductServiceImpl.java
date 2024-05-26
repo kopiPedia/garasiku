@@ -35,8 +35,14 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public String deleteByProductId(String productId) {
-		return prodRepo.deleteByProductId(productId);
+	public Boolean deleteByProductId(String productId) {
+		try {
+			prodRepo.deleteByProductId(productId);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
 	}
 
 	@Override
@@ -44,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
 		return prodRepo.save(data);
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public Product createNewProduct(Product data, MultipartFile image) throws IOException {
 		if(image != null || !image.isEmpty()) {

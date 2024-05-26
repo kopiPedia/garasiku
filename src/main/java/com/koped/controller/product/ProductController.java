@@ -1,13 +1,14 @@
 package com.koped.controller.product;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ public class ProductController {
     public String showDetailPage(Model model, @PathVariable Integer id) {
 		Product product = prodService.findByIds(id);
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		
 		Cart cart = new Cart();
 		
         model.addAttribute("product", product);
@@ -60,6 +62,20 @@ public class ProductController {
         	prodService.createNewProduct(data, images);
         }
         return "redirect:/home";
+    }
+	
+	@DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") String id) {
+        try {
+            boolean isDeleted = prodService.deleteByProductId(id);
+            if (isDeleted) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error deleting product: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
