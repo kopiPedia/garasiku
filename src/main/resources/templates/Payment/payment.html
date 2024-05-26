@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-icons.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-svg.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e8f5e9; /* Soft green background */
+            margin: 0;
+            padding: 0;
+        }
+        h2  {
+            color: #388e3c;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 2.5em;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="~{blocks/fragments :: mainNavbar}"></div>
+<div class="container my-2">
+    <h2>Payment</h2>
+    <p id="totalPrice"></p>
+    <label for="voucherInput">Select Available Voucher</label>
+    <select id="voucherInput" class="form-control">
+        <option value="" class="text-gray-400">Select Discount Voucher</option>
+        <option th:each="voucher : ${vouchers}" th:value="${voucher.voucherId}" th:text="${voucher.voucherName + ' (' + voucher.discount + '%)' + ': ' + voucher.voucherQuantity}"></option>
+    </select>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const totalPrice = localStorage.getItem('totalPrice');
+        document.getElementById('totalPrice').textContent = `Total Price: $${totalPrice}`;
+    });
+</script>
+</body>
+</html>

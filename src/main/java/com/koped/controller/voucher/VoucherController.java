@@ -1,5 +1,7 @@
 package com.koped.controller.voucher;
+import com.koped.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.koped.model.Voucher;
@@ -12,12 +14,23 @@ import org.springframework.ui.Model;
 public class VoucherController {
     @Autowired
     private VoucherService voucherService;
-//    @GetMapping("/list")
-//    public String voucherPage(Model model) {
-//        List<Voucher> voucherList = voucherService.findAllVoucher();
-//        model.addAttribute("voucher", voucherList);
-//        return "Voucher/VoucherList";
-//    }
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/list")
+    public String voucherPage(Model model) {
+        String userLoggedIn = SecurityContextHolder.getContext().getAuthentication().getName();
+        String role = userService.findByUsername(userLoggedIn).getRole();
+
+        if (role.equals("Admin")){
+            List<Voucher> voucherList = voucherService.findAllVoucher();
+            model.addAttribute("voucher", voucherList);
+            return "Voucher/VoucherList";
+        }
+
+        return "redirect:/?error=invalid_format";
+    }
 
     @GetMapping("/create")
     public String createVoucherPage(Model model){
@@ -35,6 +48,22 @@ public class VoucherController {
     @GetMapping("/delete/{id}")
     public String deleteProduct (@PathVariable String id){
         voucherService.deleteVoucher(id);
+        return "redirect:/voucher/list";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editVoucher (@PathVariable String id, Model model) {
+        Voucher voucher = voucherService.findByVoucherId(id).orElseThrow(null);
+        model.addAttribute("voucher", voucher);
+        model.addAttribute("voucherId", id);
+        return "Voucher/EditVoucher";
+    }
+
+    @PostMapping("/update/{voucherId}")
+    public String updateVoucher(@PathVariable String voucherId, @ModelAttribute("voucher") Voucher updatedVoucher) {
+        Voucher voucher = voucherService.findByVoucherId(voucherId).orElseThrow(null);
+        updatedVoucher.setVoucherId(voucher.getVoucherId());
+        voucherService.updateVoucher(updatedVoucher);
         return "redirect:/voucher/list";
     }
 }
