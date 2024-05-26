@@ -2,12 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>View Import Form</title>
+    <title>Import Form Details</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: cadetblue;
-            color: white;
+            background-color: #e8f5e9;
+            color: black;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .card {
             background-color: #ffffff;
@@ -22,10 +31,21 @@
         .image-container img {
             max-width: 100%;
             height: auto;
-            display: block;
-            margin: 0 auto;
-            max-height: 400px; /* Limit the height of the image */
-            object-fit: contain; /* Ensure the image fits within the dimensions */
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .back-btn {
+            background-color: cadetblue;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -33,17 +53,17 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-body">
-            <h1 class="card-title">Import Form Details</h1>
+            <h1 class="card-title form-title">Import Form Details</h1>
             <p><strong>Product Name:</strong> <span th:text="${importForm.productName}"></span></p>
             <p><strong>Expected Country:</strong> <span th:text="${importForm.expectedCountry}"></span></p>
             <p><strong>Details:</strong> <span th:text="${importForm.details}"></span></p>
-            <p><strong>Budget Range($):</strong> <span th:text="${importForm.budgetRange}"></span></p>
+            <p><strong>Budget Range:</strong> <span th:text="${importForm.budgetRange}"></span></p>
             <p><strong>Image:</strong></p>
             <div class="image-container">
                 <img th:src="@{'/static/' + ${importForm.image}}" alt="Product Image">
             </div>
             <p><strong>Status:</strong> <span th:text="${importForm.status}"></span></p>
-            <button class="btn btn-secondary mt-3" onclick="location.href='/import/forms'">Back to Main</button>
+            <a href="/import/forms" class="back-btn">Back to Main</a>
         </div>
     </div>
 </div>
