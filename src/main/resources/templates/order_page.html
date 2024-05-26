@@ -21,84 +21,69 @@
             font-size: 2.5em;
         }
 
-        #orderItems {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .order-item {
-            background-color: #fff;
-            border-radius: 5px;
-            border: 2px solid #388e3c; /* Border to look like a branded navbar */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin: 10px 0;
-            padding: 20px;
-            width: 80%;
-            font-size: 1.2em;
-            position: relative;
-            overflow: hidden; /* Ensure the hover effect doesn't overflow the item */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .order-item:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transform: scale(1.02); /* Slight zoom effect */
-        }
-
-        .order-item:hover .mask {
-            opacity: 1;
-        }
-
-        .mask {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: hsla(195, 83%, 58%, 0.2);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .order-item p {
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        .order-status {
-            font-weight: bold;
-            color: #388e3c;
-        }
-
-        #totalPriceCard {
+        .table-container {
             display: flex;
             justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            background-color: #ffffff;
-            color: #388e3c;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            padding: 20px;
+        }
+
+        .table {
             width: 80%;
-            max-width: 400px;
-            font-size: 1.5em;
-            font-weight: bold;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 1.2em;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+        }
+
+        .table th {
+            background-color: #388e3c;
+            color: #ffffff;
+        }
+
+        .table tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .table tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .table tr:last-of-type {
+            border-bottom: 2px solid #388e3c;
         }
     </style>
 </head>
 <body>
 <div th:insert="~{blocks/fragments :: mainNavbar}"></div>
 <h1>Orders</h1>
-<div id="orderItems">
-    <!-- Order items will be dynamically added here -->
+<div class="table-container">
+    <table class="table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th scope="col">Product ID</th>
+            <th scope="col">Cart ID</th>
+            <th scope="col">Timestamp</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderItem: ${orders}">
+            <td th:text="${orderItem.productId}"></td>
+            <td th:text="${orderItem.cartId}"></td>
+            <td th:text="${orderItem.timestamp}"></td>
+            <td>
+                <a th:href="@{/order/view/{id}(id=${orderItem.productId})}" class="btn btn-success btn-just-icon btn-sm">View</a>
+                <a th:href="@{/order/delete/{id}(id=${orderItem.productId})}" class="btn btn-danger btn-just-icon btn-sm">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-<script th:src="@{/js/order.js}"></script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

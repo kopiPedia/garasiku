@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
+@RequestMapping("/orders")
 public class OrderController {
 
     @Autowired
@@ -34,6 +35,13 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/list")
+    public String listOrders(Model model) {
+        List<Order> orders = orderService.getAllOrders();
+        model.addAttribute("orders", orders);
+        return "orders";
+    }
 
     @GetMapping("/order")
     public String orderPage(Model model) {
