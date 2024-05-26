@@ -1,16 +1,11 @@
 package com.koped.controller.product;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,6 +59,13 @@ public class ProductController {
         	prodService.createNewProduct(data, images);
         }
         return "redirect:/home";
+    }
+	
+	@GetMapping("/update/{id}")
+    public String showProductForm(@PathVariable Integer id, Model model) {
+        Product data = prodService.findByIds(id);
+        model.addAttribute("product", data);
+        return "product/update-product";
     }
 
 }

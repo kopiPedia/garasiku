@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert/Update Product</title>
+    <style>
+        body {
+            background-color: cadetblue;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            color: black;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: cadetblue;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: cadetblue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #5f9ea0;
+        }
+        .form-group img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function formatPriceInput(input) {
+            var value = input.value.replace(/,/g, '');
+            var formattedValue = Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            input.value = formattedValue;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2 th:text="${id != null} ? 'Update Product' : 'Insert Product'">Insert Product</h2>
+        <form th:action="@{/product/save}" th:object="${product}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:if="${id != null}" th:field="*{id}" />
+            <div class="form-group">
+                <label for="name">Product Name</label>
+                <input type="text" id="title" th:field="*{title}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Product Description</label>
+                <input type="text" id="description" th:field="*{description}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Product Price</label>
+                <input type="text" id="price" th:field="*{price}" class="form-control" required oninput="formatPriceInput(this)">
+            </div>
+            <div class="form-group">
+                <label for="category">Product Category</label>
+                <input type="text" id="category" th:field="*{category}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="stock">Product Stock</label>
+                <input type="number" id="stock" th:field="*{stock}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Product Image</label>
+                <input type="file" class="form-control-file" id="images" name="images" accept=".jpg,.png">
+
+                <div th:if="${product.image != null}">
+                    <img th:src="@{${product.image}}" alt="Product Image">
+                </div>
+              
+            </div>
+            <div class="form-group">
+                <button type="submit" th:text="${id != null} ? 'Update Product' : 'Save Product'">Save Product</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
