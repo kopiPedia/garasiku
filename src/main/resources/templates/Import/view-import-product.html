@@ -32,7 +32,7 @@
             <p><strong>Country:</strong> <span th:text="${product.country}"></span></p>
             <p><strong>Price:</strong> <span th:text="${product.price}"></span></p>
             <p><strong>Category:</strong> <span th:text="${product.category}"></span></p>
-            <p><strong>Image:</strong> <img th:src="${product.image}" alt="Product Image" width="200"></p>
+            <p><strong>Image:</strong> <img th:src="@{'/images/' + ${product.image}}" alt="Product Image" width="200"></p>
             <button class="btn btn-secondary mt-3" onclick="location.href='/import/forms'">Back to Main</button>
         </div>
     </div>

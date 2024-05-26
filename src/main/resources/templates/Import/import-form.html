@@ -46,15 +46,21 @@
 
     <h2 class="mt-5">Available Products</h2>
     <div th:each="form : ${importForms}">
-        <div th:if="${!#lists.isEmpty(productsByRequestId[form.requestId])}">
-            <div class="card">
-                <div class="card-header">
-                    <h5 th:text="'Products for Request: ' + ${form.productName}"></h5>
-                </div>
-                <div class="card-body">
-                    <div th:each="product : ${productsByRequestId[form.requestId]}">
-                        <p th:text="${product.title}"></p>
-                        <button class="btn btn-info btn-sm" th:attr="onclick=|location.href='/import/product/view/' + '${product.productId}'|">View</button>
+        <!-- Check if form.requestId is not null and productsByRequestId contains the key -->
+        <div th:if="${form.requestId != null}">
+            <div th:if="${productsByRequestId.containsKey(form.requestId)}">
+                <!-- Check if the list is empty -->
+                <div th:if="${!#lists.isEmpty(productsByRequestId[form.requestId])}">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 th:text="'Products for Request: ' + ${form.productName}"></h5>
+                        </div>
+                        <div class="card-body">
+                            <div th:each="product : ${productsByRequestId[form.requestId]}">
+                                <p th:text="${product.title}"></p>
+                                <button class="btn btn-info btn-sm" th:attr="onclick=|location.href='/import/product/view/' + '${product.productId}'|">View</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

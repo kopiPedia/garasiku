@@ -75,13 +75,17 @@ public class ImportProductFormServiceImpl implements ImportProductFormService {
     public ResponseEntity<ImportForm> createNewRequests(ImportForm data, MultipartFile image) throws IOException {
         if (image != null && !image.isEmpty()) {
             String fileName = String.valueOf(data.getRequestId()) + StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
-            String uploadDir = "resources/docs/";
+            String uploadDir = "src/main/resources/static/importimages/";
             String uploadPath = uploadDir + fileName;
             Path uploadAbsolutePath = Paths.get(uploadPath);
             Files.createDirectories(uploadAbsolutePath.getParent());
             Files.copy(image.getInputStream(), uploadAbsolutePath);
 
-            data.setImage(fileName);
+            String fileNameDB = "../importimages/" + fileName;
+
+            data.setImage(fileNameDB);
+
+
         }
         ImportForm savedForm = importFormRepository.save(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedForm);
