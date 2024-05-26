@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,19 +44,15 @@
             padding: 10px;
             text-align: center;
             transition: transform 0.2s;
-
             position: relative;
-
         }
         .product-card:hover {
             transform: scale(1.05);
             cursor: pointer;
-
         }
         .product-card.disabled {
             cursor: not-allowed;
             opacity: 0.6;
-
         }
         .product-card img {
             max-width: 100%;
@@ -72,7 +68,6 @@
             color: white;
             margin: 20px;
         }
-
         .stock-zero {
             position: absolute;
             top: 10px;
@@ -92,13 +87,10 @@
             cursor: pointer;
             font-size: 16px;
         }
-
     </style>
-    
 </head>
 <body>
-	
-	<input type="hidden" id="csrfToken" th:value="${_csrf.token}"/>
+    <input type="hidden" id="csrfToken" th:value="${_csrf.token}"/>
     <input type="hidden" id="csrfHeader" th:value="${_csrf.headerName}"/>
     <!-- Navbar -->
     <nav class="navbar">
@@ -121,27 +113,42 @@
     </div>
 
     <div class="product-container" th:unless="${#lists.isEmpty(products)}">
-        <div th:each="product : ${products}" class="product-card" th:onclick="'window.location.href=\'/product/' + ${product.id} + '\';'" th:classappend="${product.stock == 0} ? ' disabled' : ''">
-
+        <div th:each="product : ${products}" class="product-card" th:classappend="${product.stock == 0} ? ' disabled' : ''" th:onclick="${product.stock != 0} ? 'window.location.href=\'/product/' + ${product.id} + '\';' : ''">
             <img th:src="@{${product.image}}" alt="Product Image">
             <h3 th:text="${product.title}">Product Name</h3>
             <p class="price" th:text="'Rp ' + ${product.price}">Rp0</p>
             <p th:text="${product.category}">Product Category</p>
             <div th:if="${product.stock == 0}" class="stock-zero">Product Unavailable</div>
-            <div class="button-container">
-                <button class="edit-button" th:onclick="'window.location.href=\'/edit/' + ${product.id} + '\';'">&#9998; Edit</button>
-                <button class="delete-button" th:attr="data-id=${product.productId}" onclick="deleteProduct(this)">&#10060; Delete</button>
+            <div sec:authorize="hasRole('Admin')">
+                <button class="edit-button" th:onclick="'editProduct(event, \'' + ${product.id} + '\');'">&#9998; Edit</button>
+                <button class="delete-button" th:attr="data-id=${product.productId}" onclick="confirmDelete(event, this)">&#10060; Delete</button>
             </div>
         </div>
     </div>
-</body>
 
-<script>
+    <script>
+        function confirmDelete(event, element) {
+            event.stopPropagation();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteProduct(element);
+                }
+            });
+        }
+
         function deleteProduct(element) {
             var productId = $(element).attr('data-id');
             var csrfToken = $('#csrfToken').val();
             var csrfHeader = $('#csrfHeader').val();
-            
+
             $.ajax({
                 url: '/product/' + productId,
                 type: 'DELETE',
@@ -170,5 +177,11 @@
                 }
             });
         }
+
+        function editProduct(event, productId) {
+            event.stopPropagation();
+            window.location.href = '/product/update/' + productId;
+        }
     </script>
+</body>
 </html>
