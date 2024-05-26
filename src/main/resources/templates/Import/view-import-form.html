@@ -37,7 +37,7 @@
             <p><strong>Product Name:</strong> <span th:text="${importForm.productName}"></span></p>
             <p><strong>Expected Country:</strong> <span th:text="${importForm.expectedCountry}"></span></p>
             <p><strong>Details:</strong> <span th:text="${importForm.details}"></span></p>
-            <p><strong>Budget Range:</strong> <span th:text="${importForm.budgetRange}"></span></p>
+            <p><strong>Budget Range($):</strong> <span th:text="${importForm.budgetRange}"></span></p>
             <p><strong>Image:</strong></p>
             <div class="image-container">
                 <img th:src="@{'/static/' + ${importForm.image}}" alt="Product Image">
