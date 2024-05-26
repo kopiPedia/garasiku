@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Payment</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-icons.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/nucleo-svg.css}" />
@@ -14,7 +16,7 @@
             margin: 0;
             padding: 0;
         }
-        h2  {
+        h2 {
             color: #388e3c;
             text-align: center;
             padding: 20px 0;
@@ -35,29 +37,41 @@
 <div class="container my-2">
     <div class="card">
         <h2>Payment</h2>
-        <label for="voucherInput">Select Available Voucher</label>
+        <label for="voucherInput">Select Available Voucher (optional)</label>
         <select id="voucherInput" class="form-control">
             <option value="" class="text-gray-400">Select Discount Voucher</option>
-            <option th:each="voucher : ${vouchers}" th:attr="data-discount=${voucher.discount}" th:text="${voucher.voucherName + ' (' + voucher.discount + '%)' + ': ' + voucher.voucherQuantity}"></option>
+            <option th:each="voucher : ${vouchers}" th:attr="data-discount=${voucher.discount}" th:value="${voucher.voucherId}" th:text="${voucher.voucherName + ' (' + voucher.discount + '%)' + ': ' + voucher.voucherQuantity}"></option>
         </select>
         <br>
         <p id="totalPrice"></p>
-        <a class="btn btn-success btn-sm mb-3">Pay</a>
+        <button type="button" class="payButton btn btn-success btn-sm mb-3">Pay</button>
     </div>
 </div>
 
-<!--Future Modal-->
-<!--<div id="deleteModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-50">-->
-<!--    <div class="bg-gray-800 rounded-lg shadow-lg p-6 w-96">-->
-<!--        <h2 class="text-lg font-semibold mb-4">Confirm Payment?</h2>-->
-<!--        <p class="mb-6 text-gray-400">Payment VIA Online Payment</p>-->
-<!--        <div class="flex justify-end space-x-4">-->
-<!--            <button id="cancelButton" class="px-4 py-2 text-sm font-medium text-gray-100 bg-gray-600 rounded-lg focus:outline-none hover:bg-gray-500">Cancel</button>-->
-<!--            <button id="confirmButton" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg focus:outline-none hover:bg-red-700">Confirm</button>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<!-- Modal -->
+<div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="payModalLabel">Confirm Payment VIA Online Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed with the payment?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-just-icon btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success btn-just-icon btn-sm" id="confirmButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/payment.js"></script>
 </body>
 </html>

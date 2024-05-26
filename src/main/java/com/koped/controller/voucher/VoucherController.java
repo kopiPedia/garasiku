@@ -1,6 +1,8 @@
 package com.koped.controller.voucher;
 import com.koped.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -65,5 +67,25 @@ public class VoucherController {
         updatedVoucher.setVoucherId(voucher.getVoucherId());
         voucherService.updateVoucher(updatedVoucher);
         return "redirect:/voucher/list";
+    }
+
+    @PostMapping("/decrement/{voucherId}")
+    @ResponseBody
+    public ResponseEntity<String> useVoucher(@PathVariable String voucherId) {
+        Voucher voucher = voucherService.findByVoucherId(voucherId).orElseThrow(null);
+        if (voucher == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voucher not found");
+        }
+        if (voucher.getVoucherQuantity() > 0) {
+            voucher.setVoucherQuantity(voucher.getVoucherQuantity() - 1);
+            if (voucher.getVoucherQuantity() == 0) {
+                voucherService.deleteVoucher(voucherId);
+            } else {
+                voucherService.createVoucher(voucher);
+            }
+            return ResponseEntity.ok("Voucher used successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Voucher out of stock");
+        }
     }
 }
