@@ -63,7 +63,7 @@
 <body>
     <div class="container">
         <h2 th:text="${id != null} ? 'Update Product' : 'Insert Product'">Insert Product</h2>
-        <form th:action="@{/product/save}" th:object="${product}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/product/update}" th:object="${product}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:if="${id != null}" th:field="*{id}" />
             <div class="form-group">
                 <label for="name">Product Name</label>

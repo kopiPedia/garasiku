@@ -13,7 +13,7 @@ public interface ProductService {
 	Product findByProductIds(String productId);
 	List<Product> findAllProducts();
 	Boolean deleteByProductId(String productId);
-	Product updateByProductIds(Product data);
+	Product updateByProductIds(Product data, MultipartFile newImage);
 	ResponseEntity<?> createNewProduct(Product data, MultipartFile image) throws IOException;
 	Product findByIds(Integer id);
 

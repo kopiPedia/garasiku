@@ -67,5 +67,12 @@ public class ProductController {
         model.addAttribute("product", data);
         return "product/update-product";
     }
+	
+	@PostMapping("/update")
+    public String updateProduct(@ModelAttribute Product data, @RequestParam("images") MultipartFile images) throws IOException {
+        
+        prodService.updateByProductIds(data, images);
+        return "redirect:/product/products";
+    }
 
 }
