@@ -84,25 +84,31 @@ public class ImportProductFormServiceImpl implements ImportProductFormService {
         return ResponseEntity.ok(updatedForm);
     }
 
-
     @Override
     public ResponseEntity<ImportForm> createNewRequests(ImportForm data, MultipartFile image) throws IOException {
         if (image != null && !image.isEmpty()) {
             String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(image.getOriginalFilename());
-            String uploadDir = "src/main/resources/static/importimages/";
-            String uploadPath = uploadDir + fileName;
-            Path uploadAbsolutePath = Paths.get(uploadPath);
-            Files.createDirectories(uploadAbsolutePath.getParent());
-            Files.copy(image.getInputStream(), uploadAbsolutePath);
-            String fileNameDB = "/importimages/" + fileName;
+            String uploadDir = "src/main/resources/static/importImages/";
+            Path uploadPath = Paths.get(uploadDir + fileName);
+            Files.createDirectories(uploadPath.getParent());
+            Files.copy(image.getInputStream(), uploadPath);
+
+            String fileNameDB = "../importImages/" + fileName;
             data.setImage(fileNameDB);
         }
 
-        data.setRequestId(UUID.randomUUID().toString());
+        data.setRequestId(generateUniqueRequestId());
+        data.setStatus("PLACED"); // Automatically set status to PLACED
+
+        // Validate the fields before saving
+        validateImportForm(data);
 
         ImportForm savedForm = importFormRepo.save(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedForm);
     }
+
+
+
 
 
     // Method to validate and set status

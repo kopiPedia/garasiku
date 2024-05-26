@@ -19,6 +19,14 @@
             background-color: #004085;
             border-color: #004085;
         }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            max-height: 400px; /* Limit the height of the image */
+            object-fit: contain; /* Ensure the image fits within the dimensions */
+        }
     </style>
 </head>
 <body>
@@ -32,7 +40,10 @@
             <p><strong>Country:</strong> <span th:text="${product.country}"></span></p>
             <p><strong>Price:</strong> <span th:text="${product.price}"></span></p>
             <p><strong>Category:</strong> <span th:text="${product.category}"></span></p>
-            <p><strong>Image:</strong> <img th:src="@{'/images/' + ${product.image}}" alt="Product Image" width="200"></p>
+            <p><strong>Image:</strong></p>
+            <div class="image-container">
+                <img th:src="@{'/images/' + ${product.image}}" alt="Product Image">
+            </div>
             <button class="btn btn-secondary mt-3" onclick="location.href='/import/forms'">Back to Main</button>
         </div>
     </div>
