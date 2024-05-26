@@ -33,7 +33,7 @@
     </style>
 </head>
 <body>
-<div th:insert="~{blocks/fragments :: mainNavbar}"></div>
+<div th:insert="~{blocks/fragments :: adminNavbar}"></div>
 <div class="center-container">
     <div class="card">
         <div class="card-body">
@@ -45,13 +45,15 @@
                 </div>
                 <div class="form-group">
                     <label for="quantityInput">Quantity</label>
-                    <input th:field="*{voucherQuantity}" type="text" class="form-control mb-4" id="quantityInput" placeholder="Enter voucher quantity">
+                    <input th:field="*{voucherQuantity}" type="number" class="form-control mb-4" id="quantityInput" placeholder="Enter voucher quantity" value="1" min="1">
                 </div>
                 <div class="form-group">
-                    <label for="discountInput">Discount</label>
-                    <input th:field="*{discount}" type="text" class="form-control mb-4" id="discountInput" placeholder="Enter voucher discount">
+                    <label for="discountInput">Discount (%) </label>
+                    <input th:field="*{discount}" type="number" class="form-control mb-4" id="discountInput" placeholder="Enter voucher discount" value="1" min="1">
                 </div>
                 <button type="submit" class="btn btn-success btn-block">Save</button>
+                <br>
+                <a th:href="@{/voucher/list}" class="btn btn-danger btn-just-icon btn-sm">Back</a>
             </form>
         </div>
     </div>

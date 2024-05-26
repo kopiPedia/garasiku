@@ -1,15 +1,13 @@
 package com.koped.service;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.koped.model.Product;
@@ -23,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductServiceImpl implements ProductService {
 	
 	private final ProductRepository prodRepo;
+	private final CloudinaryServiceImpl cloudService;
 
 	@Override
 	public Product findByProductIds(String productId) {
@@ -52,24 +51,36 @@ public class ProductServiceImpl implements ProductService {
 
 	@SuppressWarnings("null")
 	@Override
-	public Product createNewProduct(Product data, MultipartFile image) throws IOException {
+	public ResponseEntity<?> createNewProduct(Product data, MultipartFile image) throws IOException {
 		if(image != null || !image.isEmpty()) {
 			
 			String randomUUID = String.valueOf(UUID.randomUUID().toString());
+//			
+//			String fileName = String.valueOf(randomUUID + "_" + StringUtils.cleanPath(image.getOriginalFilename()));
+//            String uploadDir = "src/main/resources/static/productImages/";
+//            String uploadPath = uploadDir + fileName;
+//            Path uploadAbsolutePath = Paths.get(uploadPath);
+//            Files.createDirectories(uploadAbsolutePath.getParent());
+//            Files.copy(image.getInputStream(), uploadAbsolutePath);
+//            
+//            String fileNameDB = "../productImages/" + fileName;
 			
-			String fileName = String.valueOf(randomUUID + "_" + StringUtils.cleanPath(image.getOriginalFilename()));
-            String uploadDir = "src/main/resources/static/productImages/";
-            String uploadPath = uploadDir + fileName;
-            Path uploadAbsolutePath = Paths.get(uploadPath);
-            Files.createDirectories(uploadAbsolutePath.getParent());
-            Files.copy(image.getInputStream(), uploadAbsolutePath);
+			try {
+	            
+	            data.setImage(cloudService.uploadFile(image, "folder_1"));
+//	            if(data.getImage() == null) {
+//	                return ResponseEntity.badRequest().build();
+//	            }
+	            
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
             
-            String fileNameDB = "../productImages/" + fileName;
-            
-            data.setImage(fileNameDB);
             data.setProductId(randomUUID);
+            prodRepo.save(data);
 		}
-		return prodRepo.save(data);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
