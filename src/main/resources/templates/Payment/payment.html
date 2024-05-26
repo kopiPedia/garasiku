@@ -12,7 +12,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e8f5e9; /* Soft green background */
+            background-color: #e8f5e9;
             margin: 0;
             padding: 0;
         }
@@ -43,8 +43,8 @@
             <option th:each="voucher : ${vouchers}" th:attr="data-discount=${voucher.discount}" th:value="${voucher.voucherId}" th:text="${voucher.voucherName + ' (' + voucher.discount + '%)' + ': ' + voucher.voucherQuantity}"></option>
         </select>
         <br>
-        <p id="totalPrice"></p>
-        <button type="button" class="payButton btn btn-success btn-sm mb-3">Pay</button>
+        <p id="totalPrice" th:text="'Total Price: $' + ${totalPrice}"></p>
+        <button type="button" class="payButton btn btn-success btn-sm mb-3" th:data-cart-id="${cart[0].id}">Pay</button>
     </div>
 </div>
 

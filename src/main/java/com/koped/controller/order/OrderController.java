@@ -57,6 +57,7 @@ public class OrderController {
             order1.setProductId(prodId);
             order1.setOrderDate(Timestamp.from(Instant.now()));
             order1.setUserId(username);
+            orderService.saveOrder(order1);
             }
 
         return "redirect:/order";

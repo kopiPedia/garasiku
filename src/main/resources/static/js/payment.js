@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const payButton = document.querySelector('.payButton');
     const confirmButton = document.getElementById('confirmButton');
 
-    let totalPrice = parseFloat(localStorage.getItem('totalPrice'));
-    totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
+    let totalPrice = parseFloat(totalPriceElement.textContent.replace('Total Price: $', ''));
 
     voucherInput.addEventListener('change', () => {
         const selectedOption = voucherInput.options[voucherInput.selectedIndex];
@@ -13,9 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isNaN(discount) && discount > 0) {
             const discountedPrice = totalPrice - (totalPrice * (discount / 100));
             totalPriceElement.textContent = `Total Price: $${discountedPrice.toFixed(2)}`;
-
-            // Save the total price to localStorage
-            localStorage.setItem('totalPrice', discountedPrice.toFixed(2));
         } else {
             totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
         }
@@ -27,12 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     confirmButton.addEventListener('click', () => {
         const selectedVoucherId = voucherInput.value;
+        const cartId = payButton.getAttribute('data-cart-id');  // Read cart ID from button data attribute
 
         const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
         if (selectedVoucherId) {
-            // Make an AJAX request to update the voucher quantity
+            // Make an AJAX request to update the voucher quantity and create order
             $.ajax({
                 url: `/voucher/decrement/${selectedVoucherId}`,
                 method: 'POST',
@@ -40,16 +37,40 @@ document.addEventListener('DOMContentLoaded', () => {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: () => {
-                    // url needs to be changed
-                    window.location.href = `/cart`;
+                    // Create the order from the cart
+                    $.ajax({
+                        url: `/create/${cartId}`,
+                        method: 'POST',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader(csrfHeader, csrfToken);
+                        },
+                        success: () => {
+                            window.location.href = `/order`;
+                        },
+                        error: (err) => {
+                            alert('Error creating order: ' + err.responseText);
+                        }
+                    });
                 },
                 error: (err) => {
                     alert('Error processing payment by voucher: ' + err.responseText);
                 }
             });
         } else {
-            // url needs to be changed
-            window.location.href = `/cart`;
+            // If no voucher selected, directly create the order
+            $.ajax({
+                url: `/create/${cartId}`,
+                method: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: () => {
+                    window.location.href = `/order`;
+                },
+                error: (err) => {
+                    alert('Error creating order: ' + err.responseText);
+                }
+            });
         }
     });
 });
