@@ -1,6 +1,9 @@
 package com.koped.controller.ImportProducts;
 
+import com.koped.model.User;
+import com.koped.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +30,17 @@ public class ImportFormController {
     @Autowired
     private ImportProductService importProductService;
 
-    // Hardcoded user ID for now
-    private final int userId = 2;
+    @Autowired
+    private UserServiceImpl userService;
 
+    private int getCurrentUserId() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User dataUser = userService.findByUsername(username);
+        return dataUser.getId();
+    }
     @GetMapping("/forms")
     public String importFormsPage(Model model) {
+        int userId = getCurrentUserId();
         List<ImportForm> importForms = importProductFormService.findAllByUserId(userId);
         List<ImportProduct> importProducts = importProductService.findAllProducts();
 
@@ -52,6 +61,7 @@ public class ImportFormController {
 
     @PostMapping("/form/create")
     public String createForm(@ModelAttribute ImportForm importForm, @RequestParam("images") MultipartFile image) throws IOException {
+        int userId = getCurrentUserId();
         importForm.setUserId(userId);
         importForm.setStatus("PLACED");  // Automatically set status to PLACED
         importProductFormService.createNewRequests(importForm, image);
@@ -87,7 +97,7 @@ public class ImportFormController {
     @GetMapping("/product/view/{productId}")
     public String viewProductPage(@PathVariable String productId, Model model) {
         ImportProduct importProduct = importProductService.findByProductIds(productId).getBody();
-        model.addAttribute("product", importProduct);
+        model.addAttribute("importProduct", importProduct);
         return "Import/view-import-product";
     }
 }

@@ -34,15 +34,15 @@
     <div class="card">
         <div class="card-body">
             <h1 class="card-title">Product Details</h1>
-            <p><strong>Title:</strong> <span th:text="${product.title}"></span></p>
-            <p><strong>Description:</strong> <span th:text="${product.description}"></span></p>
-            <p><strong>Stock:</strong> <span th:text="${product.stock}"></span></p>
-            <p><strong>Country:</strong> <span th:text="${product.country}"></span></p>
-            <p><strong>Price:</strong> <span th:text="${product.price}"></span></p>
-            <p><strong>Category:</strong> <span th:text="${product.category}"></span></p>
+            <p><strong>Title:</strong> <span th:text="${importProduct.title}"></span></p>
+            <p><strong>Description:</strong> <span th:text="${importProduct.description}"></span></p>
+            <p><strong>Stock:</strong> <span th:text="${importProduct.stock}"></span></p>
+            <p><strong>Country:</strong> <span th:text="${importProduct.country}"></span></p>
+            <p><strong>Price:</strong> <span th:text="${importProduct.price}"></span></p>
+            <p><strong>Category:</strong> <span th:text="${importProduct.category}"></span></p>
             <p><strong>Image:</strong></p>
             <div class="image-container">
-                <img th:src="@{'/images/' + ${product.image}}" alt="Product Image">
+                <img th:src="@{'/static/' + ${importProduct.image}}" alt="Product Image">
             </div>
             <button class="btn btn-secondary mt-3" onclick="location.href='/import/forms'">Back to Main</button>
         </div>
