@@ -1,6 +1,9 @@
 package com.koped.controller.ImportProducts;
 
+import com.koped.model.User;
+import com.koped.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +28,35 @@ public class AdminImportController {
     @Autowired
     private ImportProductService importProductService;
 
+    @Autowired
+    private UserServiceImpl userService;
+
+    private String getCurrentRole() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User dataUser = userService.findByUsername(username);
+        return dataUser.getRole();
+    }
+
     @GetMapping("/main")
     public String importMainPage(Model model) {
-        List<ImportForm> importForms = importProductFormService.findAllRequests();
+
+        String role = getCurrentRole();
+
+        if ("Admin".equals(role)) {
+
+            List<ImportForm> importForms = importProductFormService.findAllRequests();
         List<ImportProduct> importProducts = importProductService.findAllProducts();
         model.addAttribute("importForms", importForms);
         model.addAttribute("importProducts", importProducts);
         return "AdminImport/import-main";
+        } else {
+            return "redirect:/admin/import/access-denied-import";
+    }
+    }
+
+    @GetMapping("/access-denied-import")
+    public String accessDeniedImport() {
+        return "access-denied-import";
     }
 
     @GetMapping("/form/view/{requestId}")

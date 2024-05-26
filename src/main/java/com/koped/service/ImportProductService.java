@@ -15,4 +15,5 @@ public interface ImportProductService {
     ResponseEntity<ImportProduct> updateByProductId(String productId, ImportProduct updatedProductData, MultipartFile productImage) throws IOException;
     ResponseEntity<ImportProduct> createNewProduct(ImportProduct data, MultipartFile productImage) throws IOException;
     ResponseEntity<ImportProduct> findByUserId(int userId);
+    ImportProduct findByProductId(String productId);
 }

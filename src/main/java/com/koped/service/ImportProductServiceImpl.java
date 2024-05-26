@@ -36,6 +36,11 @@ public class ImportProductServiceImpl implements ImportProductService {
     }
 
     @Override
+    public ImportProduct findByProductId(String productId) {
+        return importRepo.findByProductId(productId);
+    }
+
+    @Override
     public List<ImportProduct> findAllProducts() {
         return importRepo.findAll();
     }
