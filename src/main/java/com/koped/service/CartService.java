@@ -12,4 +12,5 @@ public interface CartService {
     List<Cart> findCartByUser(String username);
     Cart decreaseProductQuantityInCart(long id, String productId);
     Cart increaseProductQuantityInCart(long id, String productId);
+    Cart addProductToCartImportProduct(Cart cart);
 }
