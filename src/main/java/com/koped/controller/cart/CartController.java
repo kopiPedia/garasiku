@@ -66,9 +66,9 @@ public class CartController {
             model.addAttribute("importProduct", importService.findByProductId(productId));
             return "Import/view-import-product";
     }
-    @PostMapping("/cart/delete")
-    public String removeProductFromCart(@RequestParam String productId, @RequestParam long id){
-        cartService.removeProductFromCart(id, productId);
+    @GetMapping(value = "/cart/delete/{cartItemId}/{productId}")
+    public String deleteCartItem(@PathVariable Long cartItemId, @PathVariable String productId) {
+        cartService.removeProductFromCart(cartItemId, productId);
         return "redirect:/cart";
     }
 
