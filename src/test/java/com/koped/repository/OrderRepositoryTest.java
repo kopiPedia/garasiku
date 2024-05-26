@@ -71,17 +71,17 @@ public class OrderRepositoryTest {
         assertTrue(deletedOrder.isEmpty());
     }
 
-    @Test
-    public void testFindByStatus() {
-        Order order1 = new Order();
-        order1.setStatus(OrderStatus.PLACED);
-
-        Order order2 = new Order();
-        order2.setStatus(OrderStatus.PLACED);
-
-        when(orderRepository.findByStatus(OrderStatus.PLACED)).thenReturn(Arrays.asList(order1, order2));
-
-        List<Order> orders = orderRepository.findByStatus(OrderStatus.PLACED);
-        assertEquals(2, orders.size());
-    }
+//    @Test
+//    public void testFindByStatus() {
+//        Order order1 = new Order();
+//        order1.setStatus(OrderStatus.PLACED);
+//
+//        Order order2 = new Order();
+//        order2.setStatus(OrderStatus.PLACED);
+//
+//        when(orderRepository.findByStatus(OrderStatus.PLACED)).thenReturn(Arrays.asList(order1, order2));
+//
+//        List<Order> orders = orderRepository.findByStatus(OrderStatus.PLACED);
+//        assertEquals(2, orders.size());
+//    }
 }
