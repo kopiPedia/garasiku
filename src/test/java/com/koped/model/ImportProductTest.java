@@ -2,7 +2,6 @@ package com.koped.model;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import java.math.BigDecimal;
 
 public class ImportProductTest {
 
@@ -76,6 +75,14 @@ public class ImportProductTest {
     }
 
     @Test
+    public void testSetUserId() {
+        ImportProduct product = new ImportProduct();
+        int userId = 100;
+        product.setUserId(userId);
+        assertEquals(userId, product.getUserId(), "User ID should be correctly set.");
+    }
+
+    @Test
     public void testSetDescription() {
         ImportProduct product = new ImportProduct();
         String description = "Detailed description of the product.";
@@ -84,7 +91,7 @@ public class ImportProductTest {
     }
 
     @Test
-    public void testSetStock() {
+    public void testSetStock_ValidStock() {
         ImportProduct product = new ImportProduct();
         Integer stock = 100;
         product.setStock(stock);
@@ -99,12 +106,13 @@ public class ImportProductTest {
         assertEquals(country, product.getCountry(), "Country should be correctly set.");
     }
 
-//    @Test
-//    public void testSetPrice() {
-//        ImportProduct product = new ImportProduct();
-//        product.setPrice(price);
-//        assertEquals(0, price.compareTo(product.getPrice()), "Price should be correctly set.");
-//    }
+    @Test
+    public void testSetPrice_ValidPrice() {
+        ImportProduct product = new ImportProduct();
+        Double price = 199.99;
+        product.setPrice(price);
+        assertEquals(price, product.getPrice(), "Price should be correctly set.");
+    }
 
     @Test
     public void testSetImage() {
@@ -113,5 +121,4 @@ public class ImportProductTest {
         product.setImage(image);
         assertEquals(image, product.getImage(), "Image should be correctly set.");
     }
-
 }

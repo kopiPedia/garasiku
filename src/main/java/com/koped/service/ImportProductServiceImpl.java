@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 public class ImportProductServiceImpl implements ImportProductService {
 
     private final ImportRepository importRepo;
+    private final CloudinaryServiceImpl cloudService;
 
     @Override
     public ResponseEntity<ImportProduct> findByProductIds(String productId) {
@@ -63,15 +64,14 @@ public class ImportProductServiceImpl implements ImportProductService {
         }
 
         if (productImage != null && !productImage.isEmpty()) {
-            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(productImage.getOriginalFilename());
-            String uploadDir = "src/main/resources/static/productImages/";
-            String uploadPath = uploadDir + fileName;
-            Path uploadAbsolutePath = Paths.get(uploadPath);
-            Files.createDirectories(uploadAbsolutePath.getParent());
-            Files.copy(productImage.getInputStream(), uploadAbsolutePath);
+            try {
 
-            String fileNameDB = "../productImages/" + fileName;
-            existingProduct.setImage(fileNameDB);
+                existingProduct.setImage(cloudService.uploadFile(productImage, "folder_1"));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         existingProduct.setTitle(updatedProductData.getTitle());
@@ -89,15 +89,14 @@ public class ImportProductServiceImpl implements ImportProductService {
     @Override
     public ResponseEntity<ImportProduct> createNewProduct(ImportProduct data, MultipartFile productImage) throws IOException {
         if (productImage != null && !productImage.isEmpty()) {
-            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(productImage.getOriginalFilename());
-            String uploadDir = "src/main/resources/static/productImages/";
-            String uploadPath = uploadDir + fileName;
-            Path uploadAbsolutePath = Paths.get(uploadPath);
-            Files.createDirectories(uploadAbsolutePath.getParent());
-            Files.copy(productImage.getInputStream(), uploadAbsolutePath);
+            try {
 
-            String fileNameDB = "../productImages/" + fileName;
-            data.setImage(fileNameDB);
+                data.setImage(cloudService.uploadFile(productImage, "folder_1"));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
         data.setProductId(UUID.randomUUID().toString());
         ImportProduct savedProduct = importRepo.save(data);

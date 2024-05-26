@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImportProductFormServiceImpl implements ImportProductFormService {
 
     private final ImportFormRepository importFormRepo;
+    private final CloudinaryService cloudService;
 
     @Override
     public ResponseEntity<ImportForm> findByRequestIds(String requestId) {
@@ -64,14 +65,14 @@ public class ImportProductFormServiceImpl implements ImportProductFormService {
         }
 
         if (image != null && !image.isEmpty()) {
-            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(image.getOriginalFilename());
-            String uploadDir = "src/main/resources/static/importimages/";
-            String uploadPath = uploadDir + fileName;
-            Path uploadAbsolutePath = Paths.get(uploadPath);
-            Files.createDirectories(uploadAbsolutePath.getParent());
-            Files.copy(image.getInputStream(), uploadAbsolutePath);
-            String fileNameDB = "../importimages/" + fileName;
-            existingForm.setImage(fileNameDB);
+            try {
+
+                existingForm.setImage(cloudService.uploadFile(image, "folder_1"));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         existingForm.setProductName(data.getProductName());
@@ -87,14 +88,14 @@ public class ImportProductFormServiceImpl implements ImportProductFormService {
     @Override
     public ResponseEntity<ImportForm> createNewRequests(ImportForm data, MultipartFile image) throws IOException {
         if (image != null && !image.isEmpty()) {
-            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(image.getOriginalFilename());
-            String uploadDir = "src/main/resources/static/importImages/";
-            Path uploadPath = Paths.get(uploadDir + fileName);
-            Files.createDirectories(uploadPath.getParent());
-            Files.copy(image.getInputStream(), uploadPath);
+            try {
 
-            String fileNameDB = "../importImages/" + fileName;
-            data.setImage(fileNameDB);
+                data.setImage(cloudService.uploadFile(image, "folder_1"));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         data.setRequestId(generateUniqueRequestId());
