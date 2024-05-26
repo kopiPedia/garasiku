@@ -1,12 +1,12 @@
 package com.koped.service;
 import com.koped.model.Cart;
 import com.koped.repository.CartRepository;
+import com.koped.repository.ImportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import com.koped.repository.ProductRepository;
 
@@ -16,6 +16,7 @@ import com.koped.repository.ProductRepository;
 public class CartServiceImpl implements CartService{
   private final CartRepository cartRepository;
   private final ProductRepository productRepository;
+  private final ImportRepository importRepository;
 
     @Override
     public Cart addProductToCart(Cart cart) {
@@ -37,6 +38,26 @@ public class CartServiceImpl implements CartService{
         cartRepository.save(cart);
         return cart;
     }
+
+    @Override
+    public Cart addProductToCartImportProduct(Cart cart){
+        if(importRepository.findByProductId(cart.getProductId()).getStock() < cart.getQuantity()){
+            // return null if stock is not enough
+            return null;
+        }
+        if(cartRepository.findByProductIdAndUsername(cart.getProductId(), cart.getUsername()) != null){
+            // if product already in cart, increase quantity
+            Cart cart1 = cartRepository.findByProductIdAndUsername(cart.getProductId(), cart.getUsername());
+            cart1.setQuantity(cart1.getQuantity() + cart.getQuantity());
+            cart1.setPrice( cart1.getPrice()+cart.getPrice());
+            productRepository.findByProductId(cart.getProductId()).setStock(productRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
+            cartRepository.save(cart1);
+            return cart1;
+        }
+        cart.setPrice(importRepository.findByProductId(cart.getProductId()).getPrice() * (cart.getQuantity()));
+        importRepository.findByProductId(cart.getProductId()).setStock(importRepository.findByProductId(cart.getProductId()).getStock() - cart.getQuantity());
+        cartRepository.save(cart);
+        return cart;}
 
     @Override
     public void removeProductFromCart(long id, String productId) {
