@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import com.koped.model.Cart;
 import com.koped.service.CartService;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,8 +26,16 @@ public class CartController {
     public String cartPage(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List <Cart> cart = cartService.findCartByUser(username);
+        List <String> images = new ArrayList<String>();
+        double total = 0;
+        for(Cart i : cart){
+            images.add(productService.findByProductIds(i.getProductId()).getImage());
+            total += productService.findByProductIds(i.getProductId()).getPrice() * i.getQuantity();
+        }
+        model.addAttribute("username", username);
+        model.addAttribute("images", images);
         model.addAttribute("cart", cart);
-        model.addAttribute("total", 0);
+        model.addAttribute("total",total );
         return "cart";
     }
 
