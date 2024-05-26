@@ -4,15 +4,13 @@ import com.koped.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import com.koped.model.Cart;
 import com.koped.service.CartService;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CartController {
@@ -68,4 +66,10 @@ public class CartController {
             model.addAttribute("importProduct", importService.findByProductId(productId));
             return "Import/view-import-product";
     }
+    @GetMapping("/cart/delete/{id}/{productId}")
+    public String removeProductFromCart(@PathVariable("id") long id, @PathVariable("productId") String productId) {
+        cartService.removeProductFromCart(id, productId);
+        return "redirect:/cart";
+    }
+
 }

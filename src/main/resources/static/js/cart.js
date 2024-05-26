@@ -75,13 +75,15 @@ async function refreshCart(cartItem, id) {
     }
 
     const totalPriceElement = document.querySelector('#totalPriceCard p');
-    const totalPrice = await fetchTotalPrice(id);
+    const totalPrice = await fetchTotalPrice();
     totalPriceElement.textContent = `Total Price: $${totalPrice}`;
 }
 
-async function fetchTotalPrice(id) {
-    const response = await fetch(`/cart/price/${id}`);
+async function fetchTotalPrice() {
+    const userId = document.querySelector('#userId').value;
+    const response = await fetch(`/cart/total/${userId}`);
     const totalPrice = await response.text();
+    localStorage.setItem('totalPrice', totalPrice.toFixed(2));
     return totalPrice;
 }
 
@@ -100,24 +102,3 @@ document.querySelectorAll('.decrease-btn').forEach(button => {
         decrement(id, productId);
     });
 });
-
-document.querySelectorAll('.delete-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const id = button.getAttribute('data-id');
-        const productId = button.getAttribute('data-product-id');
-        deleteProduct(id, productId);
-    });
-});
-
-function refreshCart2(deletedItemId) {
-    const itemCard = document.querySelector(`.cart-item[data-id='${deletedItemId}']`);
-
-    if (itemCard) {
-        itemCard.remove();
-    }
-
-    const totalPriceElement = document.querySelector('#totalPriceCard p');
-    fetchTotalPrice().then(totalPrice => {
-        totalPriceElement.textContent = `Total Price: $${parseFloat(totalPrice).toFixed(2)}`;
-    });
-}

@@ -147,6 +147,7 @@
 <body>
 <div th:insert="~{blocks/fragments :: mainNavbar}"></div>
 <h1>Cart</h1>
+<input type="hidden" id="userId" th:value="${username}"/>
 <div id="cartItems">
     <div class="card cart-item" th:each="cartItem, iterStat: ${cart}">
         <img th:src="${images[iterStat.index]}" alt="Product Image">
@@ -158,14 +159,14 @@
             <button class="increase-btn btn btn-sm" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">+</button>
         </div>
         <p th:text="'Price: $' + ${(cartItem.price)}" th:id="'price-' + ${cartItem.id}"></p>
-        <button class="delete-btn btn btn-sm" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">Delete</button>
+        <a th:href="@{'/cart/delete/' + ${cartItem.id} + '/' + ${cartItem.productId}}" class="delete-btn btn btn-sm">Delete</a>
     </div>
 </div>
 <div id="totalPriceCard">
     <p th:text="'Total Price: $' + ${(total)}"></p>
 </div>
 
-<button class="pay-button">Pay</button>
+<a th:href="@{/payment}" class="pay-button">Pay</a>
 
 <script th:src="@{/js/cart.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
