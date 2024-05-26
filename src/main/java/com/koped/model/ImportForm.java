@@ -42,6 +42,9 @@ public class ImportForm {
     private String status;
 
     public void setBudgetRange(BigDecimal budgetRange) {
+        if (budgetRange == null) {
+            throw new NullPointerException("Budget range cannot be null");
+        }
         if (budgetRange.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Budget range cannot be negative");
         }
