@@ -19,6 +19,14 @@
             background-color: #004085;
             border-color: #004085;
         }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            max-height: 400px; /* Limit the height of the image */
+            object-fit: contain; /* Ensure the image fits within the dimensions */
+        }
     </style>
 </head>
 <body>
@@ -30,7 +38,10 @@
             <p><strong>Expected Country:</strong> <span th:text="${importForm.expectedCountry}"></span></p>
             <p><strong>Details:</strong> <span th:text="${importForm.details}"></span></p>
             <p><strong>Budget Range:</strong> <span th:text="${importForm.budgetRange}"></span></p>
-            <p><strong>Image:</strong> <img th:src="@{${importForm.image}}" alt="Product Image"></p>
+            <p><strong>Image:</strong></p>
+            <div class="image-container">
+                <img th:src="@{${importForm.image}}" alt="Product Image">
+            </div>
             <p><strong>Status:</strong> <span th:text="${importForm.status}"></span></p>
             <button class="btn btn-secondary mt-3" onclick="location.href='/import/forms'">Back to Main</button>
         </div>
