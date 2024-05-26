@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-
+import com.koped.repository.CartRepository;
 
 
 @Service
@@ -24,6 +24,7 @@ public class ImportProductServiceImpl implements ImportProductService {
 
     private final ImportRepository importRepo;
     private final CloudinaryServiceImpl cloudService;
+    private final CartRepository cartRepo;
 
     @Override
     public ResponseEntity<ImportProduct> findByProductIds(String productId) {
@@ -50,6 +51,7 @@ public class ImportProductServiceImpl implements ImportProductService {
         if (product == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
         }
+        cartRepo.deleteByProductId(productId);
         importRepo.delete(product);
         return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully");
     }
