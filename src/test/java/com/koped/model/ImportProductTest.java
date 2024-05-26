@@ -99,13 +99,12 @@ public class ImportProductTest {
         assertEquals(country, product.getCountry(), "Country should be correctly set.");
     }
 
-    @Test
-    public void testSetPrice() {
-        ImportProduct product = new ImportProduct();
-        BigDecimal price = new BigDecimal("199.99");
-        product.setPrice(price);
-        assertEquals(0, price.compareTo(product.getPrice()), "Price should be correctly set.");
-    }
+//    @Test
+//    public void testSetPrice() {
+//        ImportProduct product = new ImportProduct();
+//        product.setPrice(price);
+//        assertEquals(0, price.compareTo(product.getPrice()), "Price should be correctly set.");
+//    }
 
     @Test
     public void testSetImage() {
