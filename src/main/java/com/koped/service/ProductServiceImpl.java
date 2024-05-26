@@ -65,4 +65,9 @@ public class ProductServiceImpl implements ProductService {
 		return prodRepo.save(data);
 	}
 
+	@Override
+	public Product findByIds(Integer id) {
+		return prodRepo.findById(id).orElse(null);
+	}
+
 }

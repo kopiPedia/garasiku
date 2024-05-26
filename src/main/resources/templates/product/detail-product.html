@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            color: black;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: cadetblue;
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .breadcrumb a {
+            color: cadetblue;
+            text-decoration: none;
+            margin-right: 5px;
+        }
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        .product {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .product img {
+            max-width: 400px;
+            width: 100%;
+            border-radius: 8px;
+        }
+        .product-details {
+            flex: 1;
+            margin-left: 20px;
+        }
+        .product-title {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .product-price {
+            font-size: 1.5em;
+            color: cadetblue;
+            margin-bottom: 10px;
+        }
+        .product-rating {
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+        .product-description {
+            margin-bottom: 20px;
+        }
+        .product-specifications,
+        .product-info {
+            margin-bottom: 20px;
+        }
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+        }
+        .product-info div {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .product-info div:last-child {
+            margin-right: 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: cadetblue;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #5f9ea0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="/">Garasiku</a>
+        </div>
+        <div class="navbar-menu">
+            <a href="/">Home</a>
+            <a href="/categories">Categories</a>
+            <a href="/contact">Contact</a>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <!-- Breadcrumb -->
+    <div class="container">
+
+        <!-- Product Detail -->
+        <form th:action="@{/cart/add}" th:object="${cart}" method="post">
+        <div class="product">
+            <img th:src="@{${product.image}}" alt="Product Image">
+            <div class="product-details">
+                <h1 class="product-title" th:text="${product.title}">Product Name</h1>
+                <p class="product-price" th:text="'Rp ' + ${product.price}">Rp8.000</p>
+                
+                <p class="product-description" th:text="${product.description}">Product Description</p>
+
+                <div class="product-info">
+                    <div>
+						<h4>Input quantity:</h4>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1">
+                        <p th:text="'Stock: ' + ${product.stock}"></p>
+                        <input type="hidden" id="price" name="price" th:value="${product.price}">
+                        <input type="hidden" id="product" name="product" th:value="${product.title}">
+                        <input type="hidden" id="productId" name="productId" th:value="${product.productId}">
+                        <input type="hidden" id="username" name="username" th:value="${username}">
+                    </div>
+                </div>
+
+                <a href="/buy-now" class="btn">Buy Now</a>
+                <button class="btn" type="submit">Add to cart</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</body>
+</html>
