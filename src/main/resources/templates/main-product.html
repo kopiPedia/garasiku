@@ -36,9 +36,9 @@
 			<div th:if="${product.stock == 0}" class="stock-zero">Product Unavailable</div>
 
 
-			<button th:if="${role == 'User'} ? ' disable' : ''" class="edit-button" th:onclick="'editProduct(event, \'' + ${product.id} + '\');'">&#9998;
+			<button class="edit-button" th:onclick="'editProduct(event, \'' + ${product.id} + '\');'">&#9998;
 				Edit</button>
-			<button th:if="${role == 'User'} ? ' disable' : ''" class="delete-button" th:attr="data-id=${product.productId}"
+			<button class="delete-button" th:attr="data-id=${product.productId}"
 				onclick="confirmDelete(event, this)">&#10060; Delete</button>
 		</div>
 	</div>

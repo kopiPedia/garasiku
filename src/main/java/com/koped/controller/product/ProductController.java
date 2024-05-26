@@ -27,15 +27,12 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 	
 	private final ProductServiceImpl prodService;
-	private final UserServiceImpl userService;
 	
 	@GetMapping("/products")
     public String listProducts(Model model) {
         List<Product> products = prodService.findAllProducts();
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String role = userService.findByUsername(username).getRole();
+        
         model.addAttribute("products", products);
-        model.addAttribute("role", role);
         return "main-product";
     }
 	
