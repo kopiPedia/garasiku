@@ -70,7 +70,7 @@ public class ImportProductFormServiceImpl implements ImportProductFormService {
             Path uploadAbsolutePath = Paths.get(uploadPath);
             Files.createDirectories(uploadAbsolutePath.getParent());
             Files.copy(image.getInputStream(), uploadAbsolutePath);
-            String fileNameDB = "/importimages/" + fileName;
+            String fileNameDB = "../importimages/" + fileName;
             existingForm.setImage(fileNameDB);
         }
 
