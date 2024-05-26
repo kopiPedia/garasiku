@@ -65,21 +65,16 @@
     <table class="table table-striped table-responsive-md">
         <thead>
         <tr>
+            <th scope="col">User ID</th>
             <th scope="col">Product ID</th>
-            <th scope="col">Cart ID</th>
             <th scope="col">Timestamp</th>
-            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="orderItem: ${orders}">
+            <td th:text="${orderItem.userId}"></td>
             <td th:text="${orderItem.productId}"></td>
-            <td th:text="${orderItem.cartId}"></td>
-            <td th:text="${orderItem.timestamp}"></td>
-            <td>
-                <a th:href="@{/order/view/{id}(id=${orderItem.productId})}" class="btn btn-success btn-just-icon btn-sm">View</a>
-                <a th:href="@{/order/delete/{id}(id=${orderItem.productId})}" class="btn btn-danger btn-just-icon btn-sm">Delete</a>
-            </td>
+            <td th:text="${orderItem.orderDate}"></td>
         </tr>
         </tbody>
     </table>

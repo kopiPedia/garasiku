@@ -40,7 +40,7 @@ public class OrderController {
     public String listOrders(Model model) {
         List<Order> orders = orderService.getAllOrders();
         model.addAttribute("orders", orders);
-        return "orders";
+        return "order_page";
     }
 
     @GetMapping("/order")
