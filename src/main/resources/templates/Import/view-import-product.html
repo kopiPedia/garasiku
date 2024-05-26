@@ -114,7 +114,7 @@
     <!-- Product Detail -->
     <div class="product">
         <div>
-            <img th:src="@{'/static/' + ${importProduct.image}}" alt="Product Image">
+            <img th:src="@{${importProduct.image}}" alt="Product Image">
         </div>
         <div class="product-details">
             <h1 class="product-title" th:text="${importProduct.title}">Product Name</h1>

@@ -60,7 +60,7 @@
             <p><strong>Budget Range:</strong> <span th:text="${importForm.budgetRange}"></span></p>
             <p><strong>Image:</strong></p>
             <div class="image-container">
-                <img th:src="@{'/static/' + ${importForm.image}}" alt="Product Image">
+                <img th:src="@{${importForm.image}}" alt="Product Image">
             </div>
             <p><strong>Status:</strong> <span th:text="${importForm.status}"></span></p>
             <a href="/import/forms" class="back-btn">Back to Main</a>

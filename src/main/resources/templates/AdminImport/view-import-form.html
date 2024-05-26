@@ -30,7 +30,7 @@
             <p><strong>Expected Country:</strong> <span th:text="${importForm.expectedCountry}"></span></p>
             <p><strong>Details:</strong> <span th:text="${importForm.details}"></span></p>
             <p><strong>Budget Range($):</strong> <span th:text="${importForm.budgetRange}"></span></p>
-            <p><strong>Image:</strong> <img th:src="@{'/static/' + ${importForm.image}}"  alt="Product Image" width="200"></p>
+            <p><strong>Image:</strong> <img th:src="@{${importForm.image}}"  alt="Product Image" width="200"></p>
             <p><strong>Status:</strong> <span th:text="${importForm.status}"></span></p>
             <form th:action="@{/admin/import/form/updateStatus}" method="post">
                 <input type="hidden" name="requestId" th:value="${importForm.requestId}"/>

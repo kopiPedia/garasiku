@@ -101,7 +101,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="product : ${productsByRequestId[form.requestId]}">
-                                <td><img th:src="@{'/static/' + ${product.image}}" alt="Product Image"></td>
+                                <td><img th:src="@{${product.image}}" alt="Product Image"></td>
                                 <td th:text="${product.title}"></td>
                                 <td><button class="btn btn-info btn-sm" th:attr="onclick=|location.href='/import/product/view/' + '${product.productId}'|">View</button></td>
                             </tr>

@@ -42,7 +42,7 @@
       <input type="text" id="category" th:field="*{category}" class="form-control" required/>
     </div>
     <div class="form-group">
-      <label for="productImage">Product Image</label>
+      <label for="productImage">Product Image (Optional)</label>
       <input type="file" id="productImages" name="productImages" class="form-control"/>
     </div>
     <button type="submit" class="btn btn-success">Update</button>
@@ -52,7 +52,7 @@
 <script>
   function validateForm() {
     let isValid = true;
-    let inputs = document.querySelectorAll("input[type='text'], input[type='number'], textarea, input[type='file']");
+    let inputs = document.querySelectorAll("input[type='text'], input[type='number'], textarea");
     inputs.forEach(input => {
       if (!input.value.trim()) {
         isValid = false;
