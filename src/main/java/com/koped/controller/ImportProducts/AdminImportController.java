@@ -38,15 +38,15 @@ public class AdminImportController {
         return "AdminImport/view-import-form";
     }
 
-    @PostMapping("/form/updateStatus")
-    public String updateFormStatus(@RequestParam String requestId, @RequestParam String status) {
-        ImportForm importForm = importProductFormService.findByRequestIds(requestId).getBody();
-        if (importForm != null) {
-            importForm.setStatus(status);
-            importProductFormService.updateByRequestIds(requestId, importForm);
-        }
-        return "redirect:/admin/import/form/view/" + requestId;
-    }
+//    @PostMapping("/form/updateStatus")
+//    public String updateFormStatus(@RequestParam String requestId, @RequestParam String status) {
+//        ImportForm importForm = importProductFormService.findByRequestIds(requestId).getBody();
+//        if (importForm != null) {
+//            importForm.setStatus(status);
+//            importProductFormService.updateByRequestIds(requestId, importForm);
+//        }
+//        return "redirect:/admin/import/form/view/" + requestId;
+//    }
 
     @GetMapping("/product/create")
     public String createProductPage(Model model) {

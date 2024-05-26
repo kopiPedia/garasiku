@@ -10,9 +10,12 @@ import com.koped.model.ImportProduct;
 import com.koped.service.ImportProductFormService;
 import com.koped.service.ImportProductService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @Controller
 @RequestMapping("/import")
@@ -48,10 +51,10 @@ public class ImportFormController {
     }
 
     @PostMapping("/form/create")
-    public String createForm(@ModelAttribute ImportForm importForm) {
+    public String createForm(@ModelAttribute ImportForm importForm, @RequestParam("images") MultipartFile image) throws IOException {
         importForm.setUserId(userId);
         importForm.setStatus("PLACED");  // Automatically set status to PLACED
-        importProductFormService.createNewRequests(importForm);
+        importProductFormService.createNewRequests(importForm, image);
         return "redirect:/import/forms";
     }
 
@@ -63,8 +66,8 @@ public class ImportFormController {
     }
 
     @PostMapping("/form/edit")
-    public String updateForm(@ModelAttribute ImportForm importForm) {
-        importProductFormService.updateByRequestIds(importForm.getRequestId(), importForm);
+    public String updateForm(@ModelAttribute ImportForm importForm, @RequestParam("images") MultipartFile image) throws IOException {
+        importProductFormService.updateByRequestIds(importForm.getRequestId(), importForm, image);
         return "redirect:/import/forms";
     }
 

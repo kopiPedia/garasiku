@@ -5,6 +5,8 @@ import com.koped.service.ImportProductFormService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 
@@ -25,21 +27,21 @@ public class ImportFormRestController {
     public ResponseEntity<ImportForm> findByRequestIds(@PathVariable String requestId) {
         return importProductFormService.findByRequestIds(requestId);
     }
-
-    @PostMapping("/create")
-    public ResponseEntity<ImportForm> createNewRequests(@RequestBody ImportForm data) {
-        return importProductFormService.createNewRequests(data);
-    }
+//
+//    @PostMapping("/create")
+//    public ResponseEntity<ImportForm> createNewRequests(@RequestBody ImportForm data) {
+//        return importProductFormService.createNewRequests(data, images);
+//    }
 
     @DeleteMapping("/delete/{requestId}")
     public ResponseEntity<String> deleteRequestByRequestId(@PathVariable String requestId) {
         return importProductFormService.deleteByRequestId(requestId);
     }
 
-    @PutMapping("/update/{requestId}")
-    public ResponseEntity<ImportForm> updateRequestByRequestId(@PathVariable String requestId, @RequestBody ImportForm data) {
-        return importProductFormService.updateByRequestIds(requestId, data);
-    }
+//    @PutMapping("/update/{requestId}")
+//    public ResponseEntity<ImportForm> updateRequestByRequestId(@PathVariable String requestId, @RequestBody ImportForm data) {
+//        return importProductFormService.updateByRequestIds(requestId, data, image);
+//    }
 
     @GetMapping("/user/{userId}")
     public List<ImportForm> findAllByUserId(@PathVariable int userId) {
