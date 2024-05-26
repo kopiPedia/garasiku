@@ -6,7 +6,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: cadetblue;
+            background-color: #e8f5e9;
             color: black;
             font-family: Arial, sans-serif;
         }
@@ -60,7 +60,7 @@
             <p><strong>Budget Range:</strong> <span th:text="${importForm.budgetRange}"></span></p>
             <p><strong>Image:</strong></p>
             <div class="image-container">
-                <img th:src="@{${importForm.image}}" alt="Product Image">
+                <img th:src="@{'/static/' + ${importForm.image}}" alt="Product Image">
             </div>
             <p><strong>Status:</strong> <span th:text="${importForm.status}"></span></p>
             <a href="/import/forms" class="back-btn">Back to Main</a>

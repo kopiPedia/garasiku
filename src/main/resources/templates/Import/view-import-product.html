@@ -6,7 +6,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: cadetblue;
+            background-color: #e8f5e9;
             color: #343a40;
             font-family: Arial, sans-serif;
         }
@@ -114,7 +114,7 @@
     <!-- Product Detail -->
     <div class="product">
         <div>
-            <img th:src="@{'/images/' + ${importProduct.image}}" alt="Product Image">
+            <img th:src="@{'/static/' + ${importProduct.image}}" alt="Product Image">
         </div>
         <div class="product-details">
             <h1 class="product-title" th:text="${importProduct.title}">Product Name</h1>

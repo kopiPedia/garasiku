@@ -6,7 +6,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #e9f7f9;
+            background-color: #e8f5e9;
             color: #343a40;
         }
         .card {
@@ -29,8 +29,8 @@
             border-color: #004085;
         }
         .btn-info {
-            background-color: #17a2b8;
-            border-color: #17a2b8;
+            background-color: #28a745;
+            border-color: #e8f5e9;
         }
         .btn-warning {
             background-color: #ffc107;
@@ -63,6 +63,7 @@
         }
     </style>
 </head>
+<div th:insert="~{blocks/fragments :: mainNavbar}"></div>
 <body>
 <div class="container mt-5">
     <h2>Import Forms</h2>
@@ -100,7 +101,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="product : ${productsByRequestId[form.requestId]}">
-                                <td><img th:src="@{${product.image}}" alt="Product Image"></td>
+                                <td><img th:src="@{'/static/' + ${product.image}}" alt="Product Image"></td>
                                 <td th:text="${product.title}"></td>
                                 <td><button class="btn btn-info btn-sm" th:attr="onclick=|location.href='/import/product/view/' + '${product.productId}'|">View</button></td>
                             </tr>
