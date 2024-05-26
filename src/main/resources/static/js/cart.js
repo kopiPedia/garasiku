@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const totalPriceElement = document.querySelector('#totalPriceCard p');
         totalPriceElement.textContent = `Total Price: $${total.toFixed(2)}`;
+
+        // Save the total price to localStorage
+        localStorage.setItem('totalPrice', total.toFixed(2));
     }
 
     async function increment(id, productId) {
