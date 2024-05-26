@@ -6,23 +6,60 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: cadetblue;
-            color: white;
+            background-color: #e9f7f9;
+            color: #343a40;
         }
         .card {
             background-color: #ffffff;
-            border: none;
+            border: 1px solid #dee2e6;
             border-radius: 10px;
-            color: black;
+            color: #343a40;
             margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-weight: bold;
         }
         .btn-primary {
             background-color: #004085;
             border-color: #004085;
         }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
         .list-group-item {
             background-color: #ffffff;
-            color: black;
+            color: #343a40;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .product-table {
+            width: 100%;
+            margin-top: 15px;
+        }
+        .product-table img {
+            max-height: 100px;
+            max-width: 100px;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+        .product-table th, .product-table td {
+            padding: 10px;
+            text-align: center;
         }
     </style>
 </head>
@@ -53,10 +90,22 @@
                         <h5 th:text="'Products for Request: ' + ${form.productName} + ' (' + ${form.requestId} + ')'"></h5>
                     </div>
                     <div class="card-body">
-                        <div th:each="product : ${productsByRequestId[form.requestId]}">
-                            <p th:text="${product.title}"></p>
-                            <button class="btn btn-info btn-sm" th:attr="onclick=|location.href='/import/product/view/' + '${product.productId}'|">View</button>
-                        </div>
+                        <table class="product-table">
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="product : ${productsByRequestId[form.requestId]}">
+                                <td><img th:src="@{${product.image}}" alt="Product Image"></td>
+                                <td th:text="${product.title}"></td>
+                                <td><button class="btn btn-info btn-sm" th:attr="onclick=|location.href='/import/product/view/' + '${product.productId}'|">View</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
