@@ -3,15 +3,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.koped.service.CartServiceImpl;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.koped.service.ProductServiceImpl;
+import org.springframework.web.bind.annotation.*;
 import com.koped.model.Cart;
 
 
@@ -23,13 +16,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartRestController {
     private final CartServiceImpl cartService;
-
+    private final ProductServiceImpl productService;
     @GetMapping("/list/{user}")
     public List<Cart> findCartByUser(@PathVariable String user){
         return cartService.findCartByUser(user);
     }
     @PostMapping("/add")
-    public Cart addProductToCart(@RequestBody Cart cart){
+    public Cart addProductToCart(@RequestParam int quantity, @RequestParam String productId, @RequestParam String username){
+        Cart cart = new Cart();
+        cart.setQuantity(quantity);
+        cart.setProductId(productId);
+        cart.setUsername(username);
+        cart.setPrice(productService.findByProductIds(productId).getPrice());
+        cart.setProduct(productService.findByProductIds(productId).getTitle());
         return cartService.addProductToCart(cart);
     }
     @DeleteMapping("/delete/{id}/{productId}")
