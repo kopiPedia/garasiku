@@ -38,8 +38,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Boolean deleteByProductId(String productId) {
 		try {
-//			cartRepo.
-			System.out.println(productId);
+			cartRepo.deleteByProductId(productId);
 			prodRepo.deleteByProductId(productId);
 			return true;
 		} catch (Exception e) {
