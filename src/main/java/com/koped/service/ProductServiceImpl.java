@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.koped.model.Product;
+import com.koped.repository.CartRepository;
 import com.koped.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 public class ProductServiceImpl implements ProductService {
-	
+
 	private final ProductRepository prodRepo;
 	private final CloudinaryServiceImpl cloudService;
+	private final CartRepository cartRepo;
 
 	@Override
 	public Product findByProductIds(String productId) {
@@ -36,49 +38,58 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Boolean deleteByProductId(String productId) {
 		try {
+//			cartRepo.
+			System.out.println(productId);
 			prodRepo.deleteByProductId(productId);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
-		
+
 	}
 
 	@Override
-	public Product updateByProductIds(Product data) {
-		return prodRepo.save(data);
+	public Product updateByProductIds(Product data, MultipartFile newImage) {
+		Product oldProduct = prodRepo.findById(data.getId()).orElse(null);
+		
+		if (newImage != null && !newImage.isEmpty()) {
+
+			try {
+
+				data.setImage(cloudService.uploadFile(newImage, "folder_1"));
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+
+		} else {
+			data.setImage(oldProduct.getImage());
+		}
+		
+		data.setProductId(oldProduct.getProductId());
+		prodRepo.save(data);
+		return data;
 	}
 
 	@SuppressWarnings("null")
 	@Override
 	public ResponseEntity<?> createNewProduct(Product data, MultipartFile image) throws IOException {
-		if(image != null || !image.isEmpty()) {
-			
+		if (image != null || !image.isEmpty()) {
+
 			String randomUUID = String.valueOf(UUID.randomUUID().toString());
-//			
-//			String fileName = String.valueOf(randomUUID + "_" + StringUtils.cleanPath(image.getOriginalFilename()));
-//            String uploadDir = "src/main/resources/static/productImages/";
-//            String uploadPath = uploadDir + fileName;
-//            Path uploadAbsolutePath = Paths.get(uploadPath);
-//            Files.createDirectories(uploadAbsolutePath.getParent());
-//            Files.copy(image.getInputStream(), uploadAbsolutePath);
-//            
-//            String fileNameDB = "../productImages/" + fileName;
-			
+
 			try {
-	            
-	            data.setImage(cloudService.uploadFile(image, "folder_1"));
-//	            if(data.getImage() == null) {
-//	                return ResponseEntity.badRequest().build();
-//	            }
-	            
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            return null;
-	        }
-            
-            data.setProductId(randomUUID);
-            prodRepo.save(data);
+
+				data.setImage(cloudService.uploadFile(image, "folder_1"));
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+
+			data.setProductId(randomUUID);
+			prodRepo.save(data);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

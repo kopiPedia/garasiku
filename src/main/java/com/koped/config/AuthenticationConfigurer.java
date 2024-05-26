@@ -36,7 +36,8 @@ public class AuthenticationConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((requests) -> requests
 
-                .requestMatchers("/", "/home", "/product/products", "/productImages/**", "/register", "/css/**", "/js/**", "/img/**", "/scss/**", "/fonts/**", "/importimages/**").permitAll()
+                .requestMatchers("/", "/home", "/product/products", "/register", "/css/**", "/js/**", "/img/**", "/scss/**", "/fonts/**").permitAll()
+                .requestMatchers("/product/update/**", "/product/delete/**").hasRole("Admin")
                 .anyRequest().authenticated())
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
                     .loginPage("/login").permitAll()
@@ -44,8 +45,11 @@ public class AuthenticationConfigurer {
                     .failureHandler(failureHandler)
                     .defaultSuccessUrl("/", true)
                     .failureUrl("/login?error=true"))
-                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
-                    .logoutSuccessHandler(logoutSuccessHandler))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout=true")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"))
                 .build();
     }
 

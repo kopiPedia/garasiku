@@ -37,12 +37,7 @@ public class ProductRestController {
 		return prodService.findByProductIds(productid);
 	}
 	
-//	@PostMapping("/create")
-//	public Product createNewProduct(@RequestBody Product data) {
-//		return prodService.createNewProduct(data);
-//	}
-	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable("id") String id) {
         try {
             boolean isDeleted = prodService.deleteByProductId(id);
@@ -56,9 +51,5 @@ public class ProductRestController {
         }
     }
 	
-	@PutMapping("/update")
-	public Product updateProductByProductId(@RequestBody Product data) {
-		return prodService.updateByProductIds(data);
-	}
 
 }
