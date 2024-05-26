@@ -44,6 +44,32 @@
             <div class="image-container">
                 <img th:src="@{'/static/' + ${importProduct.image}}" alt="Product Image">
             </div>
+            <form th:action="@{/cart/add}" th:object="${cart}" method="post">
+                <div class="product">
+                    <img th:src="@{${importProduct.image}}" alt="Product Image">
+                    <div class="product-details">
+                        <h1 class="product-title" th:text="${importProduct.title}">Product Name</h1>
+                        <p class="product-price" th:text="'Rp ' + ${importProduct.price}">Rp8.000</p>
+
+                        <p class="product-description" th:text="${importProduct.description}">Product Description</p>
+
+                        <div class="product-info">
+                            <div>
+                                <h4>Input quantity:</h4>
+                                <input type="number" id="quantity" name="quantity" value="1" min="1">
+                                <p th:text="'Stock: ' + ${importProduct.stock}"></p>
+                                <input type="hidden" id="price" name="price" th:value="${importProduct.price}">
+                                <input type="hidden" id="product" name="product" th:value="${importProduct.title}">
+                                <input type="hidden" id="productId" name="productId" th:value="${importProduct.productId}">
+                                <input type="hidden" id="username" name="username" th:value="${username}">
+                            </div>
+                        </div>
+
+                        <a href="/buy-now" class="btn">Buy Now</a>
+                        <button class="btn" type="submit">Add to cart</button>
+                    </div>
+                </div>
+            </form>
             <button class="btn btn-secondary mt-3" onclick="location.href='/import/forms'">Back to Main</button>
         </div>
     </div>
