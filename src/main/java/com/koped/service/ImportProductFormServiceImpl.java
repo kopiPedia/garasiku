@@ -11,12 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import org.springframework.util.StringUtils;
+
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -101,7 +98,6 @@ public class ImportProductFormServiceImpl implements ImportProductFormService {
         data.setRequestId(generateUniqueRequestId());
         data.setStatus("PLACED"); // Automatically set status to PLACED
 
-        // Validate the fields before saving
         validateImportForm(data);
 
         ImportForm savedForm = importFormRepo.save(data);
