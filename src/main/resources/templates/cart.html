@@ -36,18 +36,11 @@
             align-items: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .cart-item:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            transform: scale(1.03);
-        }
         .cart-item img {
             width: 100px;
             height: 100px;
             object-fit: cover;
             margin-right: 20px;
-        }
-        .cart-item:hover .mask {
-            opacity: 1;
         }
         .mask {
             position: absolute;
@@ -87,18 +80,6 @@
             width: 40px;
             height: 40px;
         }
-        .cart-item button:hover {
-            background-color: #0056b3;
-        }
-        .cart-item .delete-btn {
-            background-color: #d32f2f;
-            padding: 5px 10px;
-            margin-top: 10px;
-            transition: background-color 0.3s ease;
-        }
-        .cart-item .delete-btn:hover {
-            background-color: #c62828;
-        }
         #totalPriceCard {
             display: flex;
             justify-content: center;
@@ -131,9 +112,6 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        .pay-button:hover {
-            background-color: #2e7d32;
-        }
         .cart-item img {
             max-width: 100%;
             height: auto;
@@ -152,14 +130,13 @@
     <div class="card cart-item" th:each="cartItem, iterStat: ${cart}">
         <img th:src="${images[iterStat.index]}" alt="Product Image">
         <div class="mask"></div>
-        <p th:text="'Item: ' + ${cartItem.product}"></p>
+        <p th:text="${cartItem.product}"></p>
         <p th:text="'Quantity: ' + ${cartItem.quantity}" th:id="'quantity-' + ${cartItem.id}"></p>
         <div class="btn-group" role="group">
             <button class="decrease-btn btn btn-sm" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">-</button>
             <button class="increase-btn btn btn-sm" th:attr="data-id=${cartItem.id}, data-product-id=${cartItem.productId}">+</button>
         </div>
         <p th:text="'Price: $' + ${(cartItem.price)}" th:id="'price-' + ${cartItem.id}"></p>
-        <a th:href="@{'/cart/delete/' + ${cartItem.id} + '/' + ${cartItem.productId}}" class="delete-btn btn btn-sm">Delete</a>
     </div>
 </div>
 <div id="totalPriceCard">
