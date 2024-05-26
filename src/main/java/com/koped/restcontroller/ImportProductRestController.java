@@ -36,20 +36,20 @@ public class ImportProductRestController {
         return importProductService.findByProductIds(productId);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ImportProduct> createNewProduct(@RequestBody ImportProduct data) {
-        return importProductService.createNewProduct(data);
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<ImportProduct> createNewProduct(@RequestBody ImportProduct data) {
+//        return importProductService.createNewProduct(data);
+//    }
 
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<String> deleteProductByProductId(@PathVariable String productId) {
         return importProductService.deleteByProductId(productId);
     }
 
-    @PutMapping("/update/{productId}") // Add productId path variable here
-    public ResponseEntity<ImportProduct> updateProductByProductId(@PathVariable String productId, @RequestBody ImportProduct data) {
-        return importProductService.updateByProductId(productId, data);
-    }
+//    @PutMapping("/update/{productId}") // Add productId path variable here
+//    public ResponseEntity<ImportProduct> updateProductByProductId(@PathVariable String productId, @RequestBody ImportProduct data) {
+//        return importProductService.updateByProductId(productId, data);
+//    }
 
 
     @GetMapping("/search/user/{userId}")

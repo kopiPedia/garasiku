@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Import Product</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Edit Import Product</h2>
+  <form th:action="@{/admin/import/product/edit}" th:object="${importProduct}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{productId}"/>
+    <div class="form-group">
+      <label for="requestId">Request ID</label>
+      <select id="requestId" th:field="*{requestId}" class="form-control" required>
+        <option th:each="form : ${importForms}" th:value="${form.requestId}"
+                th:text="${form.productName + ' (' + form.requestId + ')'}"></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" th:field="*{title}" class="form-control" required/>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" th:field="*{description}" class="form-control" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="stock">Stock</label>
+      <input type="number" id="stock" th:field="*{stock}" class="form-control" required/>
+    </div>
+    <div class="form-group">
+      <label for="country">Country</label>
+      <input type="text" id="country" th:field="*{country}" class="form-control" required/>
+    </div>
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input type="number" id="price" th:field="*{price}" class="form-control" required/>
+    </div>
+    <div class="form-group">
+      <label for="category">Category</label>
+      <input type="text" id="category" th:field="*{category}" class="form-control" required/>
+    </div>
+    <div class="form-group">
+      <label for="productImage">Product Image</label>
+      <input type="file" id="productImages" name="productImages" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success">Update</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='/admin/import/main'">Cancel</button>
+  </form>
+</div>
+</body>
+</html>

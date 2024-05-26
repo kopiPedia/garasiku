@@ -8,9 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 @RequiredArgsConstructor
@@ -49,54 +57,58 @@ public class ImportProductFormServiceImpl implements ImportProductFormService {
     }
 
     @Override
-    public ResponseEntity<ImportForm> updateByRequestIds(String requestId, ImportForm data) {
+    public ResponseEntity<ImportForm> updateByRequestIds(String requestId, ImportForm data, MultipartFile image) throws IOException {
         ImportForm existingForm = importFormRepo.findByRequestId(requestId);
         if (existingForm == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.notFound().build();
         }
 
-        // Update form data
+        if (image != null && !image.isEmpty()) {
+            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(image.getOriginalFilename());
+            String uploadDir = "src/main/resources/static/importimages/";
+            String uploadPath = uploadDir + fileName;
+            Path uploadAbsolutePath = Paths.get(uploadPath);
+            Files.createDirectories(uploadAbsolutePath.getParent());
+            Files.copy(image.getInputStream(), uploadAbsolutePath);
+            String fileNameDB = "../importimages/" + fileName;
+            existingForm.setImage(fileNameDB);
+        }
+
         existingForm.setProductName(data.getProductName());
         existingForm.setExpectedCountry(data.getExpectedCountry());
         existingForm.setDetails(data.getDetails());
         existingForm.setBudgetRange(data.getBudgetRange());
-        existingForm.setImage(data.getImage());
-
-        // Validate and set status
-        ResponseEntity<String> validationResponse = validateAndSetStatus(data.getStatus());
-        if (validationResponse != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
         existingForm.setStatus(data.getStatus());
 
         ImportForm updatedForm = importFormRepo.save(existingForm);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedForm);
+        return ResponseEntity.ok(updatedForm);
     }
 
-
     @Override
-    public ResponseEntity<ImportForm> createNewRequests(ImportForm data) {
-        // Generate unique requestId
-        String requestId = generateUniqueRequestId();
-        data.setRequestId(requestId);
+    public ResponseEntity<ImportForm> createNewRequests(ImportForm data, MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(image.getOriginalFilename());
+            String uploadDir = "src/main/resources/static/importImages/";
+            Path uploadPath = Paths.get(uploadDir + fileName);
+            Files.createDirectories(uploadPath.getParent());
+            Files.copy(image.getInputStream(), uploadPath);
 
-        // Validate and set status
-        ResponseEntity<String> validationResponse = validateAndSetStatus(data.getStatus());
-        if (validationResponse != null) {
-            // Return the validation response if the status is invalid
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            String fileNameDB = "../importImages/" + fileName;
+            data.setImage(fileNameDB);
         }
+
+        data.setRequestId(generateUniqueRequestId());
+        data.setStatus("PLACED"); // Automatically set status to PLACED
 
         // Validate the fields before saving
-        ResponseEntity<String> fieldValidationResponse = validateImportForm(data);
-        if (fieldValidationResponse != null) {
-            // Return the field validation response if there are errors
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        validateImportForm(data);
 
         ImportForm savedForm = importFormRepo.save(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedForm);
     }
+
+
+
 
 
     // Method to validate and set status

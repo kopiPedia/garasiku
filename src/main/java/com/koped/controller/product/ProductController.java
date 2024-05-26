@@ -1,10 +1,12 @@
 package com.koped.controller.product;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +43,7 @@ public class ProductController {
     public String showDetailPage(Model model, @PathVariable Integer id) {
 		Product product = prodService.findByIds(id);
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
+
 		Cart cart = new Cart();
 		
         model.addAttribute("product", product);

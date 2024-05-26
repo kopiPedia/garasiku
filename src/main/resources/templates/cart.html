@@ -177,7 +177,7 @@
     <p th:text="'Total Price: $' + ${(total)}"></p>
 </div>
 
-<button class="pay-button">Pay</button>
+<a th:href="@{/payment}" class="pay-button">Pay</a>
 
 <script th:src="@{/js/cart.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

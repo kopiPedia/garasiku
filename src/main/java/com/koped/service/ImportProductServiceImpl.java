@@ -5,14 +5,18 @@ import java.util.List;
 import java.util.UUID;
 
 import com.koped.model.ImportProduct;
-
 import com.koped.repository.ImportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Random;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 @Service
@@ -47,49 +51,53 @@ public class ImportProductServiceImpl implements ImportProductService {
     }
 
     @Override
-    public ResponseEntity<ImportProduct> updateByProductId(String productId, ImportProduct updatedProductData) {
-        // Find the existing product by productId
+    public ResponseEntity<ImportProduct> updateByProductId(String productId, ImportProduct updatedProductData, MultipartFile productImage) throws IOException {
         ImportProduct existingProduct = importRepo.findByProductId(productId);
         if (existingProduct == null) {
-            // If the product with the given productId doesn't exist, return a NOT_FOUND response
             return ResponseEntity.notFound().build();
         }
 
-        // Update the fields of the existing product with the new data
+        if (productImage != null && !productImage.isEmpty()) {
+            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(productImage.getOriginalFilename());
+            String uploadDir = "src/main/resources/static/productImages/";
+            String uploadPath = uploadDir + fileName;
+            Path uploadAbsolutePath = Paths.get(uploadPath);
+            Files.createDirectories(uploadAbsolutePath.getParent());
+            Files.copy(productImage.getInputStream(), uploadAbsolutePath);
+
+            String fileNameDB = "../productImages/" + fileName;
+            existingProduct.setImage(fileNameDB);
+        }
+
         existingProduct.setTitle(updatedProductData.getTitle());
         existingProduct.setDescription(updatedProductData.getDescription());
         existingProduct.setStock(updatedProductData.getStock());
         existingProduct.setCountry(updatedProductData.getCountry());
         existingProduct.setPrice(updatedProductData.getPrice());
         existingProduct.setCategory(updatedProductData.getCategory());
-        existingProduct.setImage(updatedProductData.getImage());
         existingProduct.setUserId(updatedProductData.getUserId());
 
-        // Save the updated product
         ImportProduct updatedProduct = importRepo.save(existingProduct);
-
-        // Return the updated product in the response
         return ResponseEntity.ok(updatedProduct);
     }
 
     @Override
-    public ResponseEntity<ImportProduct> createNewProduct(ImportProduct data) {
-        // Validate the fields before saving
-        ResponseEntity<String> validationResponse = validateImportProduct(data);
-        if (validationResponse != null) {
-            // Return the validation response if there are errors
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+    public ResponseEntity<ImportProduct> createNewProduct(ImportProduct data, MultipartFile productImage) throws IOException {
+        if (productImage != null && !productImage.isEmpty()) {
+            String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(productImage.getOriginalFilename());
+            String uploadDir = "src/main/resources/static/productImages/";
+            String uploadPath = uploadDir + fileName;
+            Path uploadAbsolutePath = Paths.get(uploadPath);
+            Files.createDirectories(uploadAbsolutePath.getParent());
+            Files.copy(productImage.getInputStream(), uploadAbsolutePath);
 
-        // Generate unique ID if not provided
-        if (data.getProductId() == null || data.getProductId().isEmpty()) {
-            data.setProductId(generateUniqueProductId());
+            String fileNameDB = "../productImages/" + fileName;
+            data.setImage(fileNameDB);
         }
-
+        data.setProductId(UUID.randomUUID().toString());
         ImportProduct savedProduct = importRepo.save(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
-
     @Override
     public ResponseEntity<ImportProduct> findByUserId(int userId) {
         ImportProduct product = importRepo.findByUserId(userId);
@@ -99,7 +107,6 @@ public class ImportProductServiceImpl implements ImportProductService {
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
-    // Method to validate the ImportProduct fields
     private ResponseEntity<String> validateImportProduct(ImportProduct product) {
         if (product == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product data cannot be null");
@@ -116,20 +123,16 @@ public class ImportProductServiceImpl implements ImportProductService {
         if (product.getCountry() == null || product.getCountry().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Country cannot be null or empty");
         }
-        if (product.getPrice() == null || product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+        if (product.getPrice() == null || product.getPrice() <= 0.0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Price must be greater than 0");
         }
         if (product.getCategory() == null || product.getCategory().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Category cannot be null or empty");
         }
-        // If all validations pass, return null to indicate success
         return null;
     }
 
-    // Method to generate unique product ID
     private String generateUniqueProductId() {
-        // Generate UUID as product ID
         return UUID.randomUUID().toString();
     }
 }
-

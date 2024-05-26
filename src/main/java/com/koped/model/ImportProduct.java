@@ -36,7 +36,7 @@ public class ImportProduct {
     private String country;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Double price;
 
     @Column(name = "category")
     private String category;

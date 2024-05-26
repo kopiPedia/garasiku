@@ -3,7 +3,6 @@ package com.koped.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.koped.model.Cart;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +29,8 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public Voucher findByVoucherId(String voucherId) {
-        Optional<Voucher> voucher = voucherRepository.findById(voucherId);
-        return voucher.orElse(null);
+    public Optional<Voucher> findByVoucherId(String voucherId) {
+        return voucherRepository.findById(voucherId);
     }
 
     @Override
@@ -41,16 +39,7 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public Voucher updateVoucher(String voucherId, Voucher updatedVoucher) {
-        Voucher voucher = voucherRepository.findById(voucherId).orElse(null);
-
-        if (voucher != null) {
-            voucher.setVoucherName(updatedVoucher.getVoucherName());
-            voucher.setVoucherQuantity(updatedVoucher.getVoucherQuantity());
-            voucher.setDiscount(updatedVoucher.getDiscount());
-            return voucherRepository.save(voucher);
-        }
-
-        return null;
+    public Voucher updateVoucher(Voucher updatedVoucher) {
+        return voucherRepository.save(updatedVoucher);
     }
 }
