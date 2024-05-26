@@ -121,7 +121,7 @@
     </div>
 
     <div class="product-container" th:unless="${#lists.isEmpty(products)}">
-        <div th:each="product : ${products}" class="product-card" th:classappend="${product.stock == 0} ? ' disabled' : ''">
+        <div th:each="product : ${products}" class="product-card" th:onclick="'window.location.href=\'/product/' + ${product.id} + '\';'" th:classappend="${product.stock == 0} ? ' disabled' : ''">
 
             <img th:src="@{${product.image}}" alt="Product Image">
             <h3 th:text="${product.title}">Product Name</h3>

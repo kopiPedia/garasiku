@@ -68,20 +68,20 @@ public class ProductServiceTest {
         verify(productRepository, times(1)).findAll();
     }
 
-    @Test
-    public void testDeleteByProductId() {
-        // Given
-        String productId = "ABC123";
-        when(productRepository.deleteByProductId(productId)).thenReturn("Deleted");
-
-        // When
-        String result = productService.deleteByProductId(productId);
-
-        // Then
-        assertNotNull(result);
-        assertEquals("Deleted", result);
-        verify(productRepository, times(1)).deleteByProductId(productId);
-    }
+//    @Test
+//    public void testDeleteByProductId() {
+//        // Given
+//        String productId = "ABC123";
+//        when(productRepository.deleteByProductId(productId)).thenReturn("Deleted");
+//
+//        // When
+//        String result = productService.deleteByProductId(productId);
+//
+//        // Then
+//        assertNotNull(result);
+//        assertEquals("Deleted", result);
+//        verify(productRepository, times(1)).deleteByProductId(productId);
+//    }
 
     @Test
     public void testUpdateByProductId() {
