@@ -12,15 +12,18 @@ public class UserTest {
 
         user.setId(1);
         assertEquals(1, user.getId());
-        
+
         user.setUsername("testuser");
         assertEquals("testuser", user.getUsername());
-        
+
         user.setPassword("password123");
         assertEquals("password123", user.getPassword());
-        
+
         user.setEmail("test@example.com");
         assertEquals("test@example.com", user.getEmail());
+
+        user.setRole("admin");
+        assertEquals("admin", user.getRole());
     }
 
     @Test
@@ -29,44 +32,41 @@ public class UserTest {
         assertNull(user.getUsername());
         assertNull(user.getPassword());
         assertNull(user.getEmail());
+        assertNull(user.getRole());
     }
-    
+
     @Test
     public void testEmailFormat() {
         // Test if the email format is valid
         User user = new User();
         String validEmail = "test@example.com";
         String invalidEmail = "invalid_email";
-        
+
         user.setEmail(validEmail);
         assertEquals(validEmail, user.getEmail());
-        
+
         // Ensure invalid email is not accepted
-        try {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             user.setEmail(invalidEmail);
-            fail("Invalid email should not be accepted");
-        } catch (IllegalArgumentException e) {
-            assertNotNull(e.getMessage());
-        }
+        });
+        assertEquals("Invalid email format", exception.getMessage());
     }
-    
+
     @Test
     public void testPasswordLength() {
         // Test if password length is at least 8 characters
         User user = new User();
         String validPassword = "password123";
         String invalidPassword = "pass123";
-        
+
         user.setPassword(validPassword);
         assertEquals(validPassword, user.getPassword());
-        
+
         // Ensure invalid password is not accepted
-        try {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             user.setPassword(invalidPassword);
-            fail("Password length less than 8 characters should not be accepted");
-        } catch (IllegalArgumentException e) {
-            assertNotNull(e.getMessage());
-        }
+        });
+        assertEquals("Password must be at least 8 characters long", exception.getMessage());
     }
 
     @Test
@@ -122,6 +122,4 @@ public class UserTest {
         });
         assertEquals("Invalid email format", exception.getMessage());
     }
-
 }
-
