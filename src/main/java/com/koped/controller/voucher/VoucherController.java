@@ -1,5 +1,7 @@
 package com.koped.controller.voucher;
+import com.koped.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.koped.model.Voucher;
@@ -12,11 +14,22 @@ import org.springframework.ui.Model;
 public class VoucherController {
     @Autowired
     private VoucherService voucherService;
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/list")
     public String voucherPage(Model model) {
-        List<Voucher> voucherList = voucherService.findAllVoucher();
-        model.addAttribute("voucher", voucherList);
-        return "Voucher/VoucherList";
+        String userLoggedIn = SecurityContextHolder.getContext().getAuthentication().getName();
+        String role = userService.findByUsername(userLoggedIn).getRole();
+
+        if (role.equals("Admin")){
+            List<Voucher> voucherList = voucherService.findAllVoucher();
+            model.addAttribute("voucher", voucherList);
+            return "Voucher/VoucherList";
+        }
+
+        return "redirect:/?error=invalid_format";
     }
 
     @GetMapping("/create")

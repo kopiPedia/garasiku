@@ -26,11 +26,10 @@ public class PaymentController {
     public String paymentPage(Model model){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-//        List<Cart> cart = cartService.findCartByUser(username); prob will be changed
+        List<Cart> cart = cartService.findCartByUser(username);
         List<Voucher> voucherList = voucherService.findAllVoucher();
-
         model.addAttribute("vouchers", voucherList);
-//        model.addAttribute("cart", cart);
+        model.addAttribute("cart", cart);
         return "Payment/payment";
     }
 
