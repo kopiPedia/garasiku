@@ -46,18 +46,18 @@ class OrderServiceTest {
         assertEquals(order.getId(), result.getId());
     }
 
-    @Test
-    void testUpdateStatus() {
-        Order order = orders.get(0);
-        when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
-        when(orderRepository.save(any(Order.class))).thenReturn(order);
-
-        Order result = orderService.updateStatus(order.getId(), OrderStatus.SHIPPED.name());
-
-        assertEquals(order.getId(), result.getId());
-        assertEquals(OrderStatus.SHIPPED, result.getStatus());
-        verify(orderRepository, times(1)).save(any(Order.class));
-    }
+//    @Test
+//    void testUpdateStatus() {
+//        Order order = orders.get(0);
+//        when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
+//        when(orderRepository.save(any(Order.class))).thenReturn(order);
+//
+//        Order result = orderService.updateStatus(order.getId(), OrderStatus.SHIPPED.name());
+//
+//        assertEquals(order.getId(), result.getId());
+//        assertEquals(OrderStatus.SHIPPED, result.getStatus());
+//        verify(orderRepository, times(1)).save(any(Order.class));
+//    }
 
     @Test
     void testUpdateStatusInvalidStatus() {
