@@ -87,12 +87,12 @@ public class CartServiceImpl implements CartService{
 
     @Override
     public int gettotalCart(String user) {
-        int totalItem = 0;
+        int totalPrice = 0;
         List<Cart> userCart = cartRepository.findAllByUsername(user);
         for(Cart i : userCart){
-            totalItem += i.getQuantity();
+            totalPrice += Double.valueOf(i.getPrice());
         }
-        return totalItem;
+        return totalPrice;
     }
 
     @Override
