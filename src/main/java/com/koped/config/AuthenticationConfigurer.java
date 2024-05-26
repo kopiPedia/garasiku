@@ -35,6 +35,7 @@ public class AuthenticationConfigurer {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((requests) -> requests
+
                 .requestMatchers("/", "/home", "/product/products", "/productImages/**", "/register", "/css/**", "/js/**", "/img/**", "/scss/**", "/fonts/**", "/importimages/**").permitAll()
                 .anyRequest().authenticated())
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
