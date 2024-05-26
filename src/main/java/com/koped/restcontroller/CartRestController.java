@@ -23,10 +23,7 @@ public class CartRestController {
     public List<Cart> findCartByUser(@PathVariable String user){
         return cartService.findCartByUser(user);
     }
-    @DeleteMapping("/delete/{id}/{productId}")
-    public void removeProductFromCart(@PathVariable long id, @PathVariable String productId){
-        cartService.removeProductFromCart(id, productId);
-    }
+
     @PutMapping("/update/{id}/{quantity}/{productId}")
     public Cart updateProductQuantityInCart(@PathVariable long id, @PathVariable int quantity, @PathVariable String productId){
         return cartService.updateProductQuantityInCart(id, quantity, productId);
